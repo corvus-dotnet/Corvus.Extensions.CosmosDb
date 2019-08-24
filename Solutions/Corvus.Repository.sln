@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{BDC86884-4D8A-4D2F-ADA3-C8C27A2A01BF}"
+	ProjectSection(SolutionItems) = preProject
+		..\azure-pipelines.yml = ..\azure-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Repository.Abstractions", "Corvus.Repository.Abstractions\Corvus.Repository.Abstractions.csproj", "{697DCEA5-8FAC-4304-87ED-53355E102BF8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Repository", "Corvus.Repository\Corvus.Repository.csproj", "{B8943885-D8E2-43D9-9EE5-EB3550E24212}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Repository.Specs", "Corvus.Repository.Specs\Corvus.Repository.Specs.csproj", "{C463B36D-A3B7-4C47-915E-EAC1074C282C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{697DCEA5-8FAC-4304-87ED-53355E102BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{697DCEA5-8FAC-4304-87ED-53355E102BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{697DCEA5-8FAC-4304-87ED-53355E102BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{697DCEA5-8FAC-4304-87ED-53355E102BF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8943885-D8E2-43D9-9EE5-EB3550E24212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8943885-D8E2-43D9-9EE5-EB3550E24212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8943885-D8E2-43D9-9EE5-EB3550E24212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8943885-D8E2-43D9-9EE5-EB3550E24212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C463B36D-A3B7-4C47-915E-EAC1074C282C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C463B36D-A3B7-4C47-915E-EAC1074C282C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C463B36D-A3B7-4C47-915E-EAC1074C282C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C463B36D-A3B7-4C47-915E-EAC1074C282C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2FE6918-F86F-4AAC-BC28-D5141DEB816B}
+	EndGlobalSection
+EndGlobal
