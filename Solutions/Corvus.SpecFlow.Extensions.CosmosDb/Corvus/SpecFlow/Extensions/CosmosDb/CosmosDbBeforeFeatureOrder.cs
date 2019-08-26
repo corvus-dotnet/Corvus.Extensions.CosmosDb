@@ -20,7 +20,7 @@ namespace Corvus.SpecFlow.Extensions.CosmosDb
         /// </summary>
         /// <remarks>
         /// <para>
-        /// In most tests, <see cref="CreateSqlClient"/> is the first step that will be used. Tests
+        /// In most tests, <see cref="CreateClient"/> is the first step that will be used. Tests
         /// that work directly with the client objects don't really need to see the settings
         /// directly. However, some tests need the Cosmos DB account URI and key because they
         /// create new collections as part of the test. (E.g., tests that verify that we handle
@@ -41,18 +41,18 @@ namespace Corvus.SpecFlow.Extensions.CosmosDb
         /// <summary>
         /// The <c>Order</c> at which the client object is created.
         /// </summary>
-        public const int CreateSqlClient = ReadClientSettings + 1;
+        public const int CreateClient = ReadClientSettings + 1;
 
         /// <summary>
         /// The <c>Order</c> from which the client object is available but has not yet been
         /// prepopulated with test data.
         /// </summary>
         /// <remarks>
-        /// This leaves a space of 99 after <see cref="CreateSqlClient"/> (so this is 20100) to
+        /// This leaves a space of 99 after <see cref="CreateClient"/> (so this is 20100) to
         /// leave space for any test-specific setup that needs to happen after the client
         /// object exists, but before main test data is loaded.
         /// </remarks>
-        public const int UnpopulatedDatabaseCollectionAvailable = CreateSqlClient + 99;
+        public const int UnpopulatedDatabaseCollectionAvailable = CreateClient + 99;
 
         /// <summary>
         /// The <c>Order</c> at which the client object is created..

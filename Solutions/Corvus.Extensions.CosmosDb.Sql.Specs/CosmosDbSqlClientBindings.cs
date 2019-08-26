@@ -90,7 +90,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         /// </summary>
         /// <param name="featureContext">The feature context.</param>
         /// <remarks>Note that this sets up a resource in Azure and will incur cost. Ensure the corresponding tear down operation is always run, or verify manually after a test run.</remarks>
-        [BeforeFeature("@setupCosmosDBSqlClient", Order = CosmosDbBeforeFeatureOrder.CreateSqlClient)]
+        [BeforeFeature("@setupCosmosDBSqlClient", Order = CosmosDbBeforeFeatureOrder.CreateClient)]
         public static void SetupCosmosDbSqlClientForFeature(FeatureContext featureContext)
         {
             CosmosDbSettings settings = featureContext.Get<CosmosDbSettings>();
@@ -101,7 +101,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
             partitionKeyDefinition.Paths.Add("/id");
             var client = new CosmosDbSqlClient(
                 settings.CosmosDbDatabaseName,
-                "repo-" + Guid.NewGuid(),
+                "client-" + Guid.NewGuid(),
                 settings.CosmosDbAccountUri,
                 featureContext.Get<string>(CosmosDbContextKeys.AccountKey),
                 serializerSettings.Instance,
@@ -109,7 +109,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
                 connectionPolicy: new ConnectionPolicy { ConnectionMode = ConnectionMode.Direct },
                 defaultOfferThroughput: settings.CosmosDbDefaultOfferThroughput,
                 useDatabaseThroughput: true);
-            featureContext.Set(client, CosmosDbContextKeys.CosmosDbSqlClient);
+            featureContext.Set(client, CosmosDbContextKeys.CosmosDbClient);
             AddFeatureLevelCosmosDbSqlClientForCleanup(featureContext, client);
         }
 

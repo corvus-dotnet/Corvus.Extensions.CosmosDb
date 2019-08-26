@@ -13,6 +13,10 @@ namespace Corvus.Extensions.CosmosDb.Crypto
     /// <summary>
     ///     Helper methods for obtaining secrets.
     /// </summary>
+    /// <remarks>
+    /// We need this as different tenants may be configured to use different keyvaults (in a BYO scenario).
+    /// Therefore we cannot simply configure the keyvault fallback for configuration.
+    /// </remarks>
     public static class SecretHelper
     {
         /// <summary>

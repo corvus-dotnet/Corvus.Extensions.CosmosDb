@@ -1,29 +1,35 @@
-﻿// <copyright file="CosmosDbSqlClientSteps.cs" company="Endjin">
+﻿// <copyright file="GraphRepositorySteps.cs" company="Endjin">
 // Copyright (c) Endjin. All rights reserved.
 // </copyright>
 
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable CS1591 // Elements should be documented
+#pragma warning disable IDE0009 // Spurious this or me qualification
+#pragma warning disable RCS1192 // Spurious avoid string literals
 
-namespace Corvus.Extensions.CosmosDb.Specs
+namespace Endjin.GraphRepository.Specs
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
+    using Corvus.Extensions;
     using Corvus.Extensions.CosmosDb;
     using Corvus.Extensions.CosmosDb.Crypto;
+    using Corvus.Extensions.CosmosDb.GremlinQuery;
     using Corvus.SpecFlow.Extensions.CosmosDb;
     using Microsoft.Azure.Documents;
     using Microsoft.Azure.Documents.Client;
+
     using NUnit.Framework;
+
     using TechTalk.SpecFlow;
     using TechTalk.SpecFlow.Assist;
 
     [Binding]
-    public class CosmosDbSqlClientSteps : CosmosDbSqlClientStepsBase<SampleEntity>
+    public class CosmosDbGremlinClientSteps : CosmosDbGremlinClientStepsBase<SampleEntity>
     {
         private const string NullString = "null";
         private const string NewGuidString = "newguid";
@@ -32,7 +38,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         private const string StoredEntitiesKey = "StoredEntities";
         private const string QueryValueKey = "QueryValue";
 
-        public CosmosDbSqlClientSteps(FeatureContext featureContext, ScenarioContext scenarioContext)
+        public CosmosDbGremlinClientSteps(FeatureContext featureContext, ScenarioContext scenarioContext)
             : base(featureContext, scenarioContext)
         {
         }
@@ -46,7 +52,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         [Then("the document client should not be null")]
         public async Task ThenTheDocumentClientShouldNotBeNull()
         {
-            ICosmosDbSqlClient client = this.FeatureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
             Assert.IsNotNull(await client.GetDocumentClientAsync().ConfigureAwait(false));
         }
 
@@ -56,8 +62,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         {
             try
             {
-                ICosmosDbSqlClient client = this.FeatureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
-
+                ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
                 string translatedId = this.TranslateId(id);
                 await client.DeleteAsync(translatedId, translatedId).ConfigureAwait(false);
             }
@@ -67,13 +72,120 @@ namespace Corvus.Extensions.CosmosDb.Specs
             }
         }
 
+        [Given("I add the following edge to the graph")]
+        [When("I add the following edge to the graph")]
+        public Task WhenIAddTheFollowingEdgeToTheGraph(Table table)
+        {
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+            return client.AddEdgeAsync(table.Rows[0]["Label"], table.Rows[0]["Start Id"], table.Rows[0]["End Id"]);
+        }
+
+        [Given("I store (.*) entities with the label '(.*)'")]
+        public async Task GivenIStoreEntitiesWithTheLabel(int numberOfEntities, string label)
+        {
+            var entities = new System.Collections.Concurrent.ConcurrentBag<SampleEntity>();
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+            var random = new Random(3);
+
+            await Enumerable.Range(0, numberOfEntities).ForEachAsync(_ =>
+            {
+                var entity = new SampleEntity { Id = Guid.NewGuid().ToString(), Name = CryptoString.RandomString(), SomeValue = random.Next() };
+                entities.Add(entity);
+                return client.AddVertexAsync(entity, label);
+            }).ConfigureAwait(false);
+
+            this.ScenarioContext.Set(entities.ToList(), StoredEntitiesKey);
+        }
+
+        [When("I get all entities with the label '(.*)'")]
+        public async Task WhenIGetAllEntitiesWithTheLabelAsync(string label)
+        {
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+            GraphTraversal<dynamic, SampleEntity> traversal = client.StartTraversal().V<SampleEntity>().HasLabel(label);
+            IEnumerable<SampleEntity> result = await client.ExecuteTraversalAsync(traversal).ConfigureAwait(false);
+            this.ScenarioContext.Set(result.ToList(), ResultKey);
+        }
+
+        [Then("the result should have (.*) entities")]
+        public void ThenTheResultShouldHaveEntities(int count)
+        {
+            IList<SampleEntity> result = this.ScenarioContext.Get<IList<SampleEntity>>(ResultKey);
+            Assert.AreEqual(count, result.Count);
+        }
+
+        [Then("the following out traversals should exist")]
+        public async Task ThenTheFollowingOutTraversalsShouldExist(Table table)
+        {
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+            foreach (TableRow row in table.Rows)
+            {
+                string startId = row["Start Id"];
+                string endId = row["End Id"];
+                string label = row["Label"];
+
+                GraphTraversal<dynamic, Edge> traversal = client.StartTraversal().V(startId).OutE(label);
+                IEnumerable<Edge> edges = await client.ExecuteTraversalAsync(traversal).ConfigureAwait(false);
+                var peopleList = edges.ToList();
+                Assert.AreEqual(1, peopleList.Count);
+                Edge actual = peopleList[0];
+                Assert.AreEqual(label, actual.Label);
+            }
+        }
+
+        [Then("the traversal called '(.*)' should be empty")]
+        public async Task ThenTheTraversalCalledShouldBeEmpty(string traversalName)
+        {
+            GraphTraversal<object, SamplePerson> traversal = this.FeatureContext.Get<GraphTraversal<object, SamplePerson>>(traversalName);
+            IEnumerable<SamplePerson> actualList = await traversal.Client.ExecuteTraversalAsync(traversal).ConfigureAwait(false);
+            Assert.IsFalse(actualList.Any());
+        }
+
+        [When("I get the nodes with property '(.*)' as a traversal called '(.*)'")]
+        public void WhenIGetTheNodesWithPropertyAsATraversalCalled(string property, string traversalName)
+        {
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+
+            GraphTraversal<dynamic, SamplePerson> traversal = client.StartTraversal().V<SamplePerson>().Has(property);
+
+            this.FeatureContext.Set(traversal, traversalName);
+        }
+
+        [When("I get the nodes with property '(.*)' as a traversal called '(.*)' with the predicate (.*)")]
+        public void WhenIGetTheNodesWithPropertyAsATraversalCalledWithThePredicateBetween(string property, string traversalName, string predicate)
+        {
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+
+            GraphTraversal<dynamic, SamplePerson> traversal = client.StartTraversal().V<SamplePerson>().Has(property, predicate);
+
+            this.FeatureContext.Set(traversal, traversalName);
+        }
+
+        [Then("the following in traversals should exist")]
+        public async Task ThenTheFollowingInTraversalsShouldExist(Table table)
+        {
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+            foreach (TableRow row in table.Rows)
+            {
+                string startId = row["Start Id"];
+                string endId = row["End Id"];
+                string label = row["Label"];
+
+                GraphTraversal<dynamic, Edge> traversal = client.StartTraversal().V(startId).InE(label);
+                IEnumerable<Edge> edges = await client.ExecuteTraversalAsync(traversal).ConfigureAwait(false);
+                var peopleList = edges.ToList();
+                Assert.AreEqual(1, peopleList.Count);
+                Edge actual = peopleList[0];
+                Assert.AreEqual(label, actual.Label);
+            }
+        }
+
         [Given("I set the offer throughput to (.*) ru/s")]
         [When("I set the offer throughput to (.*) ru/s")]
         public async Task WhenISetTheOfferThroughputToRuS(int rus)
         {
             try
             {
-                ICosmosDbSqlClient client = this.FeatureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
+                ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
                 await client.SetThroughputAsync(rus).ConfigureAwait(false);
             }
             catch (Exception e)
@@ -82,10 +194,121 @@ namespace Corvus.Extensions.CosmosDb.Specs
             }
         }
 
+        [Given("I add the following vertices to the graph with label '(.*)'")]
+        [When("I add the following vertices to the graph with label '(.*)'")]
+        public async Task WhenIAddTheFollowingVerticesToTheGraphWithLabel(string label, Table table)
+        {
+            try
+            {
+                ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+
+                foreach (SamplePerson person in table.CreateSet<SamplePerson>())
+                {
+                    await client.AddVertexAsync(person, label).ConfigureAwait(false);
+                }
+            }
+            catch (Exception e)
+            {
+                this.ScenarioContext.Set(e, CosmosDbContextKeys.ExceptionKey);
+            }
+        }
+
+        [Given("I update the following vertices in the graph")]
+        [When("I update the following vertices in the graph")]
+        public async Task WhenIUpdateTheFollowingVerticesInTheGraph(Table table)
+        {
+            try
+            {
+                ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+                foreach (SamplePerson person in table.CreateSet<SamplePerson>())
+                {
+                    await client.UpdateVertexAsync(person).ConfigureAwait(false);
+                }
+            }
+            catch (Exception e)
+            {
+                this.ScenarioContext.Set(e, CosmosDbContextKeys.ExceptionKey);
+            }
+        }
+
+        [Given("I get the nodes with label '(.*)' as a traversal called '(.*)'")]
+        [When("I get the nodes with label '(.*)' as a traversal called '(.*)'")]
+        public void WhenIGetTheNodesWithLabelAsATraversalCalled(string label, string traversalName)
+        {
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+
+            GraphTraversal<dynamic, SamplePerson> traversal = client.StartTraversal().V<SamplePerson>().HasLabel(label);
+
+            this.FeatureContext.Set(traversal, traversalName);
+        }
+
+        [Given("I fold the traversal called '(.*)' to a list traversal called '(.*)'")]
+        [When("I fold the traversal called '(.*)' to a list traversal called '(.*)'")]
+        public void WhenIFoldTheTraversalToAListToATraversalCalledCalled(string inputTraversalName, string outputTraversalName)
+        {
+            GraphTraversal<dynamic, SamplePerson> inputTraversal = this.FeatureContext.Get<GraphTraversal<dynamic, SamplePerson>>(inputTraversalName);
+            GraphTraversal<dynamic, SamplePerson> outputTraversal = inputTraversal.Fold();
+            this.FeatureContext.Set(outputTraversal, outputTraversalName);
+        }
+
+        [When("I execute the list traversal called '(.*)' and store the result in a list called '(.*)'")]
+        public async Task WhenIExecuteTheListTraversalCalledAndStoreTheResultInAListCalled(string traversalName, string listName)
+        {
+            GraphTraversal<object, SamplePerson> traversal = this.FeatureContext.Get<GraphTraversal<object, SamplePerson>>(traversalName);
+            IEnumerable<SamplePerson> list = await traversal.Client.ExecuteTraversalAsync(traversal).ConfigureAwait(false);
+            this.FeatureContext.Set(list.ToList(), listName);
+        }
+
+        [Then("I should be able to get the following vertices from the traversal called '(.*)'")]
+        public async Task ThenIShouldBeAbleToGetTheFollowingVerticesFromTheTraversalCalledAsync(string traversalName, Table table)
+        {
+            GraphTraversal<object, SamplePerson> traversal = this.FeatureContext.Get<GraphTraversal<object, SamplePerson>>(traversalName);
+            IList<SamplePerson> actualList = (await traversal.Client.ExecuteTraversalAsync(traversal).ConfigureAwait(false)).ToList();
+            var expectedList = table.CreateSet<SamplePerson>().ToList();
+            CollectionAssert.AreEquivalent(expectedList, actualList);
+            //Assert.AreEqual(expectedList.Count, actualList.Count);
+            //expectedList.ForEach(expected =>
+            //{
+            //    Assert.IsTrue(actualList.Any(actual => expected.Equals(actual)));
+            //});
+            //actualList.ForEach(actual=>
+            //{
+            //    Assert.IsTrue(expectedList.Any(expected => actual.Equals(expected)));
+            //});
+        }
+
+        [Then("the list called '(.*)' should be empty")]
+        public void ThenTheListCalledShouldBeEmpty(string listName)
+        {
+            IList<SamplePerson> actualList = this.FeatureContext.Get<IList<SamplePerson>>(listName);
+            Assert.AreEqual(0, actualList.Count);
+        }
+
+        [Then("I should be able to get the following vertices from the list called '(.*)'")]
+        public void ThenIShouldBeAbleToGetTheFollowingVerticesFromTheListCalled(string listName, Table table)
+        {
+            var expectedList = table.CreateSet<SamplePerson>().ToList();
+            IList<SamplePerson> actualList = this.FeatureContext.Get<IList<SamplePerson>>(listName);
+
+            VerifyLists(expectedList, actualList);
+        }
+
+        [Then("I should be able to get the following vertices")]
+        public async Task ThenIShouldBeAbleToGetTheFollowingNodes(Table table)
+        {
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+
+            foreach (SamplePerson expected in table.CreateSet<SamplePerson>())
+            {
+                SamplePerson actual = await client.GetVertexAsync<SamplePerson>(expected.Id).ConfigureAwait(false);
+                VertifyPerson(expected, actual);
+            }
+        }
+
         [Then("the result should be (.*) ru/s")]
         public async Task ThenTheResultShouldBeRuS(int rus)
         {
-            ICosmosDbSqlClient client = this.FeatureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
             int throughput = await client.GetThroughputAsync().ConfigureAwait(false);
             Assert.AreEqual(rus, throughput);
         }
@@ -95,7 +318,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         public void ThenItShouldThrowAn(string exceptionTypeName)
         {
             var exceptionType = Type.GetType(exceptionTypeName);
-            if (this.ScenarioContext.TryGetValue(CosmosDbContextKeys.ExceptionKey, out Exception exception))
+            if (this.ScenarioContext.TryGetValue<Exception>(CosmosDbContextKeys.ExceptionKey, out Exception exception))
             {
                 Assert.IsInstanceOf(exceptionType, exception);
             }
@@ -108,7 +331,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         [Then("the DocumentClientException should have an HTTP status code of '(.*)'")]
         public void ThenTheDocumentClientExceptionShouldHaveAnHTTPStatusCodeOf(string statusCode)
         {
-            if (this.ScenarioContext.TryGetValue(CosmosDbContextKeys.ExceptionKey, out Exception exception))
+            if (this.ScenarioContext.TryGetValue<Exception>(CosmosDbContextKeys.ExceptionKey, out Exception exception))
             {
                 if (exception is DocumentClientException documentClientException)
                 {
@@ -126,10 +349,31 @@ namespace Corvus.Extensions.CosmosDb.Specs
             }
         }
 
+        [Then("the GremlinClientException should have an HTTP status code of '(.*)'")]
+        public void ThenTheGremlinClientExceptionShouldHaveAnHTTPStatusCodeOf(string statusCode)
+        {
+            if (this.ScenarioContext.TryGetValue<Exception>(CosmosDbContextKeys.ExceptionKey, out Exception exception))
+            {
+                if (exception is GremlinClientException graphRepositoryException)
+                {
+                    var httpStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), statusCode, true);
+                    Assert.AreEqual(httpStatusCode, graphRepositoryException.StatusCode);
+                }
+                else
+                {
+                    Assert.True(false, "The exception was not a GremlinClientException. (Have you verified with \"It should throw a 'Corvus.Extensions.CosmosDb.GraphRespositoryException'\"?)");
+                }
+            }
+            else
+            {
+                Assert.True(false, "No exception thrown.");
+            }
+        }
+
         [Then("the ArgumentNullException applies to the parameter '(.*)'")]
         public void ThenTheArgumentNullExceptionAppliesToTheParameter(string paramName)
         {
-            if (this.ScenarioContext.TryGetValue(CosmosDbContextKeys.ExceptionKey, out Exception exception))
+            if (this.ScenarioContext.TryGetValue<Exception>(CosmosDbContextKeys.ExceptionKey, out Exception exception))
             {
                 if (exception is ArgumentNullException argumentNullException)
                 {
@@ -201,7 +445,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         [Given("I store the entities")]
         public async Task GivenIStoreTheEntities(Table table)
         {
-            ICosmosDbSqlClient client = this.FeatureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
+            ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
 
             try
             {
@@ -228,7 +472,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         {
             try
             {
-                ICosmosDbSqlClient client = this.FeatureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
+                ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
                 string translatedId = this.TranslateId(id);
                 SampleEntity entity = await client.GetAsync<SampleEntity>(translatedId, translatedId).ConfigureAwait(false);
                 this.ScenarioContext.Set(entity, ResultKey);
@@ -244,10 +488,9 @@ namespace Corvus.Extensions.CosmosDb.Specs
         {
             try
             {
-                ICosmosDbSqlClient client = this.FeatureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
+                ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
                 string translatedId = this.TranslateId(id);
-                DocumentResponse<SampleEntity> document = await client.ReadDocumentAsync<SampleEntity>(
-                    translatedId, translatedId).ConfigureAwait(false);
+                DocumentResponse<SampleEntity> document = await client.ReadDocumentAsync<SampleEntity>(translatedId, translatedId).ConfigureAwait(false);
                 this.ScenarioContext.Set(document, ResultKey);
             }
             catch (Exception e)
@@ -261,7 +504,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         {
             try
             {
-                ICosmosDbSqlClient client = this.FeatureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
+                ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
                 string translatedId = this.TranslateId(id);
                 Document document = await client.GetAsync(translatedId, translatedId).ConfigureAwait(false);
                 this.ScenarioContext.Set(document, ResultKey);
@@ -318,12 +561,10 @@ namespace Corvus.Extensions.CosmosDb.Specs
         {
             try
             {
-                ICosmosDbSqlClient client = this.FeatureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
+                ICosmosDbGremlinClient client = this.FeatureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
 
                 string translatedId = this.TranslateId(id);
-                EntityInstance<SampleEntity> instance = await client.GetEntityInstanceAsync<SampleEntity>(
-                    translatedId,
-                    translatedId).ConfigureAwait(false);
+                EntityInstance<SampleEntity> instance = await client.GetEntityInstanceAsync<SampleEntity>(translatedId, translatedId).ConfigureAwait(false);
                 this.ScenarioContext.Set(instance, ResultKey);
             }
             catch (Exception e)
@@ -335,7 +576,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         [When("I query entities with a null specification")]
         public Task WhenIQueryEntitiesWithANullSpecification()
         {
-            return this.ExecuteQueryHelper((SqlQuerySpec)null);
+            return this.ExecuteQueryHelper(null);
         }
 
         [When("I query entities with a null query string")]
@@ -378,7 +619,8 @@ namespace Corvus.Extensions.CosmosDb.Specs
         [Then("there should be no entities in the response")]
         public void ThenThereShouldBeNoEntitiesInTheResponse()
         {
-            Assert.IsEmpty(this.GetAllResults());
+            IEnumerable<SampleEntity> entities = this.GetAllResults();
+            Assert.IsEmpty(entities);
         }
 
         [Then("there should be as many entities in the result set as in the set that was stored")]
@@ -406,7 +648,9 @@ namespace Corvus.Extensions.CosmosDb.Specs
         public void ThenEachPageOfResultShouldHaveMatchingEntitiesInTheSetThatWasStored()
         {
             List<SampleEntity> entities = this.FeatureContext.Get<List<SampleEntity>>(StoredEntitiesKey);
-            foreach (FeedResponse<SampleEntity> page in this.ScenarioContext.Get<List<FeedResponse<SampleEntity>>>(ResultKey))
+            List<FeedResponse<SampleEntity>> pages = this.ScenarioContext.Get<List<FeedResponse<SampleEntity>>>(ResultKey);
+
+            foreach (FeedResponse<SampleEntity> page in pages)
             {
                 foreach (SampleEntity result in page)
                 {
@@ -422,7 +666,7 @@ namespace Corvus.Extensions.CosmosDb.Specs
         {
             for (int i = 0; i < pageCount; ++i)
             {
-                await this.ExecuteQueryHelper(queryText, pageSize, i).ConfigureAwait(false);
+                await this.ExecuteQueryPageHelper(queryText, pageSize, i).ConfigureAwait(false);
             }
         }
 
@@ -501,6 +745,15 @@ namespace Corvus.Extensions.CosmosDb.Specs
         /// <inheritdoc/>
         protected override int ParamValueSelector(SampleEntity e) => e.SomeValue;
 
+        private static void VertifyPerson(SamplePerson expected, SamplePerson actual)
+        {
+            Assert.IsNotNull(actual, $"Unable to get the vertex with ID '{expected.Id}'");
+            Assert.AreEqual(expected.FirstName, actual.FirstName);
+            Assert.AreEqual(expected.LastName, actual.LastName);
+            Assert.AreEqual(expected.DateOfBirth, actual.DateOfBirth);
+            Assert.AreEqual(expected.Rating, actual.Rating);
+        }
+
         private static void IsMatch(SampleEntity expected, SampleEntity actual)
         {
             Assert.AreEqual(expected.Id, actual.Id);
@@ -508,11 +761,22 @@ namespace Corvus.Extensions.CosmosDb.Specs
             Assert.AreEqual(expected.SomeValue, actual.SomeValue);
         }
 
+        private static void VerifyLists(List<SamplePerson> expectedList, IList<SamplePerson> actualList)
+        {
+            Assert.AreEqual(expectedList.Count, actualList.Count);
+            foreach (SamplePerson expected in expectedList)
+            {
+                SamplePerson actual = actualList.SingleOrDefault(p => p.Id == expected.Id);
+                Assert.IsNotNull(actual);
+                VertifyPerson(expected, actual);
+            }
+        }
+
         private static async Task AddRandomEntities(FeatureContext featureContext, int count)
         {
-            var entities = new ConcurrentBag<SampleEntity>();
-            ICosmosDbSqlClient client = featureContext.Get<ICosmosDbSqlClient>(CosmosDbContextKeys.CosmosDbClient);
-            var random = new Random();
+            var entities = new System.Collections.Concurrent.ConcurrentBag<SampleEntity>();
+            ICosmosDbGremlinClient client = featureContext.Get<ICosmosDbGremlinClient>(CosmosDbContextKeys.CosmosDbClient);
+            var random = new Random(3);
 
             await Enumerable.Range(0, count).ForEachAsync(_ =>
             {
@@ -524,20 +788,31 @@ namespace Corvus.Extensions.CosmosDb.Specs
             featureContext.Set(entities.ToList(), StoredEntitiesKey);
         }
 
-        private Task StoreAnEntity(SampleEntity item, string etag = null) =>
-            this.ExecuteWithClient(client => client.UpsertAsync(item, etag == null ? null : new RequestOptions { AccessCondition = new AccessCondition { Condition = etag, Type = AccessConditionType.IfMatch } }));
+        private Task StoreAnEntity(SampleEntity item, string etag = null) => this.ExecuteWithClient(client =>
+            client.UpsertAsync(item, etag == null ? null : new RequestOptions { AccessCondition = new AccessCondition { Condition = etag, Type = AccessConditionType.IfMatch } }));
 
-        private Task InsertAnEntity(SampleEntity item) =>
-            this.ExecuteWithClient(client => client.InsertAsync(item));
+        private Task InsertAnEntity(SampleEntity item) => this.ExecuteWithClient(client => client.InsertAsync(item));
 
-        private Task UpdateAnEntity(SampleEntity item, string etag = null) =>
-            this.ExecuteWithClient(client => client.UpdateAsync(item, etag));
+        private Task UpdateAnEntity(SampleEntity item, string etag = null) => this.ExecuteWithClient(client => client.UpdateAsync(item, etag));
 
-        private Task ExecuteQueryHelper(SqlQuerySpec querySpec) =>
-            this.ExecuteWithClient(client => client.ExecuteQueryAsync<SampleEntity>(querySpec));
+        private Task ExecuteQueryHelper(SqlQuerySpec querySpec) => this.ExecuteWithClient(async client =>
+        {
+            var responses = new List<FeedResponse<SampleEntity>>();
+            FeedResponse<SampleEntity> feedResponse = null;
+            for (int page = 0; feedResponse == null || feedResponse.ResponseContinuation != null; ++page)
+            {
+                feedResponse = await client.ExecuteQueryAsync<SampleEntity>(querySpec).ConfigureAwait(false);
+            }
 
-        private Task ExecuteQueryHelper(string queryText) => this.ExecuteMultipageQuery((client, feedOptions) =>
-            client.ExecuteQueryAsync<SampleEntity>(queryText, feedOptions: feedOptions));
+            return feedResponse;
+        });
+
+        private Task ExecuteQueryPageHelper(string queryText, int pageSize, int pageIndex)
+            => this.ExecuteSingleOfManyPagesQuery((client) =>
+                client.ExecuteQueryAsync<SampleEntity>(
+                    queryText,
+                    pagesToSkip: pageIndex,
+                    feedOptions: new FeedOptions { MaxItemCount = pageSize, EnableCrossPartitionQuery = true }));
 
         private string TranslateId(string id)
         {
@@ -556,4 +831,5 @@ namespace Corvus.Extensions.CosmosDb.Specs
 
 #pragma warning restore SA1600 // Elements should be documented
 #pragma warning restore CS1591 // Elements should be documented
-
+#pragma warning restore IDE0009 // Spurious this or me qualification
+#pragma warning restore RCS1192 // Spurious avoid string literals

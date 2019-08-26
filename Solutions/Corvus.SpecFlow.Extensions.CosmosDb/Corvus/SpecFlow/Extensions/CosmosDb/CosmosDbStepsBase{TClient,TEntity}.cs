@@ -84,7 +84,7 @@ namespace Corvus.SpecFlow.Extensions.CosmosDb
         /// <returns>A task that completes once the operation has finished.</returns>
         protected async Task ExecuteWithClient<TResult>(Func<TClient, Task<TResult>> action)
         {
-            TClient client = this.FeatureContext.Get<TClient>(CosmosDbContextKeys.CosmosDbSqlClient);
+            TClient client = this.FeatureContext.Get<TClient>(CosmosDbContextKeys.CosmosDbClient);
 
             try
             {
@@ -134,7 +134,7 @@ namespace Corvus.SpecFlow.Extensions.CosmosDb
 
             try
             {
-                TClient client = this.FeatureContext.Get<TClient>(CosmosDbContextKeys.CosmosDbSqlClient);
+                TClient client = this.FeatureContext.Get<TClient>(CosmosDbContextKeys.CosmosDbClient);
                 FeedResponse<TEntity> feedResponse = await executeQuery(client).ConfigureAwait(false);
                 pages.Add(feedResponse);
                 return feedResponse;

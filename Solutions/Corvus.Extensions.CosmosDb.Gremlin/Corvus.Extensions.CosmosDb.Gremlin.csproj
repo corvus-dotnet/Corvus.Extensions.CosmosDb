@@ -14,15 +14,14 @@
   <Import Project="..\Common.NetStandard_2_0.proj" />
 
   <ItemGroup>
-    <PackageReference Include="Corvus.Configuration.TestEnvironment" Version="0.1.0" />
-    <PackageReference Include="Corvus.SpecFlow.Extensions" Version="0.1.0" />
-    <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="SpecFlow" Version="3.0.225" />
+    <PackageReference Include="Corvus.Extensions" Version="0.5.0" />
+    <PackageReference Include="Corvus.Retry" Version="0.2.0" />
+    <PackageReference Include="Microsoft.Azure.DocumentDb.Core" Version="2.5.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Corvus.Extensions.CosmosDb.Gremlin\Corvus.Extensions.CosmosDb.Gremlin.csproj" />
     <ProjectReference Include="..\Corvus.Extensions.CosmosDb.Sql\Corvus.Extensions.CosmosDb.Sql.csproj" />
+    <ProjectReference Include="..\Corvus.Extensions.CosmosDb.Gremlin.Abstractions\Corvus.Extensions.CosmosDb.Gremlin.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

@@ -12,7 +12,7 @@ namespace Corvus.SpecFlow.Extensions.CosmosDb
         /// <summary>
         /// The key for the Cosmos DB client instance in the feature context.
         /// </summary>
-        public const string CosmosDbSqlClient = "CosmosDbSqlClient";
+        public const string CosmosDbClient = "CosmosDbSqlClient";
 
         /// <summary>
         /// The key for the Cosmos DB AccountKey (secret) in the feature context.
