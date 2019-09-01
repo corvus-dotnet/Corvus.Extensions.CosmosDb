@@ -1,6 +1,0 @@
-{
-  "stepAssemblies": [
-    { "assembly": "Corvus.SpecFlow.Extensions" },
-    { "assembly": "Corvus.SpecFlow.Extensions.CosmosDb" }
-  ]
-}
