@@ -78,18 +78,18 @@ namespace Corvus.Extensions.CosmosClient.Specs
         public virtual void SerializeAPOCOToADocumentWith_EtagAndDeserializeToAnEntityInstance(string name, string dateOfBirth, string eTag, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Serialize a POCO to a document with _etag and deserialize to an EntityInstance", null, exampleTags);
-#line 8
+#line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 9
+#line 7
  testRunner.Given(string.Format("I create a Person with Name \"{0}\" and DateOfBirth \"{1}\" called \"SamplePerson\"", name, dateOfBirth), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 10
+#line 8
  testRunner.And(string.Format("I serialize the Person \"SamplePerson\" to a document called \"SampleDocument\" with " +
                         "ETag \"{0}\"", eTag), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
+#line 9
  testRunner.When("I deserialize the document called \"SampleDocument\" to an EntityInstance called \"R" +
                     "esult\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 12
+#line 10
  testRunner.Then(string.Format("the EntityInstance called \"Result\" should have an Entity with Name \"{0}\" and Date" +
                         "OfBirth \"{1}\" and an ETag \"{2}\"", name, dateOfBirth, eTag), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -103,23 +103,72 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void Round_TripSerializeAnEntityInstance(string name, string dateOfBirth, string eTag, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Round-trip serialize an EntityInstance", null, exampleTags);
-#line 19
+#line 17
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 20
+#line 18
  testRunner.Given(string.Format("I create a Person with Name \"{0}\" and DateOfBirth \"{1}\" called \"SamplePerson\"", name, dateOfBirth), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 21
+#line 19
  testRunner.And(string.Format("I create an EntityInstance for the Person called \"SamplePerson\" with ETag \"{0}\" c" +
                         "alled \"SampleInstance\"", eTag), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 20
  testRunner.And("I serialize the EntityInstance called \"SampleInstance\" to a document called \"Samp" +
                     "leDocument\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 21
  testRunner.When("I deserialize the document called \"SampleDocument\" to an EntityInstance called \"R" +
                     "esult\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
+#line 22
  testRunner.Then(string.Format("the EntityInstance called \"Result\" should have an Entity with Name \"{0}\" and Date" +
                         "OfBirth \"{1}\" and an ETag \"{2}\"", name, dateOfBirth, eTag), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Compare EntityInstances for equality")]
+        [NUnit.Framework.TestCaseAttribute("Henry", "1969-04-13", "01AFE3", "Henry", "1969-04-13", "01AFE3", "true", null)]
+        [NUnit.Framework.TestCaseAttribute("null", "1963-11-23", "null", "null", "1963-11-23", "null", "true", null)]
+        [NUnit.Framework.TestCaseAttribute("Henry", "1963-11-23", "null", "null", "1963-11-23", "null", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("null", "1963-11-23", "null", "Henry", "1963-11-23", "null", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("Henry", "1963-11-23", "01AFE3", "Henry", "1963-11-23", "null", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("Henry", "1963-11-23", "null", "Henry", "1963-11-23", "01AFE3", "false", null)]
+        [NUnit.Framework.TestCaseAttribute("Henry", "1971-04-22", "01AFE3", "Henry", "1969-04-13", "01AFE3", "false", null)]
+        public virtual void CompareEntityInstancesForEquality(string leftName, string leftDateOfBirth, string leftETag, string rightName, string rightDateOfBirth, string rightETag, string equal, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Compare EntityInstances for equality", null, exampleTags);
+#line 29
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 30
+ testRunner.Given(string.Format("I create a Person with Name \"{0}\" and DateOfBirth \"{1}\" called \"SamplePersonLeft\"" +
+                        "", leftName, leftDateOfBirth), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 31
+ testRunner.Given(string.Format("I create a Person with Name \"{0}\" and DateOfBirth \"{1}\" called \"SamplePersonRight" +
+                        "\"", rightName, rightDateOfBirth), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 32
+ testRunner.And(string.Format("I create an EntityInstance for the Person called \"SamplePersonLeft\" with ETag \"{0" +
+                        "}\" called \"LeftInstance\"", leftETag), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
+ testRunner.And(string.Format("I create an EntityInstance for the Person called \"SamplePersonRight\" with ETag \"{" +
+                        "0}\" called \"RightInstance\"", rightETag), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+ testRunner.Then(string.Format("the Equals comparison of the EntityInstance called \"LeftInstance\" with the Entity" +
+                        "Instance called \"RightInstance\" should be \"{0}\"", equal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 35
+ testRunner.And(string.Format("the Equals comparison of the EntityInstance called \"LeftInstance\" with the Entity" +
+                        "Instance called \"RightInstance\" as an object should be \"{0}\"", equal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+ testRunner.And("the Equals comparison of the EntityInstance called \"LeftInstance\" with a null Ent" +
+                    "ityInstance should be \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+ testRunner.And("the Equals comparison of the EntityInstance called \"LeftInstance\" with a null obj" +
+                    "ect should be \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 38
+ testRunner.And(string.Format("the == comparison of the EntityInstance called \"LeftInstance\" with the EntityInst" +
+                        "ance called \"RightInstance\" should be \"{0}\"", equal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
+ testRunner.And(string.Format("the != comparison of the EntityInstance called \"LeftInstance\" with the EntityInst" +
+                        "ance called \"RightInstance\" should be not \"{0}\"", equal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

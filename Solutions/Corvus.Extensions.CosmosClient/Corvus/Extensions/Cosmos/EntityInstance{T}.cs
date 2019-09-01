@@ -83,7 +83,7 @@ namespace Corvus.Extensions.Cosmos
         /// <inheritdoc/>
         public bool Equals(IEntityInstance<T> other)
         {
-            return this.ETag == other.ETag &&
+            return !(other is null) && this.ETag == other.ETag &&
                    EqualityComparer<T>.Default.Equals(this.Entity, other.Entity);
         }
 

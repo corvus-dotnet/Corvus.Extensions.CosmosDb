@@ -4,6 +4,7 @@
     using Corvus.Extensions.CosmosClient.Specs.Driver;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using NUnit.Framework;
     using TechTalk.SpecFlow;
 
     [Binding]
@@ -53,5 +54,40 @@
             EntityInstanceDriver.SerializeEntityInstanceToDocument(entityInstanceKey, this.ScenarioContext, documentKey);
         }
 
+        [Then(@"the Equals comparison of the EntityInstance called ""(.*)"" with the EntityInstance called ""(.*)"" should be ""(.*)""")]
+        public void ThenTheEqualsComparisonOfTheEntityInstanceCalledWithTheEntityInstanceCalledShouldBe(string leftKey, string rightKey, bool comparison)
+        {
+            Assert.AreEqual(comparison, this.ScenarioContext.Get<EntityInstance<Person>>(leftKey).Equals(this.ScenarioContext.Get<EntityInstance<Person>>(rightKey)));
+        }
+
+        [Then(@"the == comparison of the EntityInstance called ""(.*)"" with the EntityInstance called ""(.*)"" should be ""(.*)""")]
+        public void ThenTheComparisonOfTheEntityInstanceCalledWithTheEntityInstanceCalledShouldBe(string leftKey, string rightKey, bool comparison)
+        {
+            Assert.AreEqual(comparison, this.ScenarioContext.Get<EntityInstance<Person>>(leftKey) == this.ScenarioContext.Get<EntityInstance<Person>>(rightKey));
+        }
+
+        [Then(@"the != comparison of the EntityInstance called ""(.*)"" with the EntityInstance called ""(.*)"" should be not ""(.*)""")]
+        public void ThenTheComparisonOfTheEntityInstanceCalledWithTheEntityInstanceCalledShouldBeNot(string leftKey, string rightKey, bool comparison)
+        {
+            Assert.AreEqual(!comparison, this.ScenarioContext.Get<EntityInstance<Person>>(leftKey) != this.ScenarioContext.Get<EntityInstance<Person>>(rightKey));
+        }
+
+        [Then(@"the Equals comparison of the EntityInstance called ""(.*)"" with the EntityInstance called ""(.*)"" as an object should be ""(.*)""")]
+        public void ThenTheEqualsComparisonOfTheEntityInstanceCalledWithTheEntityInstanceCalledAsAnObjectShouldBe(string leftKey, string rightKey, bool comparison)
+        {
+            Assert.AreEqual(comparison, this.ScenarioContext.Get<EntityInstance<Person>>(leftKey).Equals((object)this.ScenarioContext.Get<EntityInstance<Person>>(rightKey)));
+        }
+
+        [Then(@"the Equals comparison of the EntityInstance called ""(.*)"" with a null EntityInstance should be ""(.*)""")]
+        public void ThenTheEqualsComparisonOfTheEntityInstanceCalledWithANullEntityInstanceShouldBe(string leftKey, bool comparison)
+        {
+            Assert.AreEqual(comparison, this.ScenarioContext.Get<EntityInstance<Person>>(leftKey).Equals(null));
+        }
+
+        [Then(@"the Equals comparison of the EntityInstance called ""(.*)"" with a null object should be ""(.*)""")]
+        public void ThenTheEqualsComparisonOfTheEntityInstanceCalledWithANullObjectShouldBe(string leftKey, bool comparison)
+        {
+            Assert.AreEqual(comparison, this.ScenarioContext.Get<EntityInstance<Person>>(leftKey).Equals((object)null));
+        }
     }
 }
