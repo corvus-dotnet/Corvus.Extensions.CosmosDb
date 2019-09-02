@@ -99,7 +99,7 @@
         /// <returns></returns>
         internal static Task<IList<T>> IteratePeopleWithAsyncMethodAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, ScenarioContext scenarioContext = null, string resultsKey = null)
         {
-            return IteratePeopleWithSyncMethodAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), scenarioContext, resultsKey);
+            return IteratePeopleWithAsyncMethodAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), scenarioContext, resultsKey);
         }
 
         /// <summary>
