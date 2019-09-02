@@ -64,10 +64,11 @@
         /// <param name="containerKey">The key in the context with which to get the Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
-        /// <returns></returns>
-        internal static Task<IList<T>> IteratePeopleWithSyncMethodAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, ScenarioContext scenarioContext = null, string resultsKey = null)
+        /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
+        /// <returns>The people found when iterating the query.</returns>
+        internal static Task<IList<T>> IteratePeopleWithSyncMethodAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, ScenarioContext scenarioContext = null, string resultsKey = null, int? batchSize = null)
         {
-            return IteratePeopleWithSyncMethodAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), scenarioContext, resultsKey);
+            return IteratePeopleWithSyncMethodAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), scenarioContext, resultsKey, batchSize);
         }
 
         /// <summary>
@@ -78,11 +79,12 @@
         /// <param name="container">The Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
-        /// <returns></returns>
-        internal static async Task<IList<T>> IteratePeopleWithSyncMethodAsync<T>(string queryText, Container container, ScenarioContext scenarioContext = null, string resultsKey = null)
+        /// <returns>The people found when iterating the query.</returns>
+        internal static async Task<IList<T>> IteratePeopleWithSyncMethodAsync<T>(string queryText, Container container, ScenarioContext scenarioContext = null, string resultsKey = null, int? batchSize = null)
         {
             var results = new List<T>();
-            await container.ForEachAsync<T>(queryText, t => results.Add(t)).ConfigureAwait(false);
+            QueryRequestOptions requestOptions = batchSize.HasValue ? new QueryRequestOptions { MaxItemCount = batchSize } : null;
+            await container.ForEachAsync<T>(queryText, t => results.Add(t), requestOptions).ConfigureAwait(false);
             scenarioContext.Set(results, resultsKey);
             return results;
         }
@@ -96,10 +98,11 @@
         /// <param name="containerKey">The key in the context with which to get the Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
-        /// <returns></returns>
-        internal static Task<IList<T>> IteratePeopleWithAsyncMethodAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, ScenarioContext scenarioContext = null, string resultsKey = null)
+        /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
+        /// <returns>The people found when iterating the query.</returns>
+        internal static Task<IList<T>> IteratePeopleWithAsyncMethodAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, ScenarioContext scenarioContext = null, string resultsKey = null, int? batchSize = null)
         {
-            return IteratePeopleWithAsyncMethodAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), scenarioContext, resultsKey);
+            return IteratePeopleWithAsyncMethodAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), scenarioContext, resultsKey, batchSize);
         }
 
         /// <summary>
@@ -110,11 +113,13 @@
         /// <param name="container">The Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
-        /// <returns></returns>
-        internal static async Task<IList<T>> IteratePeopleWithAsyncMethodAsync<T>(string queryText, Container container, ScenarioContext scenarioContext = null, string resultsKey = null)
+        /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
+        /// <returns>The people found when iterating the query.</returns>
+        internal static async Task<IList<T>> IteratePeopleWithAsyncMethodAsync<T>(string queryText, Container container, ScenarioContext scenarioContext = null, string resultsKey = null, int? batchSize = null)
         {
+            QueryRequestOptions requestOptions = batchSize.HasValue ? new QueryRequestOptions { MaxItemCount = batchSize } : null;
             var results = new List<T>();
-            await container.ForEachAsync<T>(queryText, t => { results.Add(t); return Task.CompletedTask; }).ConfigureAwait(false);
+            await container.ForEachAsync<T>(queryText, t => { results.Add(t); return Task.CompletedTask; }, requestOptions).ConfigureAwait(false);
             scenarioContext.Set(results, resultsKey);
             return results;
         }
