@@ -1,10 +1,13 @@
 ﻿namespace Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Corvus.Extensions.Cosmos;
     using Corvus.Extensions.CosmosClient.Specs.Common;
     using Corvus.Extensions.CosmosClient.Specs.Common.Driver;
     using Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature.Driver;
+    using Corvus.SpecFlow.Extensions;
     using NUnit.Framework;
     using TechTalk.SpecFlow;
 
@@ -21,17 +24,30 @@
 
         public ScenarioContext ScenarioContext { get; }
 
-        [Given(@"I add a collection of Person objects called ""(.*)"" to the Cosmos Container")]
-        public Task GivenIAddACollectionOfPersonObjectsCalledToTheCosmosContainer(string peopleKey, Table table)
+
+        [Given(@"that I create a Cosmos Container called ""(.*)""")]
+        public Task GivenThatICreateACosmosContainerCalled(string containerKey)
         {
-            IList<Person> people = PersonDriver.CreatePeople(table, this.ScenarioContext, peopleKey);
-            return CosmosExtensionsDriver.AddPeopleToContainerAsync(this.FeatureContext, people);
+            return CosmosExtensionsDriver.CreateContainer("/id", this.FeatureContext, this.ScenarioContext, containerKey);
         }
 
-        [When(@"I iterate the query ""(.*)"" with a synchronous action and store the Person objects seen in ""(.*)""")]
-        public Task WhenIIterateTheQueryWithASynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string resultsKey)
+        [Given(@"I add a collection of Person objects called ""(.*)"" to the Cosmos Container called ""(.*)""")]
+        public Task GivenIAddACollectionOfPersonObjectsCalledToTheCosmosContainer(string peopleKey, string containerKey, Table table)
         {
-            return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAsync(queryText, this.FeatureContext, this.ScenarioContext, resultsKey);
+            IList<Person> people = PersonDriver.CreatePeople(table, this.ScenarioContext, peopleKey);
+            return CosmosExtensionsDriver.AddPeopleToContainerAsync(this.ScenarioContext, containerKey, people);
+        }
+
+        [When(@"I iterate the query ""(.*)"" against the container called ""(.*)"" with a synchronous action and store the Person objects seen in ""(.*)""")]
+        public Task WhenIIterateTheQueryWithASynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAsync<Person>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey);
+        }
+
+        [When(@"I iterate the query ""(.*)"" against the container called ""(.*)"" with a synchronous action and store the Entity Instance of Person objects seen in ""(.*)""")]
+        public Task WhenIIterateTheQueryWithASynchronousActionAndStoreTheEntityInstanceOfPersonObjectsSeenIn(string queryText, string containerKey, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAsync<EntityInstance<Person>>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey);
         }
 
         [Then(@"the Person collection ""(.*)"" should contain the following items from the Person collection ""(.*)""")]
@@ -43,6 +59,17 @@
 
             CollectionAssert.AreEqual(expectedList, actualList);
         }
+
+        [Then(@"the Entity Instance of Person collection ""(.*)"" should contain the following items from the Person collection ""(.*)""")]
+        public void ThenTheEntityInstanceOfPersonCollectionShouldContainTheFollowingItemsFromThePersonCollection(string actualKey, string sourceKey, Table indices)
+        {
+            IList<EntityInstance<Person>> entityInstanceList = this.ScenarioContext.Get<IList<EntityInstance<Person>>>(actualKey);
+            IList<Person> sourceList = this.ScenarioContext.Get<IList<Person>>(sourceKey);
+            IList<Person> expectedList = PersonDriver.GetPeopleFromIndices(sourceList, indices);
+
+            CollectionAssert.AreEqual(expectedList, entityInstanceList.Select(e => e.Entity).ToList());
+        }
+
 
     }
 }

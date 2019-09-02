@@ -111,15 +111,15 @@ namespace Corvus.SpecFlow.Extensions
         /// You should use this in conjunction with the <c>@setupCosmosDbContainer</c> tag.
         /// </para>
         /// </remarks>
-        [BeforeFeature("@withUniqueFeatureContainerInSharedDatabase", Order = CosmosDbBeforeFeatureOrder.CreateContainer)]
-        public static async Task SetupCosmosDbContainerForFeature(FeatureContext featureContext)
+        [BeforeFeature("@withSharedDatabase", Order = CosmosDbBeforeFeatureOrder.CreateDatabase)]
+        [BeforeFeature("@withUniqueFeatureContainerInSharedDatabase", Order = CosmosDbBeforeFeatureOrder.CreateDatabase)]
+        public static async Task SetupCosmosDbDatabaseForFeature(FeatureContext featureContext)
         {
             CosmosDbSettings settings = featureContext.Get<CosmosDbSettings>();
 
             ICosmosClientBuilderFactory clientBuilderFactory = ContainerBindings.GetServiceProvider(featureContext).GetService<ICosmosClientBuilderFactory>();
 
             string accountKey = featureContext.Get<string>(CosmosDbContextKeys.AccountKey);
-            string partitionKeyPath = featureContext.Get<string>(CosmosDbContextKeys.PartitionKeyPath);
 
             CosmosClientBuilder builder;
 
@@ -137,11 +137,44 @@ namespace Corvus.SpecFlow.Extensions
 
             CosmosClient client = builder.Build();
             Database database = await client.CreateDatabaseIfNotExistsAsync(settings.CosmosDbDatabaseName, settings.CosmosDbDefaultOfferThroughput);
-            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath);
             featureContext.Set(client, CosmosDbContextKeys.CosmosDbClient);
             featureContext.Set(database, CosmosDbContextKeys.CosmosDbDatabase);
-            featureContext.Set(container, CosmosDbContextKeys.CosmosDbContainer);
+        }
 
+        /// <summary>
+        /// Enable setup of a Cosmos DB Sql Client for the feature using the
+        /// <c>@setupCosmosDbContainer</c> tag.
+        /// </summary>
+        /// <param name="featureContext">The feature context.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this sets up a resource in Azure and will incur cost. Ensure the corresponding tear down operation is always run, or verify manually after a test run.
+        /// </para>
+        /// <para>
+        /// This method creates a unique container for the feature in a database configured for shared throughput (which will typically be shared amongst multiple features.)
+        /// </para>
+        /// <para>
+        /// You will find a <see cref="CosmosDbContextKeys.CosmosDbClient"/>, <see cref="CosmosDbContextKeys.CosmosDbDatabase"/> and <see cref="CosmosDbContextKeys.CosmosDbContainer"/>
+        /// stored in the FeatureContext.
+        /// </para>
+        /// <para>
+        /// If there is an <see cref="ICosmosClientBuilderFactory"/> registered in the container it will use it, otherwise it will use a default client builder.
+        /// </para>
+        /// <para>
+        /// It registers the container for deletion, but not the database, as this is expected to be a shared testing resource.
+        /// </para>
+        /// <para>
+        /// You should use this in conjunction with the <c>@setupCosmosDbContainer</c> tag.
+        /// </para>
+        /// </remarks>
+        [BeforeFeature("@withUniqueFeatureContainerInSharedDatabase", Order = CosmosDbBeforeFeatureOrder.CreateContainer)]
+        public static async Task SetupCosmosDbContainerForFeature(FeatureContext featureContext)
+        {
+            string partitionKeyPath = featureContext.Get<string>(CosmosDbContextKeys.PartitionKeyPath);
+            Database database = featureContext.Get<Database>(CosmosDbContextKeys.CosmosDbDatabase);
+            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath);
+            featureContext.Set(container, CosmosDbContextKeys.CosmosDbContainer);
             AddFeatureLevelCosmosDbContainerForCleanup(featureContext, container);
         }
 
@@ -151,6 +184,7 @@ namespace Corvus.SpecFlow.Extensions
         /// <param name="scenarioContext">The scenario context.</param>
         /// <returns>A <see cref="Task"/> which completes once the operation has completed.</returns>
         [AfterScenario("@setupCosmosDBKeys", Order = 100000)]
+        [AfterScenario("@withSharedDatabase", Order = 100000)]
         public static Task TeardownScenarioLevelCosmosDBContainers(ScenarioContext scenarioContext)
         {
             return scenarioContext.RunAndStoreExceptionsAsync(() => TeardownCosmosDBContainersCoreAsync(scenarioContext));
@@ -163,7 +197,7 @@ namespace Corvus.SpecFlow.Extensions
         /// <returns>A <see cref="Task"/> which completes once the operation has completed.</returns>
         [AfterFeature("@setupCosmosDbContainer", Order = 100000)]
         [AfterFeature("@setupCosmosDBKeys", Order = 100000)]
-        public static Task TeardownFeatureLevelCosmosDBRepositories(FeatureContext featureContext)
+        public static Task TeardownFeatureLevelCosmosDBContainer(FeatureContext featureContext)
         {
             return featureContext.RunAndStoreExceptionsAsync(() => TeardownCosmosDBContainersCoreAsync(featureContext));
         }

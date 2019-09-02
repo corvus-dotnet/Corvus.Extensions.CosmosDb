@@ -16,11 +16,31 @@
         /// Adds the given people to the default container.
         /// </summary>
         /// <param name="containerContext">The feature or scenario context which has the Cosmos container.</param>
+        /// <param name="containerKey">The key in the context with which to get the Cosmos Container.</param>
         /// <param name="people">The people to add to the default container.</param>
         /// <returns>A <see cref="Task"/> which completes once the people have been added to the container.</returns>
-        internal static Task AddPeopleToContainerAsync(SpecFlowContext containerContext, IList<Person> people)
+        internal static Task AddPeopleToContainerAsync(SpecFlowContext containerContext, string containerKey, IList<Person> people)
         {
-            return AddPeopleToContainer(GetCosmosContainer(containerContext), people);
+            return AddPeopleToContainer(GetCosmosContainer(containerContext, containerKey), people);
+        }
+
+        /// <summary>
+        /// Create a container against a database.
+        /// </summary>
+        /// <param name="databaseContext">The context from which to get the <see cref="Database"/>.</param>
+        /// <param name="containerContext">The context into which to store the <see cref="Container"/>, or null if you do not need to store it.</param>
+        /// <param name="containerKey">The key at which to store the <see cref="Container"/>, or null if you do not need to store it.</param>
+        /// <returns></returns>
+        internal static async Task<Container> CreateContainer(string partitionKeyPath, SpecFlowContext databaseContext, ScenarioContext containerContext = null, string containerKey = null)
+        {
+            Database database = databaseContext.Get<Database>(CosmosDbContextKeys.CosmosDbDatabase);
+            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath);
+            if (containerContext != null && containerKey != null)
+            {
+                containerContext.Set(container, containerKey);
+                CosmosDbContextBindings.AddScenarioLevelCosmosDbContainerForCleanup(containerContext, container);
+            }
+            return container;
         }
 
 
@@ -38,54 +58,38 @@
         /// <summary>
         /// Executes a query and iterates the result with a synchronous iterator.
         /// </summary>
+        /// <typeparam name="T">The type of the entity to iterate.</typeparam>
         /// <param name="queryText">The query text.</param>
         /// <param name="containerContext">The context from which to get the Cosmos Container.</param>
+        /// <param name="containerKey">The key in the context with which to get the Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
         /// <returns></returns>
-        internal static Task<IList<Person>> IteratePeopleWithSyncMethodAsync(string queryText, SpecFlowContext containerContext,  ScenarioContext scenarioContext = null, string resultsKey = null)
+        internal static Task<IList<T>> IteratePeopleWithSyncMethodAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, ScenarioContext scenarioContext = null, string resultsKey = null)
         {
-            return IteratePeopleWithSyncMethodAsync(queryText, GetCosmosContainer(containerContext), scenarioContext, resultsKey); 
+            return IteratePeopleWithSyncMethodAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), scenarioContext, resultsKey);
         }
 
         /// <summary>
         /// Executes a query and iterates the result with a synchronous iterator.
         /// </summary>
+        /// <typeparam name="T">The type of the entity to iterate.</typeparam>
         /// <param name="queryText">The query text.</param>
         /// <param name="container">The Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
         /// <returns></returns>
-        internal static async Task<IList<Person>> IteratePeopleWithSyncMethodAsync(string queryText, Container container, ScenarioContext scenarioContext = null, string resultsKey = null)
+        internal static async Task<IList<T>> IteratePeopleWithSyncMethodAsync<T>(string queryText, Container container, ScenarioContext scenarioContext = null, string resultsKey = null)
         {
-            var results = new List<Person>();
-            await container.ForEachAsync<Person>(queryText, t => results.Add(t)).ConfigureAwait(false);
+            var results = new List<T>();
+            await container.ForEachAsync<T>(queryText, t => results.Add(t)).ConfigureAwait(false);
             scenarioContext.Set(results, resultsKey);
             return results;
         }
-        /// <summary>
-        /// Executes a query against a container.
-        /// </summary>
-        /// <param name="queryText">The query to execute.</param>
-        /// <param name="containerContext">The feature or scenario context which has the Comsos container.</param>
-        /// <param name="scenarioContext">The scenario context in which to set the results (or null if you do not need to set the results).</param>
-        /// <param name="resultKey">The key against which to set the results (or null if you do not need to set the results).</param>
-        /// <returns>A <see cref="Task"/> which, when complete, provides the <see cref="FeedIterator{T}"/> for the query.</returns>
-        internal static FeedIterator<Person> ExecutePersonQuery(string queryText, SpecFlowContext containerContext, ScenarioContext scenarioContext = null, string resultKey = null)
+
+        private static Container GetCosmosContainer(SpecFlowContext containerContext, string containerKey = CosmosDbContextKeys.CosmosDbContainer)
         {
-            FeedIterator<Person> results = GetCosmosContainer(containerContext).GetItemQueryIterator<Person>(queryText);
-
-            if (scenarioContext != null && resultKey != null)
-            {
-                scenarioContext.Set(results, resultKey);
-            }
-
-            return results;
-        }
-
-        private static Container GetCosmosContainer(SpecFlowContext containerContext)
-        {
-            return containerContext.Get<Container>(CosmosDbContextKeys.CosmosDbContainer);
+            return containerContext.Get<Container>(containerKey);
         }
     }
 }

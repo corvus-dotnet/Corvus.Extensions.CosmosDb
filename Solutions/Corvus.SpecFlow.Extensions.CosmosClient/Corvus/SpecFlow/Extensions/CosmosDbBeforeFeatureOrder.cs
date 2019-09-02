@@ -39,9 +39,14 @@ namespace Corvus.SpecFlow.Extensions
         public const int ReadClientSettings = ContainerBeforeFeatureOrder.ServiceProviderAvailable + 9999;
 
         /// <summary>
-        /// The <c>Order</c> at which the client object is created.
+        /// The <c>Order</c> at which the client and database object are created.
         /// </summary>
-        public const int CreateContainer = ReadClientSettings + 1;
+        public const int CreateDatabase = ReadClientSettings;
+
+        /// <summary>
+        /// The <c>Order</c> at which the container object is created.
+        /// </summary>
+        public const int CreateContainer = CreateDatabase + 1;
 
         /// <summary>
         /// The <c>Order</c> from which the client object is available but has not yet been
