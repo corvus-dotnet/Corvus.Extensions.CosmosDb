@@ -26,18 +26,6 @@ namespace Corvus.Extensions.Cosmos.Internal
         /// <summary>
         /// Create a serializer that uses the JSON.net serializer.
         /// </summary>
-        /// <remarks>
-        /// This is internal to reduce exposure of JSON.net types so
-        /// it is easier to convert to System.Text.Json.
-        /// </remarks>
-        internal CorvusJsonDotNetCosmosSerializer()
-        {
-            this.serializer = JsonSerializer.Create();
-        }
-
-        /// <summary>
-        /// Create a serializer that uses the JSON.net serializer.
-        /// </summary>
         /// <param name="jsonSerializerSettings">The Json serializer settings.</param>
         /// <remarks>
         /// This is internal to reduce exposure of JSON.net types so

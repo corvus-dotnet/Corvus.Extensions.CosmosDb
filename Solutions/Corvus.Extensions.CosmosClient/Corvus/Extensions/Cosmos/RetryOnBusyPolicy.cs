@@ -10,7 +10,7 @@ namespace Corvus.Extensions.Cosmos
     using Microsoft.Azure.Cosmos;
 
     /// <summary>
-    /// A retry policy whic fails immediately on all exceptions, except a Cosmos <see cref="HttpStatusCode.ServiceUnavailable"/> status code.
+    /// A retry policy which fails immediately on all exceptions, except a Cosmos <see cref="HttpStatusCode.ServiceUnavailable"/> status code.
     /// </summary>
     /// <remarks>This allows us to use the internal retry mechanism in the SDK, but fall back on our retry when we get service unavailable errors.</remarks>
     public class RetryOnBusyPolicy : IRetryPolicy
