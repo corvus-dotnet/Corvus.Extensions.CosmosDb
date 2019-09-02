@@ -1,10 +1,12 @@
-﻿namespace Corvus.Extensions.CosmosClient.Specs
+﻿namespace Corvus.Extensions.CosmosClient.Specs.Common
 {
     using System;
     using System.Collections.Generic;
 
     internal class Person : IEquatable<Person>
     {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
         public string Name { get; set; }
 
         public DateTimeOffset DateOfBirth { get; set; }
@@ -17,6 +19,7 @@
         public bool Equals(Person other)
         {
             return other != null &&
+                   this.Id == other.Id &&
                    this.Name == other.Name &&
                    this.DateOfBirth.Equals(other.DateOfBirth);
         }
@@ -25,6 +28,7 @@
         {
             int hashCode = -605153749;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.Id);
             hashCode = hashCode * -1521134295 + EqualityComparer<DateTimeOffset>.Default.GetHashCode(this.DateOfBirth);
             return hashCode;
         }

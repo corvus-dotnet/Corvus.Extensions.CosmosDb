@@ -11,7 +11,6 @@ namespace Corvus.SpecFlow.Extensions
     using Corvus.Extensions;
     using Corvus.Extensions.Cosmos;
     using Corvus.Extensions.Cosmos.Crypto;
-    using Gherkin.Ast;
     using Microsoft.Azure.Cosmos;
     using Microsoft.Azure.Cosmos.Fluent;
     using Microsoft.Extensions.Configuration;
@@ -21,6 +20,7 @@ namespace Corvus.SpecFlow.Extensions
     /// <summary>
     /// Services to help manage Cosmos DB instances in a Scenario or Feature context.
     /// </summary>
+    [Binding]
     public static class CosmosDbContextBindings
     {
         private const string CosmosDbDatabasesToDelete = "CosmosDbDatabasesToDelete";

@@ -2,7 +2,7 @@
 // Copyright (c) Endjin. All rights reserved.
 // </copyright>
 
-namespace Corvus.Extensions.Cosmos.Specs
+namespace Corvus.Extensions.Cosmos.Specs.CosmosClientExtensionsFeature.Bindings
 {
     using Corvus.SpecFlow.Extensions;
     using Microsoft.Extensions.DependencyInjection;

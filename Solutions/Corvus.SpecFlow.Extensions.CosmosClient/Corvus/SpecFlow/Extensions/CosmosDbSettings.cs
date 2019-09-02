@@ -4,8 +4,6 @@
 
 namespace Corvus.SpecFlow.Extensions
 {
-    using System;
-
     /// <summary>
     /// Settings for CosmosDB databases and collections used in tests.
     /// </summary>

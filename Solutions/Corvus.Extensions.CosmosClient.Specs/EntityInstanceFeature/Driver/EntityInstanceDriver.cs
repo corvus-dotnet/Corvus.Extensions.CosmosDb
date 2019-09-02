@@ -1,8 +1,9 @@
-﻿namespace Corvus.Extensions.CosmosClient.Specs.Driver
+﻿namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
 {
     using System;
-    using System.Resources;
     using Corvus.Extensions.Cosmos;
+    using Corvus.Extensions.CosmosClient.Specs.Common;
+    using Corvus.Extensions.CosmosClient.Specs.Common.Driver;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using NUnit.Framework;
@@ -11,42 +12,19 @@
     internal static class EntityInstanceDriver
     {
         /// <summary>
-        /// Create a sample person from example data.
-        /// </summary>
-        /// <param name="name">The name, or "null" for a null value.</param>
-        /// <param name="dateOfBirth">The date of birth.</param>
-        /// <param name="context">The scenario context (or null if you do not wish to set the value into the context).</param>
-        /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
-        /// <returns>The example person created.</returns>
-        internal static Person CreatePerson(string name, string dateOfBirth, ScenarioContext context = null, string keyToSet = null)
-        {
-            var person = 
-                new Person
-                {
-                    Name = GetNullableString(name),
-                    DateOfBirth = GetNullableDateTimeOffset(dateOfBirth).Value,
-                };
-
-            if (context != null && keyToSet != null)
-            {
-                context.Set(person, keyToSet);
-            }
-
-            return person;
-        }
-
-        /// <summary>
         /// Matches an actual entity instance of a person against 
         /// </summary>
         /// <param name="actualEntityInstance">The actual entity instance to verify</param>
+        /// <param name="expectedId">The expected id of the Person.</param>
         /// <param name="expectedName">The expected name of the Person.</param>
         /// <param name="expectedDateOfBirth">The expected date of birth of the person.</param>
         /// <param name="expectedETag">The expected ETag of the entity instance.</param>
-        internal static void MatchEntityInstanceOfPerson(EntityInstance<Person> actualEntityInstance, string expectedName, string expectedDateOfBirth, string expectedETag)
+        internal static void MatchEntityInstanceOfPerson(EntityInstance<Person> actualEntityInstance, string expectedId, string expectedName, string expectedDateOfBirth, string expectedETag)
         {
-            Assert.AreEqual(GetNullableString(expectedName), actualEntityInstance.Entity.Name);
-            Assert.AreEqual(GetNullableDateTimeOffset(expectedDateOfBirth).Value, actualEntityInstance.Entity.DateOfBirth);
-            Assert.AreEqual(GetNullableString(expectedETag), actualEntityInstance.ETag);
+            Assert.AreEqual(expectedId, actualEntityInstance.Entity.Id);
+            Assert.AreEqual(ValueUtilities.GetNullableString(expectedName), actualEntityInstance.Entity.Name);
+            Assert.AreEqual(ValueUtilities.GetNullableDateTimeOffset(expectedDateOfBirth).Value, actualEntityInstance.Entity.DateOfBirth);
+            Assert.AreEqual(ValueUtilities.GetNullableString(expectedETag), actualEntityInstance.ETag);
         }
 
         /// <summary>
@@ -71,7 +49,7 @@
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         internal static EntityInstance<Person> CreateEntityInstance(Person person, string eTag, ScenarioContext context = null, string keyToSet = null)
         {
-            var entityInstance = new EntityInstance<Person>(person, GetNullableString(eTag));
+            var entityInstance = new EntityInstance<Person>(person, ValueUtilities.GetNullableString(eTag));
 
             if (context != null && keyToSet != null)
             {
@@ -107,7 +85,7 @@
         {
             string serializedPerson = JsonConvert.SerializeObject(person);
             var jobject = JObject.Parse(serializedPerson);
-            jobject["_etag"] = GetNullableString(eTag);
+            jobject["_etag"] = ValueUtilities.GetNullableString(eTag);
 
             string serializedDocument = jobject.ToString();
 
@@ -181,17 +159,6 @@
             }
 
             return serializedDocument;
-        }
-
-
-        private static string GetNullableString(string nullableString)
-        {
-            return nullableString == "null" ? null : nullableString;
-        }
-
-        private static DateTimeOffset? GetNullableDateTimeOffset(string nullableDateTimeOffsetString)
-        {
-            return nullableDateTimeOffsetString == "null" ? null : (DateTimeOffset?)DateTimeOffset.Parse(nullableDateTimeOffsetString);
         }
     }
 }

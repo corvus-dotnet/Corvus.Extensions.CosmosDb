@@ -20,7 +20,24 @@ namespace Corvus.Extensions.Cosmos
         /// Enumerate the entities matching a particular query.
         /// </summary>
         /// <typeparam name="T">The type of entity to enumerate.</typeparam>
-        /// <param name="client">The Cosmos client against which to execute the query.</param>
+        /// <param name="container">The Cosmos container against which to execute the query.</param>
+        /// <param name="queryText">The query text.</param>
+        /// <param name="action">The action to execute.</param>
+        /// <param name="requestOptions">Request options for the query.</param>
+        /// <param name="maxBatchCount">The maximum number of batches to process.</param>
+        /// <param name="continuationToken">The continuation token from which to resume processing.</param>
+        /// <param name="cancellationToken">A cancellation token to terminate the option early.</param>
+        /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
+        public static Task<string> ForEachAsync<T>(this Container container, string queryText, Action<T> action, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
+        {
+            return ForEachAsync(container, new QueryDefinition(queryText), action, requestOptions, maxBatchCount, continuationToken, cancellationToken);
+        }
+
+        /// <summary>
+        /// Enumerate the entities matching a particular query.
+        /// </summary>
+        /// <typeparam name="T">The type of entity to enumerate.</typeparam>
+        /// <param name="container">The Cosmos container against which to execute the query.</param>
         /// <param name="queryDefinition">The query definition.</param>
         /// <param name="action">The action to execute.</param>
         /// <param name="requestOptions">Request options for the query.</param>
@@ -28,7 +45,7 @@ namespace Corvus.Extensions.Cosmos
         /// <param name="continuationToken">The continuation token from which to resume processing.</param>
         /// <param name="cancellationToken">A cancellation token to terminate the option early.</param>
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
-        public static async Task<string> ForEachAsync<T>(this CosmosClient client, QueryDefinition queryDefinition, Action<T> action, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
+        public static async Task<string> ForEachAsync<T>(this Container container, QueryDefinition queryDefinition, Action<T> action, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
         {
             if (queryDefinition == null)
             {
@@ -40,7 +57,7 @@ namespace Corvus.Extensions.Cosmos
                 throw new ArgumentNullException(nameof(action));
             }
 
-            FeedIterator<T> iterator = client.GetDatabaseQueryIterator<T>(queryDefinition, continuationToken, requestOptions);
+            FeedIterator<T> iterator = container.GetItemQueryIterator<T>(queryDefinition, continuationToken, requestOptions);
 
             int batchCount = 0;
             string previousContinuationToken = null;
@@ -81,7 +98,24 @@ namespace Corvus.Extensions.Cosmos
         /// Enumerate the entities matching a particular query.
         /// </summary>
         /// <typeparam name="T">The type of entity to enumerate.</typeparam>
-        /// <param name="client">The Cosmos client against which to execute the query.</param>
+        /// <param name="container">The Cosmos container against which to execute the query.</param>
+        /// <param name="queryText">The query text.</param>
+        /// <param name="actionAsync">The action to execute.</param>
+        /// <param name="requestOptions">Request options for the query.</param>
+        /// <param name="maxBatchCount">The maximum number of batches to process.</param>
+        /// <param name="continuationToken">The continuation token from which to resume processing.</param>
+        /// <param name="cancellationToken">A cancellation token to terminate the option early.</param>
+        /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
+        public static Task<string> ForEachAsync<T>(this Container container, string queryText, Func<T, Task> actionAsync, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
+        {
+            return ForEachAsync(container, new QueryDefinition(queryText), actionAsync, requestOptions, maxBatchCount, continuationToken, cancellationToken);
+        }
+
+        /// <summary>
+        /// Enumerate the entities matching a particular query.
+        /// </summary>
+        /// <typeparam name="T">The type of entity to enumerate.</typeparam>
+        /// <param name="container">The Cosmos container against which to execute the query.</param>
         /// <param name="queryDefinition">The query definition.</param>
         /// <param name="actionAsync">The action to execute.</param>
         /// <param name="requestOptions">Request options for the query.</param>
@@ -89,7 +123,7 @@ namespace Corvus.Extensions.Cosmos
         /// <param name="continuationToken">The continuation token from which to resume processing.</param>
         /// <param name="cancellationToken">A cancellation token to terminate the option early.</param>
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
-        public static async Task<string> ForEachAsync<T>(this CosmosClient client, QueryDefinition queryDefinition, Func<T, Task> actionAsync, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
+        public static async Task<string> ForEachAsync<T>(this Container container, QueryDefinition queryDefinition, Func<T, Task> actionAsync, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
         {
             if (queryDefinition == null)
             {
@@ -101,7 +135,7 @@ namespace Corvus.Extensions.Cosmos
                 throw new ArgumentNullException(nameof(actionAsync));
             }
 
-            FeedIterator<T> iterator = client.GetDatabaseQueryIterator<T>(queryDefinition, continuationToken, requestOptions);
+            FeedIterator<T> iterator = container.GetItemQueryIterator<T>(queryDefinition, continuationToken, requestOptions);
 
             int batchCount = 0;
             string previousContinuationToken = null;
