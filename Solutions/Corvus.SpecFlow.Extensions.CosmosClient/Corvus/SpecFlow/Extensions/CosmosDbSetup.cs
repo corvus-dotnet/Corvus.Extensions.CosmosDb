@@ -58,7 +58,6 @@ namespace Corvus.SpecFlow.Extensions
         {
             serviceCollection.AddTestNameProvider();
             serviceCollection.AddCosmosClientExtensions();
-            serviceCollection.AddDefaultJsonSerializerSettings();
         }
 
         private static IConfigurationRoot AddConfiguration(

@@ -18,14 +18,14 @@ namespace Corvus.Extensions.Cosmos
         /// </summary>
         /// <param name="accountEndpoint">The account endpoint for the client.</param>
         /// <param name="accountKey">The account key for the client.</param>
-        /// <returns>A <see cref="Task"/> which, when complete, provides a <see cref="CosmosClientBuilder"/> preconfigured for the appropriate enironment.</returns>
-        Task<CosmosClientBuilder> CreateCosmosClientBuilder(string accountEndpoint, string accountKey);
+        /// <returns>A <see cref="CosmosClientBuilder"/> preconfigured for the appropriate enironment.</returns>
+        CosmosClientBuilder CreateCosmosClientBuilder(string accountEndpoint, string accountKey);
 
         /// <summary>
         /// Create a Cosmos Client Builder.
         /// </summary>
         /// <param name="connectionString">The connection string for the client.</param>
-        /// <returns>A <see cref="Task"/> which, when complete, provides a <see cref="CosmosClientBuilder"/> preconfigured for the appropriate enironment.</returns>
-        Task<CosmosClientBuilder> CreateCosmosClientBuilder(string connectionString);
+        /// <returns>A <see cref="CosmosClientBuilder"/> preconfigured for the appropriate enironment.</returns>
+        CosmosClientBuilder CreateCosmosClientBuilder(string connectionString);
     }
 }

@@ -4,7 +4,6 @@
 
 namespace Corvus.Extensions.Cosmos.Internal
 {
-    using System.Threading.Tasks;
     using Corvus.Extensions.Json;
     using Microsoft.Azure.Cosmos.Fluent;
 
@@ -25,15 +24,15 @@ namespace Corvus.Extensions.Cosmos.Internal
         }
 
         /// <inheritdoc />
-        public Task<CosmosClientBuilder> CreateCosmosClientBuilder(string connectionString)
+        public CosmosClientBuilder CreateCosmosClientBuilder(string connectionString)
         {
-            return Task.FromResult(new CosmosClientBuilder(connectionString).WithCustomSerializer(new CorvusJsonDotNetCosmosSerializer(this.serializerSettingsProvider.Instance)));
+            return new CosmosClientBuilder(connectionString).WithCustomSerializer(new CorvusJsonDotNetCosmosSerializer(this.serializerSettingsProvider.Instance));
         }
 
         /// <inheritdoc />
-        public Task<CosmosClientBuilder> CreateCosmosClientBuilder(string accountEndpoint, string accountKey)
+        public CosmosClientBuilder CreateCosmosClientBuilder(string accountEndpoint, string accountKey)
         {
-            return Task.FromResult(new CosmosClientBuilder(accountEndpoint, accountKey).WithCustomSerializer(new CorvusJsonDotNetCosmosSerializer(this.serializerSettingsProvider.Instance)));
+            return new CosmosClientBuilder(accountEndpoint, accountKey).WithCustomSerializer(new CorvusJsonDotNetCosmosSerializer(this.serializerSettingsProvider.Instance));
         }
     }
 }

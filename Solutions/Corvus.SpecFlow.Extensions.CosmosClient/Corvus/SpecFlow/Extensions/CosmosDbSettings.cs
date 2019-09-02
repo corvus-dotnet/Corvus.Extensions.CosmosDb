@@ -14,7 +14,7 @@ namespace Corvus.SpecFlow.Extensions
         /// <summary>
         /// Gets or sets the URI for the Cosmos DB Account.
         /// </summary>
-        public Uri CosmosDbAccountUri { get; set; }
+        public string CosmosDbAccountUri { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the secret to look up in Key Vault to use when authenticating

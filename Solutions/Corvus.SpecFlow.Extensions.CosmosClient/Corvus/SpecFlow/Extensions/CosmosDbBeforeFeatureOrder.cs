@@ -36,12 +36,12 @@ namespace Corvus.SpecFlow.Extensions
         /// occur after the <c>IServiceProvider</c> has been built, but before we perform Cosmos DB setup.
         /// </para>
         /// </remarks>
-        public const int ReadContainerSettings = ContainerBeforeFeatureOrder.ServiceProviderAvailable + 9999;
+        public const int ReadClientSettings = ContainerBeforeFeatureOrder.ServiceProviderAvailable + 9999;
 
         /// <summary>
         /// The <c>Order</c> at which the client object is created.
         /// </summary>
-        public const int CreateContainer = ReadContainerSettings + 1;
+        public const int CreateContainer = ReadClientSettings + 1;
 
         /// <summary>
         /// The <c>Order</c> from which the client object is available but has not yet been
