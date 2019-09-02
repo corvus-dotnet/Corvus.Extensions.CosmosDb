@@ -50,6 +50,11 @@
             return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAsync<Person>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey, batchSize);
         }
 
+        [When(@"I iterate the query ""(.*)"" against the container called ""(.*)"" with a batch size of ""(.*)"", a max batch count of ""(.*)"" and a synchronous action and store the Person objects seen in ""(.*)""")]
+        public Task WhenIIterateTheQueryWithASynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, int batchSize, int maxBatchCount, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAsync<Person>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey, batchSize, maxBatchCount);
+        }
 
         [When(@"I iterate the query ""(.*)"" against the container called ""(.*)"" with an asynchronous action and store the Person objects seen in ""(.*)""")]
         public Task WhenIIterateTheQueryWithAnAsynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, string resultsKey)
@@ -61,6 +66,12 @@
         public Task WhenIIterateTheQueryWithAnAsynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, int batchSize, string resultsKey)
         {
             return CosmosExtensionsDriver.IteratePeopleWithAsyncMethodAsync<Person>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey, batchSize);
+        }
+
+        [When(@"I iterate the query ""(.*)"" against the container called ""(.*)"" with a batch size of ""(.*)"", a max batch count of ""(.*)"" and an asynchronous action and store the Person objects seen in ""(.*)""")]
+        public Task WhenIIterateTheQueryWithAnAsynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, int batchSize, int maxBatchCount, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithAsyncMethodAsync<Person>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey, batchSize, maxBatchCount);
         }
 
         [When(@"I iterate the query ""(.*)"" against the container called ""(.*)"" with a synchronous action and store the Entity Instance of Person objects seen in ""(.*)""")]

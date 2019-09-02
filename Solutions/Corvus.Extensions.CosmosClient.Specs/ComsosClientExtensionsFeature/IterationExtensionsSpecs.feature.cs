@@ -81,10 +81,10 @@ namespace Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature
         public virtual void IterateACollectionWithASynchronousAction_()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection with a synchronous action.", null, ((string[])(null)));
-#line 10
+#line 9
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 11
+#line 10
  testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -122,10 +122,10 @@ this.ScenarioInitialize(scenarioInfo);
                         "DC62035F-039D-40EE-8307-BD77CE6FEC67",
                         "Alicia",
                         "1933-06-12"});
-#line 12
+#line 11
  testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
                     "ed \"TestContainer\"", ((string)(null)), table1, "And ");
-#line 20
+#line 19
  testRunner.When("I iterate the query \"SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < " +
                     "\'1934-01-01T00:00:00.000000Z\'\" against the container called \"TestContainer\" with" +
                     " a synchronous action and store the Person objects seen in \"PersonItemsSeen\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -138,7 +138,7 @@ this.ScenarioInitialize(scenarioInfo);
                         "5"});
             table2.AddRow(new string[] {
                         "6"});
-#line 21
+#line 20
  testRunner.Then("the Person collection \"PersonItemsSeen\" should contain the following items from t" +
                     "he Person collection \"People\"", ((string)(null)), table2, "Then ");
 #line hidden
@@ -150,10 +150,10 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void IterateACollectionWithASynchronousActionAndABatchSizeOf1()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection with a synchronous action and a batch size of 1", null, ((string[])(null)));
-#line 27
+#line 26
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 28
+#line 27
  testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -191,10 +191,10 @@ this.ScenarioInitialize(scenarioInfo);
                         "DC62035F-039D-40EE-8307-BD77CE6FEC67",
                         "Alicia",
                         "1933-06-12"});
-#line 29
+#line 28
  testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
                     "ed \"TestContainer\"", ((string)(null)), table3, "And ");
-#line 37
+#line 36
  testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with a batch size of ""1"" and a synchronous action and store the Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -205,7 +205,7 @@ this.ScenarioInitialize(scenarioInfo);
                         "5"});
             table4.AddRow(new string[] {
                         "6"});
-#line 38
+#line 37
  testRunner.Then("the Person collection \"PersonItemsSeen\" should contain the following items from t" +
                     "he Person collection \"People\"", ((string)(null)), table4, "Then ");
 #line hidden
@@ -213,14 +213,16 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Iterate a collection of Entity Instances with a synchronous action.")]
-        public virtual void IterateACollectionOfEntityInstancesWithASynchronousAction_()
+        [NUnit.Framework.DescriptionAttribute("Iterate a collection with a synchronous action, a batch size of 1 and a max batch" +
+            " count of 2")]
+        public virtual void IterateACollectionWithASynchronousActionABatchSizeOf1AndAMaxBatchCountOf2()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection of Entity Instances with a synchronous action.", null, ((string[])(null)));
-#line 44
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection with a synchronous action, a batch size of 1 and a max batch" +
+                    " count of 2", null, ((string[])(null)));
+#line 43
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 45
+#line 44
  testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -258,11 +260,11 @@ this.ScenarioInitialize(scenarioInfo);
                         "DC62035F-039D-40EE-8307-BD77CE6FEC67",
                         "Alicia",
                         "1933-06-12"});
-#line 46
+#line 45
  testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
                     "ed \"TestContainer\"", ((string)(null)), table5, "And ");
-#line 54
- testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with a synchronous action and store the Entity Instance of Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 53
+ testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with a batch size of ""1"", a max batch count of ""2"" and a synchronous action and store the Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Index"});
@@ -270,24 +272,22 @@ this.ScenarioInitialize(scenarioInfo);
                         "4"});
             table6.AddRow(new string[] {
                         "5"});
-            table6.AddRow(new string[] {
-                        "6"});
-#line 55
- testRunner.Then("the Entity Instance of Person collection \"PersonItemsSeen\" should contain the fol" +
-                    "lowing items from the Person collection \"People\"", ((string)(null)), table6, "Then ");
+#line 54
+ testRunner.Then("the Person collection \"PersonItemsSeen\" should contain the following items from t" +
+                    "he Person collection \"People\"", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Iterate a collection with an asynchronous action")]
-        public virtual void IterateACollectionWithAnAsynchronousAction()
+        [NUnit.Framework.DescriptionAttribute("Iterate a collection of Entity Instances with a synchronous action.")]
+        public virtual void IterateACollectionOfEntityInstancesWithASynchronousAction_()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection with an asynchronous action", null, ((string[])(null)));
-#line 61
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection of Entity Instances with a synchronous action.", null, ((string[])(null)));
+#line 59
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 62
+#line 60
  testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -325,13 +325,11 @@ this.ScenarioInitialize(scenarioInfo);
                         "DC62035F-039D-40EE-8307-BD77CE6FEC67",
                         "Alicia",
                         "1933-06-12"});
-#line 63
+#line 61
  testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
                     "ed \"TestContainer\"", ((string)(null)), table7, "And ");
-#line 71
- testRunner.When("I iterate the query \"SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < " +
-                    "\'1934-01-01T00:00:00.000000Z\'\" against the container called \"TestContainer\" with" +
-                    " an asynchronous action and store the Person objects seen in \"PersonItemsSeen\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 69
+ testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with a synchronous action and store the Entity Instance of Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Index"});
@@ -341,22 +339,22 @@ this.ScenarioInitialize(scenarioInfo);
                         "5"});
             table8.AddRow(new string[] {
                         "6"});
-#line 72
- testRunner.Then("the Person collection \"PersonItemsSeen\" should contain the following items from t" +
-                    "he Person collection \"People\"", ((string)(null)), table8, "Then ");
+#line 70
+ testRunner.Then("the Entity Instance of Person collection \"PersonItemsSeen\" should contain the fol" +
+                    "lowing items from the Person collection \"People\"", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Iterate a collection with an asynchronous action and a batch size of 1")]
-        public virtual void IterateACollectionWithAnAsynchronousActionAndABatchSizeOf1()
+        [NUnit.Framework.DescriptionAttribute("Iterate a collection with an asynchronous action")]
+        public virtual void IterateACollectionWithAnAsynchronousAction()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection with an asynchronous action and a batch size of 1", null, ((string[])(null)));
-#line 78
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection with an asynchronous action", null, ((string[])(null)));
+#line 76
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 79
+#line 77
  testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -394,11 +392,13 @@ this.ScenarioInitialize(scenarioInfo);
                         "DC62035F-039D-40EE-8307-BD77CE6FEC67",
                         "Alicia",
                         "1933-06-12"});
-#line 80
+#line 78
  testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
                     "ed \"TestContainer\"", ((string)(null)), table9, "And ");
-#line 88
- testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with a batch size of ""1"" and an asynchronous action and store the Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 86
+ testRunner.When("I iterate the query \"SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < " +
+                    "\'1934-01-01T00:00:00.000000Z\'\" against the container called \"TestContainer\" with" +
+                    " an asynchronous action and store the Person objects seen in \"PersonItemsSeen\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Index"});
@@ -408,7 +408,7 @@ this.ScenarioInitialize(scenarioInfo);
                         "5"});
             table10.AddRow(new string[] {
                         "6"});
-#line 89
+#line 87
  testRunner.Then("the Person collection \"PersonItemsSeen\" should contain the following items from t" +
                     "he Person collection \"People\"", ((string)(null)), table10, "Then ");
 #line hidden
@@ -416,14 +416,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Iterate a collection of Entity Instances with an asynchronous action.")]
-        public virtual void IterateACollectionOfEntityInstancesWithAnAsynchronousAction_()
+        [NUnit.Framework.DescriptionAttribute("Iterate a collection with an asynchronous action and a batch size of 1")]
+        public virtual void IterateACollectionWithAnAsynchronousActionAndABatchSizeOf1()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection of Entity Instances with an asynchronous action.", null, ((string[])(null)));
-#line 95
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection with an asynchronous action and a batch size of 1", null, ((string[])(null)));
+#line 93
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 96
+#line 94
  testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -461,11 +461,11 @@ this.ScenarioInitialize(scenarioInfo);
                         "DC62035F-039D-40EE-8307-BD77CE6FEC67",
                         "Alicia",
                         "1933-06-12"});
-#line 97
+#line 95
  testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
                     "ed \"TestContainer\"", ((string)(null)), table11, "And ");
-#line 105
- testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with an asynchronous action and store the Entity Instance of Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 103
+ testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with a batch size of ""1"" and an asynchronous action and store the Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Index"});
@@ -475,9 +475,143 @@ this.ScenarioInitialize(scenarioInfo);
                         "5"});
             table12.AddRow(new string[] {
                         "6"});
-#line 106
+#line 104
+ testRunner.Then("the Person collection \"PersonItemsSeen\" should contain the following items from t" +
+                    "he Person collection \"People\"", ((string)(null)), table12, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Iterate a collection with an asynchronous action, a batch size of 1 and a max bat" +
+            "ch count of 2")]
+        public virtual void IterateACollectionWithAnAsynchronousActionABatchSizeOf1AndAMaxBatchCountOf2()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection with an asynchronous action, a batch size of 1 and a max bat" +
+                    "ch count of 2", null, ((string[])(null)));
+#line 110
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 111
+ testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Index",
+                        "Id",
+                        "Name",
+                        "DateOfBirth"});
+            table13.AddRow(new string[] {
+                        "1",
+                        "22359BAE-D1A7-407F-B560-4FC62027C68E",
+                        "Tom",
+                        "1972-01-13"});
+            table13.AddRow(new string[] {
+                        "2",
+                        "36DBCA33-C10B-4802-A9AA-AB16822A9D25",
+                        "Dick",
+                        "1984-05-17"});
+            table13.AddRow(new string[] {
+                        "3",
+                        "5BD6C25C-4846-4352-B069-CD75BCA7E41C",
+                        "Harry",
+                        "1991-10-06"});
+            table13.AddRow(new string[] {
+                        "4",
+                        "6ED54E7C-D39C-4A2D-8781-91D15EC047F1",
+                        "Darrell",
+                        "1933-08-14"});
+            table13.AddRow(new string[] {
+                        "5",
+                        "EB7DF71C-762E-49D9-BC32-95C608EDE208",
+                        "Sally",
+                        "1932-04-09"});
+            table13.AddRow(new string[] {
+                        "6",
+                        "DC62035F-039D-40EE-8307-BD77CE6FEC67",
+                        "Alicia",
+                        "1933-06-12"});
+#line 112
+ testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
+                    "ed \"TestContainer\"", ((string)(null)), table13, "And ");
+#line 120
+ testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with a batch size of ""1"", a max batch count of ""2"" and an asynchronous action and store the Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Index"});
+            table14.AddRow(new string[] {
+                        "4"});
+            table14.AddRow(new string[] {
+                        "5"});
+#line 121
+ testRunner.Then("the Person collection \"PersonItemsSeen\" should contain the following items from t" +
+                    "he Person collection \"People\"", ((string)(null)), table14, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Iterate a collection of Entity Instances with an asynchronous action.")]
+        public virtual void IterateACollectionOfEntityInstancesWithAnAsynchronousAction_()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection of Entity Instances with an asynchronous action.", null, ((string[])(null)));
+#line 126
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 127
+ testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Index",
+                        "Id",
+                        "Name",
+                        "DateOfBirth"});
+            table15.AddRow(new string[] {
+                        "1",
+                        "22359BAE-D1A7-407F-B560-4FC62027C68E",
+                        "Tom",
+                        "1972-01-13"});
+            table15.AddRow(new string[] {
+                        "2",
+                        "36DBCA33-C10B-4802-A9AA-AB16822A9D25",
+                        "Dick",
+                        "1984-05-17"});
+            table15.AddRow(new string[] {
+                        "3",
+                        "5BD6C25C-4846-4352-B069-CD75BCA7E41C",
+                        "Harry",
+                        "1991-10-06"});
+            table15.AddRow(new string[] {
+                        "4",
+                        "6ED54E7C-D39C-4A2D-8781-91D15EC047F1",
+                        "Darrell",
+                        "1933-08-14"});
+            table15.AddRow(new string[] {
+                        "5",
+                        "EB7DF71C-762E-49D9-BC32-95C608EDE208",
+                        "Sally",
+                        "1932-04-09"});
+            table15.AddRow(new string[] {
+                        "6",
+                        "DC62035F-039D-40EE-8307-BD77CE6FEC67",
+                        "Alicia",
+                        "1933-06-12"});
+#line 128
+ testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
+                    "ed \"TestContainer\"", ((string)(null)), table15, "And ");
+#line 136
+ testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with an asynchronous action and store the Entity Instance of Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Index"});
+            table16.AddRow(new string[] {
+                        "4"});
+            table16.AddRow(new string[] {
+                        "5"});
+            table16.AddRow(new string[] {
+                        "6"});
+#line 137
  testRunner.Then("the Entity Instance of Person collection \"PersonItemsSeen\" should contain the fol" +
-                    "lowing items from the Person collection \"People\"", ((string)(null)), table12, "Then ");
+                    "lowing items from the Person collection \"People\"", ((string)(null)), table16, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
