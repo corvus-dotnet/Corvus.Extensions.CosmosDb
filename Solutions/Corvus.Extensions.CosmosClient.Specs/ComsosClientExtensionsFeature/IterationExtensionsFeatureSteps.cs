@@ -44,10 +44,22 @@
             return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAsync<Person>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey);
         }
 
+        [When(@"I iterate the query ""(.*)"" against the container called ""(.*)"" with an asynchronous action and store the Person objects seen in ""(.*)""")]
+        public Task WhenIIterateTheQueryWithAnAsynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithAsyncMethodAsync<Person>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey);
+        }
+
         [When(@"I iterate the query ""(.*)"" against the container called ""(.*)"" with a synchronous action and store the Entity Instance of Person objects seen in ""(.*)""")]
         public Task WhenIIterateTheQueryWithASynchronousActionAndStoreTheEntityInstanceOfPersonObjectsSeenIn(string queryText, string containerKey, string resultsKey)
         {
             return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAsync<EntityInstance<Person>>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey);
+        }
+
+        [When(@"I iterate the query ""(.*)"" against the container called ""(.*)"" with an asynchronous action and store the Entity Instance of Person objects seen in ""(.*)""")]
+        public Task WhenIIterateTheQueryWithAnAsynchronousActionAndStoreTheEntityInstanceOfPersonObjectsSeenIn(string queryText, string containerKey, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithAsyncMethodAsync<EntityInstance<Person>>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey);
         }
 
         [Then(@"the Person collection ""(.*)"" should contain the following items from the Person collection ""(.*)""")]

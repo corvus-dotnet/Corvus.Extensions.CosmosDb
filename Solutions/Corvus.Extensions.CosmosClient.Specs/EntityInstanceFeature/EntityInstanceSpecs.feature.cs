@@ -18,20 +18,20 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("EntityInstanceFeature")]
-    public partial class EntityInstanceFeatureFeature
+    [NUnit.Framework.DescriptionAttribute("EntityInstance")]
+    public partial class EntityInstanceFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "EntityInstanceFeature.feature"
+#line 1 "EntityInstanceSpecs.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "EntityInstanceFeature", "\tIn order to obtain the ETag for stored entity instances\r\n\tAs a developer\r\n\tI wan" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "EntityInstance", "\tIn order to obtain the ETag for stored entity instances\r\n\tAs a developer\r\n\tI wan" +
                     "t to be able to read a POCO written to a CosmosDB container as an EntityInstance" +
                     "", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);

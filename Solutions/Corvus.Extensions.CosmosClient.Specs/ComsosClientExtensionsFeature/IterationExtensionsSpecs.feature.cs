@@ -18,23 +18,23 @@ namespace Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("IterationExtensionsFeature")]
+    [NUnit.Framework.DescriptionAttribute("IterationExtensions")]
     [NUnit.Framework.CategoryAttribute("setupContainer")]
     [NUnit.Framework.CategoryAttribute("setupCosmosDBKeys")]
     [NUnit.Framework.CategoryAttribute("withSharedDatabase")]
-    public partial class IterationExtensionsFeatureFeature
+    public partial class IterationExtensionsFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "IterationExtensionsFeature.feature"
+#line 1 "IterationExtensionsSpecs.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "IterationExtensionsFeature", "\tIn order to operatore over the results of a query\r\n\tAs a developer\r\n\tI want to b" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "IterationExtensions", "\tIn order to operatore over the results of a query\r\n\tAs a developer\r\n\tI want to b" +
                     "e able to iterate the results of a query", ProgrammingLanguage.CSharp, new string[] {
                         "setupContainer",
                         "setupCosmosDBKeys",
@@ -208,6 +208,142 @@ this.ScenarioInitialize(scenarioInfo);
 #line 38
  testRunner.Then("the Entity Instance of Person collection \"PersonItemsSeen\" should contain the fol" +
                     "lowing items from the Person collection \"People\"", ((string)(null)), table4, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Iterate a collection with an asynchronous action.")]
+        public virtual void IterateACollectionWithAnAsynchronousAction_()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection with an asynchronous action.", null, ((string[])(null)));
+#line 44
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 45
+ testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Index",
+                        "Id",
+                        "Name",
+                        "DateOfBirth"});
+            table5.AddRow(new string[] {
+                        "1",
+                        "22359BAE-D1A7-407F-B560-4FC62027C68E",
+                        "Tom",
+                        "1972-01-13"});
+            table5.AddRow(new string[] {
+                        "2",
+                        "36DBCA33-C10B-4802-A9AA-AB16822A9D25",
+                        "Dick",
+                        "1984-05-17"});
+            table5.AddRow(new string[] {
+                        "3",
+                        "5BD6C25C-4846-4352-B069-CD75BCA7E41C",
+                        "Harry",
+                        "1991-10-06"});
+            table5.AddRow(new string[] {
+                        "4",
+                        "6ED54E7C-D39C-4A2D-8781-91D15EC047F1",
+                        "Darrell",
+                        "1933-08-14"});
+            table5.AddRow(new string[] {
+                        "5",
+                        "EB7DF71C-762E-49D9-BC32-95C608EDE208",
+                        "Sally",
+                        "1932-04-09"});
+            table5.AddRow(new string[] {
+                        "6",
+                        "DC62035F-039D-40EE-8307-BD77CE6FEC67",
+                        "Alicia",
+                        "1933-06-12"});
+#line 46
+ testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
+                    "ed \"TestContainer\"", ((string)(null)), table5, "And ");
+#line 54
+ testRunner.When("I iterate the query \"SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < " +
+                    "\'1934-01-01T00:00:00.000000Z\'\" against the container called \"TestContainer\" with" +
+                    " an asynchronous action and store the Person objects seen in \"PersonItemsSeen\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Index"});
+            table6.AddRow(new string[] {
+                        "4"});
+            table6.AddRow(new string[] {
+                        "5"});
+            table6.AddRow(new string[] {
+                        "6"});
+#line 55
+ testRunner.Then("the Person collection \"PersonItemsSeen\" should contain the following items from t" +
+                    "he Person collection \"People\"", ((string)(null)), table6, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Iterate a collection of Entity Instances with an asynchronous action.")]
+        public virtual void IterateACollectionOfEntityInstancesWithAnAsynchronousAction_()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Iterate a collection of Entity Instances with an asynchronous action.", null, ((string[])(null)));
+#line 61
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 62
+ testRunner.Given("that I create a Cosmos Container called \"TestContainer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Index",
+                        "Id",
+                        "Name",
+                        "DateOfBirth"});
+            table7.AddRow(new string[] {
+                        "1",
+                        "22359BAE-D1A7-407F-B560-4FC62027C68E",
+                        "Tom",
+                        "1972-01-13"});
+            table7.AddRow(new string[] {
+                        "2",
+                        "36DBCA33-C10B-4802-A9AA-AB16822A9D25",
+                        "Dick",
+                        "1984-05-17"});
+            table7.AddRow(new string[] {
+                        "3",
+                        "5BD6C25C-4846-4352-B069-CD75BCA7E41C",
+                        "Harry",
+                        "1991-10-06"});
+            table7.AddRow(new string[] {
+                        "4",
+                        "6ED54E7C-D39C-4A2D-8781-91D15EC047F1",
+                        "Darrell",
+                        "1933-08-14"});
+            table7.AddRow(new string[] {
+                        "5",
+                        "EB7DF71C-762E-49D9-BC32-95C608EDE208",
+                        "Sally",
+                        "1932-04-09"});
+            table7.AddRow(new string[] {
+                        "6",
+                        "DC62035F-039D-40EE-8307-BD77CE6FEC67",
+                        "Alicia",
+                        "1933-06-12"});
+#line 63
+ testRunner.And("I add a collection of Person objects called \"People\" to the Cosmos Container call" +
+                    "ed \"TestContainer\"", ((string)(null)), table7, "And ");
+#line 71
+ testRunner.When(@"I iterate the query ""SELECT * FROM People p WHERE p.dateOfBirth.dateTimeOffset < '1934-01-01T00:00:00.000000Z'"" against the container called ""TestContainer"" with an asynchronous action and store the Entity Instance of Person objects seen in ""PersonItemsSeen""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Index"});
+            table8.AddRow(new string[] {
+                        "4"});
+            table8.AddRow(new string[] {
+                        "5"});
+            table8.AddRow(new string[] {
+                        "6"});
+#line 72
+ testRunner.Then("the Entity Instance of Person collection \"PersonItemsSeen\" should contain the fol" +
+                    "lowing items from the Person collection \"People\"", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

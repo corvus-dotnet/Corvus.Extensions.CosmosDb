@@ -1,4 +1,4 @@
-﻿Feature: EntityInstanceFeature
+﻿Feature: EntityInstance
 	In order to obtain the ETag for stored entity instances
 	As a developer
 	I want to be able to read a POCO written to a CosmosDB container as an EntityInstance
