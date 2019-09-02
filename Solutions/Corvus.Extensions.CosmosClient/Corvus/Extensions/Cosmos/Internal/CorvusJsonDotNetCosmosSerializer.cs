@@ -37,55 +37,6 @@ namespace Corvus.Extensions.Cosmos.Internal
         }
 
         /// <summary>
-        /// Create a serializer that uses the JSON.net serializer.
-        /// </summary>
-        /// <param name="jsonSerializerSettings">The json serializer settings on which to base the settings.</param>
-        /// <param name="cosmosSerializerOptions">The overrides from cosmos serializer options.</param>
-        /// <remarks>
-        /// This is internal to reduce exposure of JSON.net types so
-        /// it is easier to convert to System.Text.Json.
-        /// </remarks>
-        internal CorvusJsonDotNetCosmosSerializer(JsonSerializerSettings jsonSerializerSettings, CosmosSerializationOptions cosmosSerializerOptions)
-        {
-            var newSettings = new JsonSerializerSettings()
-            {
-                CheckAdditionalContent = jsonSerializerSettings.CheckAdditionalContent,
-                ConstructorHandling = jsonSerializerSettings.ConstructorHandling,
-                Context = jsonSerializerSettings.Context,
-                Converters = new List<JsonConverter>(jsonSerializerSettings.Converters),
-                Culture = jsonSerializerSettings.Culture,
-                DateFormatHandling = jsonSerializerSettings.DateFormatHandling,
-                DateFormatString = jsonSerializerSettings.DateFormatString,
-                DateParseHandling = jsonSerializerSettings.DateParseHandling,
-                DateTimeZoneHandling = jsonSerializerSettings.DateTimeZoneHandling,
-                DefaultValueHandling = jsonSerializerSettings.DefaultValueHandling,
-                EqualityComparer = jsonSerializerSettings.EqualityComparer,
-                Error = jsonSerializerSettings.Error,
-                FloatFormatHandling = jsonSerializerSettings.FloatFormatHandling,
-                FloatParseHandling = jsonSerializerSettings.FloatParseHandling,
-                MaxDepth = jsonSerializerSettings.MaxDepth,
-                MetadataPropertyHandling = jsonSerializerSettings.MetadataPropertyHandling,
-                MissingMemberHandling = jsonSerializerSettings.MissingMemberHandling,
-                ObjectCreationHandling = jsonSerializerSettings.ObjectCreationHandling,
-                PreserveReferencesHandling = jsonSerializerSettings.PreserveReferencesHandling,
-                ReferenceLoopHandling = jsonSerializerSettings.ReferenceLoopHandling,
-                ReferenceResolverProvider = jsonSerializerSettings.ReferenceResolverProvider,
-                SerializationBinder = jsonSerializerSettings.SerializationBinder,
-                StringEscapeHandling = jsonSerializerSettings.StringEscapeHandling,
-                TraceWriter = jsonSerializerSettings.TraceWriter,
-                TypeNameAssemblyFormatHandling = jsonSerializerSettings.TypeNameAssemblyFormatHandling,
-                TypeNameHandling = jsonSerializerSettings.TypeNameHandling,
-                NullValueHandling = cosmosSerializerOptions.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
-                Formatting = cosmosSerializerOptions.Indented ? Formatting.Indented : Formatting.None,
-                ContractResolver = cosmosSerializerOptions.PropertyNamingPolicy == CosmosPropertyNamingPolicy.CamelCase
-                    ? new CamelCasePropertyNamesContractResolver()
-                    : null,
-            };
-
-            this.serializer = JsonSerializer.Create(newSettings);
-        }
-
-        /// <summary>
         /// Convert a Stream to the passed in type.
         /// </summary>
         /// <typeparam name="T">The type of object that should be deserialized.</typeparam>
