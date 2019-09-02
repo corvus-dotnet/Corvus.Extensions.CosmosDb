@@ -171,59 +171,5 @@ namespace Corvus.Extensions.Cosmos
 
             return responseContinuationToken;
         }
-
-        /// <summary>
-        /// Adds the parition key to the query request options.
-        /// </summary>
-        /// <param name="requestOptions">The query request options, or null if there are no existing request options.</param>
-        /// <param name="partitionKeyValue">The partition key to set, if required.</param>
-        /// <returns>The request options with the partition key set.</returns>
-        public static QueryRequestOptions WithPartitionKeyIfRequired(
-            this QueryRequestOptions requestOptions,
-            string partitionKeyValue)
-        {
-            if (partitionKeyValue != null)
-            {
-                requestOptions.PartitionKey = new PartitionKey(partitionKeyValue);
-            }
-
-            return requestOptions;
-        }
-
-        /// <summary>
-        /// Adds the parition key to the query request options.
-        /// </summary>
-        /// <param name="requestOptions">The query request options, or null if there are no existing request options.</param>
-        /// <param name="partitionKeyValue">The partition key to set, if required.</param>
-        /// <returns>The request options with the partition key set.</returns>
-        public static QueryRequestOptions WithPartitionKeyIfRequired(
-            this QueryRequestOptions requestOptions,
-            bool? partitionKeyValue)
-        {
-            if (partitionKeyValue.HasValue)
-            {
-                requestOptions.PartitionKey = new PartitionKey(partitionKeyValue.Value);
-            }
-
-            return requestOptions;
-        }
-
-        /// <summary>
-        /// Adds the parition key to the query request options.
-        /// </summary>
-        /// <param name="requestOptions">The query request options, or null if there are no existing request options.</param>
-        /// <param name="partitionKeyValue">The partition key to set, if required.</param>
-        /// <returns>The request options with the partition key set.</returns>
-        public static QueryRequestOptions WithPartitionKeyIfRequired(
-            this QueryRequestOptions requestOptions,
-            double? partitionKeyValue)
-        {
-            if (partitionKeyValue.HasValue)
-            {
-                requestOptions.PartitionKey = new PartitionKey(partitionKeyValue.Value);
-            }
-
-            return requestOptions;
-        }
     }
 }

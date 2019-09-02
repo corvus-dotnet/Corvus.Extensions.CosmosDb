@@ -37,21 +37,6 @@ namespace Corvus.Extensions.Cosmos.Crypto
         /// <returns>
         ///     The secret.
         /// </returns>
-        public static string GetSecretFromConfigurationOrKeyVault(
-            IConfigurationRoot configuration,
-            string configurationKey,
-            string keyVaultName,
-            string keyVaultSecretName)
-        {
-            return Task.Run(
-                () => GetSecretFromConfigurationOrKeyVaultAsync(
-                    configuration,
-                    configurationKey,
-                    keyVaultName,
-                    keyVaultSecretName)).Result;
-        }
-
-        /// <inheritdoc cref="GetSecretFromConfigurationOrKeyVault" />
         public static async Task<string> GetSecretFromConfigurationOrKeyVaultAsync(
             IConfiguration configuration,
             string configurationKey,
