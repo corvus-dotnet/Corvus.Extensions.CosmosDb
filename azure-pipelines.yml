@@ -26,6 +26,7 @@ jobs:
           Write-Host "##vso[task.setvariable variable=CosmosDbAccountUri]$Env:ENDJIN_COSMOSDBACCOUNTURI"
           Write-Host "##vso[task.setvariable variable=CosmosDbKeySecretName]$Env:ENDJIN_COSMOSDBKEYSECRETNAME"
           Write-Host "##vso[task.setvariable variable=KeyVaultName]$Env:ENDJIN_KEYVAULTNAME"
+          gci Env:
         displayName: 'Set Custom Environment Variables'
         env:
           ENDJIN_COSMOSDBACCOUNTURI: $(Endjin_CosmosDbAccountUri)
