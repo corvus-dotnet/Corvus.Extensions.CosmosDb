@@ -3,9 +3,12 @@
 [![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Extensions.CosmosDb/master/LICENSE)
 [![IMM](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Extensions.CosmosDb/total?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Extensions.CosmosDb/total?cache=false)
 
-This provides useful extensions for the CosmosDB SQL and Gremlin APIs, including support for Tenancy.
+This provides useful extensions for Cosmos V3 SDK.
+
+See [Corvus.Tenancy](https://github.com/corvus-dotnet/Corvus.Tenancy) for multi-tenancy support.
 
 It is built for netstandard2.0.
+
 
 ## Features
 
