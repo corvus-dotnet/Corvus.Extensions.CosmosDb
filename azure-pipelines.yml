@@ -26,8 +26,10 @@ jobs:
           Write-Host "##vso[task.setvariable variable=CosmosDbAccountUri]$Env:ENDJIN_COSMOSDBACCOUNTURI"
           Write-Host "##vso[task.setvariable variable=CosmosDbKeySecretName]$Env:ENDJIN_COSMOSDBKEYSECRETNAME"
           Write-Host "##vso[task.setvariable variable=KeyVaultName]$Env:ENDJIN_KEYVAULTNAME"
+          Write-Host "##vso[task.setvariable variable=AzureServicesAuthConnectionString]$Env:ENDJIN_AZURESERVICESAUTHCONNECTIONSTRING"
         displayName: 'Set Custom Environment Variables'
         env:
           ENDJIN_COSMOSDBACCOUNTURI: $(Endjin_CosmosDbAccountUri)
           ENDJIN_COSMOSDBKEYSECRETNAME: $(Endjin_CosmosDbKeySecretName)
           ENDJIN_KEYVAULTNAME: $(Endjin_KeyVaultName)
+          ENDJIN_AZURESERVICESAUTHCONNECTIONSTRING: $(Endjin_AzureServicesAuthConnectionString)
