@@ -26,6 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 return serviceCollection;
             }
 
+            serviceCollection.AddJsonSerializerSettings();
             serviceCollection.AddSingleton<ICosmosClientBuilderFactory, CosmosClientBuilderFactory>();
             return serviceCollection;
         }

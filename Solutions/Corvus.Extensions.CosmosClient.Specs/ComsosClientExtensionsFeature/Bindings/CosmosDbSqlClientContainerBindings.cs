@@ -26,12 +26,6 @@ namespace Corvus.Extensions.Cosmos.Specs.CosmosClientExtensionsFeature.Bindings
                 featureContext,
                 serviceCollection =>
                 {
-                    serviceCollection.AddContentFactory(contentFactory =>
-                    {
-                        // TODO: Add any content we need
-                    });
-                    serviceCollection.AddDefaultJsonSerializerSettings();
-                    serviceCollection.AddContentHandlingJsonConverters();
                     serviceCollection.AddSharedThroughputCosmosDbTestServices("/id");
                 });
         }
