@@ -30,6 +30,21 @@ namespace Corvus.Extensions.Cosmos
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
         public static Task<string> ForEachAsync<T>(this Container container, string queryText, Action<T> action, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
         {
+            if (container is null)
+            {
+                throw new ArgumentNullException(nameof(container));
+            }
+
+            if (queryText is null)
+            {
+                throw new ArgumentNullException(nameof(queryText));
+            }
+
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
             return ForEachAsync(container, new QueryDefinition(queryText), action, requestOptions, maxBatchCount, continuationToken, cancellationToken);
         }
 
@@ -47,6 +62,11 @@ namespace Corvus.Extensions.Cosmos
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
         public static async Task<string> ForEachAsync<T>(this Container container, QueryDefinition queryDefinition, Action<T> action, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
         {
+            if (container is null)
+            {
+                throw new ArgumentNullException(nameof(container));
+            }
+
             if (queryDefinition == null)
             {
                 throw new ArgumentNullException(nameof(queryDefinition));
@@ -108,6 +128,21 @@ namespace Corvus.Extensions.Cosmos
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
         public static Task<string> ForEachAsync<T>(this Container container, string queryText, Func<T, Task> actionAsync, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
         {
+            if (container is null)
+            {
+                throw new ArgumentNullException(nameof(container));
+            }
+
+            if (queryText is null)
+            {
+                throw new ArgumentNullException(nameof(queryText));
+            }
+
+            if (actionAsync is null)
+            {
+                throw new ArgumentNullException(nameof(actionAsync));
+            }
+
             return ForEachAsync(container, new QueryDefinition(queryText), actionAsync, requestOptions, maxBatchCount, continuationToken, cancellationToken);
         }
 
@@ -125,6 +160,11 @@ namespace Corvus.Extensions.Cosmos
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
         public static async Task<string> ForEachAsync<T>(this Container container, QueryDefinition queryDefinition, Func<T, Task> actionAsync, QueryRequestOptions requestOptions = null, int? maxBatchCount = null, string continuationToken = null, CancellationToken cancellationToken = default)
         {
+            if (container is null)
+            {
+                throw new ArgumentNullException(nameof(container));
+            }
+
             if (queryDefinition == null)
             {
                 throw new ArgumentNullException(nameof(queryDefinition));

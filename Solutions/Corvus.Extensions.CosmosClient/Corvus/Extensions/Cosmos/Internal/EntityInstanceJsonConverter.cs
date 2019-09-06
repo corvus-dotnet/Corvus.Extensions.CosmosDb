@@ -23,6 +23,16 @@ namespace Corvus.Extensions.Cosmos.Internal
         /// <inheritdoc/>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader is null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            if (serializer is null)
+            {
+                throw new ArgumentNullException(nameof(serializer));
+            }
+
             if (reader.TokenType == JsonToken.Null)
             {
                 return null;
@@ -42,6 +52,16 @@ namespace Corvus.Extensions.Cosmos.Internal
         /// <inheritdoc/>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            if (writer is null)
+            {
+                throw new ArgumentNullException(nameof(writer));
+            }
+
+            if (serializer is null)
+            {
+                throw new ArgumentNullException(nameof(serializer));
+            }
+
             var entityInstance = value as IEntityInstance;
             var jobject = JObject.FromObject(entityInstance.Entity, serializer);
             jobject["_etag"] = entityInstance.ETag;

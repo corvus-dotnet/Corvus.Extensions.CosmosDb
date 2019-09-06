@@ -43,6 +43,16 @@ namespace Corvus.Extensions.Cosmos.Crypto
             string keyVaultName,
             string keyVaultSecretName)
         {
+            if (configuration is null)
+            {
+                throw new System.ArgumentNullException(nameof(configuration));
+            }
+
+            if (string.IsNullOrEmpty(configurationKey))
+            {
+                throw new System.ArgumentException("message", nameof(configurationKey));
+            }
+
             string secret = configuration[configurationKey];
 
             if (string.IsNullOrEmpty(secret))
@@ -73,6 +83,21 @@ namespace Corvus.Extensions.Cosmos.Crypto
             string keyVaultName,
             string keyVaultSecretName)
         {
+            if (configuration is null)
+            {
+                throw new System.ArgumentNullException(nameof(configuration));
+            }
+
+            if (string.IsNullOrEmpty(keyVaultName))
+            {
+                throw new System.ArgumentException("message", nameof(keyVaultName));
+            }
+
+            if (string.IsNullOrEmpty(keyVaultSecretName))
+            {
+                throw new System.ArgumentException("message", nameof(keyVaultSecretName));
+            }
+
             var azureServiceTokenProvider = new AzureServiceTokenProvider(configuration["AzureServicesAuthConnectionString"]);
 
             var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));

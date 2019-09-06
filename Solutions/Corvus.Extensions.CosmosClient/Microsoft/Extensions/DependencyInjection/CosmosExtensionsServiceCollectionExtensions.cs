@@ -4,6 +4,7 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    using System.Linq;
     using Corvus.Extensions.Cosmos;
     using Corvus.Extensions.Cosmos.Internal;
     using Microsoft.Azure.Cosmos;
@@ -20,6 +21,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The service collection configured with the services.</returns>
         public static IServiceCollection AddCosmosClientExtensions(this IServiceCollection serviceCollection)
         {
+            if (serviceCollection.Any(s => typeof(ICosmosClientBuilderFactory).IsAssignableFrom(s.ServiceType)))
+            {
+                return serviceCollection;
+            }
+
             serviceCollection.AddSingleton<ICosmosClientBuilderFactory, CosmosClientBuilderFactory>();
             return serviceCollection;
         }

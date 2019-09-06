@@ -33,6 +33,11 @@ namespace Corvus.Extensions.Cosmos.Internal
         /// </remarks>
         internal CorvusJsonDotNetCosmosSerializer(JsonSerializerSettings jsonSerializerSettings)
         {
+            if (jsonSerializerSettings is null)
+            {
+                throw new System.ArgumentNullException(nameof(jsonSerializerSettings));
+            }
+
             this.serializer = JsonSerializer.Create(jsonSerializerSettings);
         }
 
