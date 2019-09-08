@@ -26,7 +26,7 @@ This project is sponsored by [endjin](https://endjin.com), a UK based Microsoft 
 
 For more information about our products and services, or for commercial support of this project, please [contact us](https://endjin.com/contact-us). 
 
-We produce two free weekly newsletters; [CosmosDb Weekly](https://CosmosDbweekly.info) for all things about the Microsoft CosmosDb Platform, and [Power BI Weekly](https://powerbiweekly.info).
+We produce two free weekly newsletters; [Azure Weekly](https://azureweekly.info) for all things about the Microsoft Azure Platform, and [Power BI Weekly](https://powerbiweekly.info).
 
 Keep up with everything that's going on at endjin via our [blog](https://blogs.endjin.com/), follow us on [Twitter](https://twitter.com/endjin), or [LinkedIn](https://www.linkedin.com/company/1671851/).
 
