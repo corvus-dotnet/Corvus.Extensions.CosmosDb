@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Corvus.Extensions" Version="0.7.0" />
-    <PackageReference Include="Corvus.Extensions.Newtonsoft.Json" Version="0.6.0" />
+    <PackageReference Include="Corvus.Extensions.Newtonsoft.Json" Version="0.7.0" />
     <PackageReference Include="Corvus.Retry" Version="0.4.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.2.0" />
     <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.4" />
