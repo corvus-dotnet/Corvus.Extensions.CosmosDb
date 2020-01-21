@@ -10,7 +10,7 @@ namespace Corvus.SpecFlow.Extensions
     using System.Threading.Tasks;
     using Corvus.Extensions;
     using Corvus.Extensions.Cosmos;
-    using Corvus.Extensions.Cosmos.Crypto;
+    using Corvus.Specflow.Extensions;
     using Microsoft.Azure.Cosmos;
     using Microsoft.Azure.Cosmos.Fluent;
     using Microsoft.Extensions.Configuration;

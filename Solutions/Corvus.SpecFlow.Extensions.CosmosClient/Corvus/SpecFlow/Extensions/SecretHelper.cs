@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.Extensions.Cosmos.Crypto
+namespace Corvus.Specflow.Extensions
 {
     using System.Threading.Tasks;
 
@@ -17,7 +17,7 @@ namespace Corvus.Extensions.Cosmos.Crypto
     /// We need this as different tenants may be configured to use different keyvaults (in a BYO scenario).
     /// Therefore we cannot simply configure the keyvault fallback for configuration.
     /// </remarks>
-    public static class SecretHelper
+    internal static class SecretHelper
     {
         /// <summary>
         ///     Attempts to retrieve a value from configuration. If it doesn't exist, attempts to retrieve it from KeyVault.
@@ -37,7 +37,7 @@ namespace Corvus.Extensions.Cosmos.Crypto
         /// <returns>
         ///     The secret.
         /// </returns>
-        public static async Task<string> GetSecretFromConfigurationOrKeyVaultAsync(
+        internal static async Task<string> GetSecretFromConfigurationOrKeyVaultAsync(
             IConfiguration configuration,
             string configurationKey,
             string keyVaultName,
@@ -78,7 +78,7 @@ namespace Corvus.Extensions.Cosmos.Crypto
         /// <returns>
         ///     The <see cref="Task" />.
         /// </returns>
-        public static async Task<string> GetSecretFromKeyVaultAsync(
+        internal static async Task<string> GetSecretFromKeyVaultAsync(
             IConfiguration configuration,
             string keyVaultName,
             string keyVaultSecretName)
