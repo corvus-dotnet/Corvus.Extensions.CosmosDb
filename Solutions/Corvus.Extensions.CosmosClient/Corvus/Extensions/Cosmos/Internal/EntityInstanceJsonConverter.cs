@@ -12,6 +12,7 @@ namespace Corvus.Extensions.Cosmos.Internal
     /// A type converter which can read an <see cref="EntityInstance{T}"/>
     /// from a serialized instance of type T in a CosmosDB document.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Used via attribute")]
     internal class EntityInstanceJsonConverter : JsonConverter
     {
         /// <inheritdoc/>
