@@ -5,7 +5,6 @@
 namespace Corvus.Extensions.Cosmos.Specs.CosmosClientExtensionsFeature.Bindings
 {
     using Corvus.SpecFlow.Extensions;
-    using Microsoft.Extensions.DependencyInjection;
     using TechTalk.SpecFlow;
 
     /// <summary>
@@ -24,10 +23,7 @@ namespace Corvus.Extensions.Cosmos.Specs.CosmosClientExtensionsFeature.Bindings
         {
             ContainerBindings.ConfigureServices(
                 featureContext,
-                serviceCollection =>
-                {
-                    serviceCollection.AddSharedThroughputCosmosDbTestServices("/id");
-                });
+                serviceCollection => serviceCollection.AddSharedThroughputCosmosDbTestServices("/id"));
         }
     }
 }

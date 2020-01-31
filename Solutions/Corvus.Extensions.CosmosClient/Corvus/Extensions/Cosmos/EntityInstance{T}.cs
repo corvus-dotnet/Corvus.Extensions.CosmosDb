@@ -58,6 +58,7 @@ namespace Corvus.Extensions.Cosmos
         /// <param name="left">The lhs for comparison.</param>
         /// <param name="right">The rhs for comparison.</param>
         /// <returns>True if the instances compare for equality using the default <see cref="EqualityComparer{T}"/> and they also share a common ETag.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Adding the validation required by CA1062 causes CA1065 to kick in instead")]
         public static bool operator ==(EntityInstance<T> left, EntityInstance<T> right)
         {
             return left.Equals(right);

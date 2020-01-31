@@ -4,6 +4,7 @@
 
 namespace Corvus.Extensions.Cosmos.Internal
 {
+    using System;
     using Corvus.Extensions.Json;
     using Microsoft.Azure.Cosmos.Fluent;
 
@@ -28,7 +29,7 @@ namespace Corvus.Extensions.Cosmos.Internal
         {
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new System.ArgumentException("message", nameof(connectionString));
+                throw new ArgumentNullException(nameof(connectionString));
             }
 
             return new CosmosClientBuilder(connectionString).WithCustomSerializer(new CorvusJsonDotNetCosmosSerializer(this.serializerSettingsProvider.Instance));
@@ -39,12 +40,12 @@ namespace Corvus.Extensions.Cosmos.Internal
         {
             if (string.IsNullOrEmpty(accountEndpoint))
             {
-                throw new System.ArgumentException("message", nameof(accountEndpoint));
+                throw new ArgumentNullException(nameof(accountEndpoint));
             }
 
             if (string.IsNullOrEmpty(accountKey))
             {
-                throw new System.ArgumentException("message", nameof(accountKey));
+                throw new ArgumentNullException(nameof(accountKey));
             }
 
             return new CosmosClientBuilder(accountEndpoint, accountKey).WithCustomSerializer(new CorvusJsonDotNetCosmosSerializer(this.serializerSettingsProvider.Instance));

@@ -8,12 +8,10 @@
 
 namespace Corvus.Extensions.Cosmos.Internal
 {
-    using System.Collections.Generic;
     using System.IO;
     using System.Text;
     using Microsoft.Azure.Cosmos;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// The default Cosmos JSON.NET serializer.
@@ -56,13 +54,9 @@ namespace Corvus.Extensions.Cosmos.Internal
                     return (T)(object)stream;
                 }
 
-                using (var sr = new StreamReader(stream))
-                {
-                    using (var jsonTextReader = new JsonTextReader(sr))
-                    {
-                        return this.serializer.Deserialize<T>(jsonTextReader);
-                    }
-                }
+                using var sr = new StreamReader(stream);
+                using var jsonTextReader = new JsonTextReader(sr);
+                return this.serializer.Deserialize<T>(jsonTextReader);
             }
         }
 
@@ -77,13 +71,11 @@ namespace Corvus.Extensions.Cosmos.Internal
             var streamPayload = new MemoryStream();
             using (var streamWriter = new StreamWriter(streamPayload, encoding: DefaultEncoding, bufferSize: 1024, leaveOpen: true))
             {
-                using (JsonWriter writer = new JsonTextWriter(streamWriter))
-                {
-                    writer.Formatting = Formatting.None;
-                    this.serializer.Serialize(writer, input);
-                    writer.Flush();
-                    streamWriter.Flush();
-                }
+                using JsonWriter writer = new JsonTextWriter(streamWriter);
+                writer.Formatting = Formatting.None;
+                this.serializer.Serialize(writer, input);
+                writer.Flush();
+                streamWriter.Flush();
             }
 
             streamPayload.Position = 0;

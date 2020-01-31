@@ -1,6 +1,5 @@
 ﻿namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
 {
-    using System;
     using Corvus.Extensions.Cosmos;
     using Corvus.Extensions.CosmosClient.Specs.Common;
     using Corvus.Extensions.CosmosClient.Specs.Common.Driver;
