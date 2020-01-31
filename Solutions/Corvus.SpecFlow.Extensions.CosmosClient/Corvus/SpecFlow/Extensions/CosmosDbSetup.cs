@@ -107,7 +107,7 @@ namespace Corvus.SpecFlow.Extensions
             }
 
             var builder = new ConfigurationBuilder();
-            builder.AddTestConfiguration(fallbackSettings);
+            builder.AddTestConfiguration("local.settings.json", fallbackSettings);
             IConfigurationRoot configuration = builder.Build();
             serviceCollection.AddSingleton(configuration);
             return configuration;

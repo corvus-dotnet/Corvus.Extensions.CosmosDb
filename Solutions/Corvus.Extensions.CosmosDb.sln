@@ -19,6 +19,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A591B8CE-6268-4312-9BDE-586CDC851909}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Common.GitHub.proj = Common.GitHub.proj
+		Common.NetStandard_2_0.proj = Common.NetStandard_2_0.proj
+		Common.NuGet.proj = Common.NuGet.proj
+		Directory.build.props = Directory.build.props
+		Directory.build.targets = Directory.build.targets
 		StyleCop.ruleset = StyleCop.ruleset
 	EndProjectSection
 EndProject
