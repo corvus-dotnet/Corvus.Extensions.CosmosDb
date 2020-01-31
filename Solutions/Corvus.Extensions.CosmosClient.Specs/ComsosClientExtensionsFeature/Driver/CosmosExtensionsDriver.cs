@@ -7,7 +7,6 @@
     using Corvus.Extensions.CosmosClient.Specs.Common;
     using Corvus.SpecFlow.Extensions;
     using Microsoft.Azure.Cosmos;
-    using NUnit.Framework;
     using TechTalk.SpecFlow;
 
     internal static class CosmosExtensionsDriver
@@ -42,7 +41,6 @@
             }
             return container;
         }
-
 
         /// <summary>
         /// Adds the given people to the given container.

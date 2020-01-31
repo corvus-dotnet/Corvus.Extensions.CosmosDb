@@ -12,9 +12,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CosmosDb.Extensions", "Cosm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Extensions.CosmosClient", "Corvus.Extensions.CosmosClient\Corvus.Extensions.CosmosClient.csproj", "{331E5D3A-8F7A-4E87-94CF-D73A6B327A5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corvus.Extensions.CosmosClient.Specs", "Corvus.Extensions.CosmosClient.Specs\Corvus.Extensions.CosmosClient.Specs.csproj", "{1EB1E15D-E243-4BE4-8AF9-7394EEE500BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Extensions.CosmosClient.Specs", "Corvus.Extensions.CosmosClient.Specs\Corvus.Extensions.CosmosClient.Specs.csproj", "{1EB1E15D-E243-4BE4-8AF9-7394EEE500BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corvus.SpecFlow.Extensions.CosmosClient", "Corvus.SpecFlow.Extensions.CosmosClient\Corvus.SpecFlow.Extensions.CosmosClient.csproj", "{02BA547F-1594-4998-95CB-F2133253A3D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.SpecFlow.Extensions.CosmosClient", "Corvus.SpecFlow.Extensions.CosmosClient\Corvus.SpecFlow.Extensions.CosmosClient.csproj", "{02BA547F-1594-4998-95CB-F2133253A3D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A591B8CE-6268-4312-9BDE-586CDC851909}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		StyleCop.ruleset = StyleCop.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

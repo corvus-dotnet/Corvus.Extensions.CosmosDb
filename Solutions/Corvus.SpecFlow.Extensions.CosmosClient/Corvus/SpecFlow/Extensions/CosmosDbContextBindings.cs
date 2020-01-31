@@ -257,10 +257,7 @@ namespace Corvus.SpecFlow.Extensions
             {
                 await Task.WhenAll(context.Get<List<Database>>(CosmosDbDatabasesToDelete)
                     .DistinctBy(database => database.Id)
-                    .Select(async database =>
-                    {
-                        await database.DeleteAsync().ConfigureAwait(false);
-                    }))
+                    .Select(async database => await database.DeleteAsync().ConfigureAwait(false)))
                     .ConfigureAwait(false);
             }
         }

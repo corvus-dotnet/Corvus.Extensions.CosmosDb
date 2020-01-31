@@ -7,7 +7,6 @@
     using Corvus.Extensions.CosmosClient.Specs.Common;
     using Corvus.Extensions.CosmosClient.Specs.Common.Driver;
     using Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature.Driver;
-    using Corvus.SpecFlow.Extensions;
     using NUnit.Framework;
     using TechTalk.SpecFlow;
 
@@ -23,7 +22,6 @@
         public FeatureContext FeatureContext { get; }
 
         public ScenarioContext ScenarioContext { get; }
-
 
         [Given(@"that I create a Cosmos Container called ""(.*)""")]
         public Task GivenThatICreateACosmosContainerCalled(string containerKey)
@@ -105,7 +103,5 @@
 
             CollectionAssert.AreEqual(expectedList, entityInstanceList.Select(e => e.Entity).ToList());
         }
-
-
     }
 }
