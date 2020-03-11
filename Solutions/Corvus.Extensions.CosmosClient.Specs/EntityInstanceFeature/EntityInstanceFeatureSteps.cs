@@ -1,4 +1,8 @@
-﻿namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature
+﻿// <copyright file="EntityInstanceFeatureSteps.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
+// </copyright>
+
+namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature
 {
     using Corvus.Extensions.Cosmos;
     using Corvus.Extensions.CosmosClient.Specs.Common;

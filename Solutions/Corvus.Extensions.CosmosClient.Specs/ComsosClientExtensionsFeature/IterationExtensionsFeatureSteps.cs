@@ -1,4 +1,8 @@
-﻿namespace Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature
+﻿// <copyright file="IterationExtensionsFeatureSteps.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
+// </copyright>
+
+namespace Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature
 {
     using System.Collections.Generic;
     using System.Linq;

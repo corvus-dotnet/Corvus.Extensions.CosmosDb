@@ -1,4 +1,8 @@
-﻿namespace Corvus.Extensions.CosmosClient.Specs.Common.Driver
+﻿// <copyright file="PersonDriver.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
+// </copyright>
+
+namespace Corvus.Extensions.CosmosClient.Specs.Common.Driver
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -9,7 +13,7 @@
         /// <summary>
         /// Create a sample people from example data.
         /// </summary>
-        /// <param name="table">The table from which to create the people. This should have columns <c>Id</c>, <c>Name</c> (which is nullable) and <c>DateOfBirth</c></param>
+        /// <param name="table">The table from which to create the people. This should have columns <c>Id</c>, <c>Name</c> (which is nullable) and <c>DateOfBirth</c>.</param>
         /// <param name="context">The scenario context (or null if you do not wish to set the value into the context).</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The example person created.</returns>
@@ -59,11 +63,11 @@
         }
 
         /// <summary>
-        /// Gets an ordered list of Person objects based on the indices in a table
+        /// Gets an ordered list of Person objects based on the indices in a table.
         /// </summary>
-        /// <param name="source">The source list</param>
+        /// <param name="source">The source list.</param>
         /// <param name="indices">A table with a single <c>Index</c> column which defines the indices of the items in the source table.</param>
-        /// <returns></returns>
+        /// <returns>A list if Person objects.</returns>
         internal static IList<Person> GetPeopleFromIndices(IList<Person> source, Table indices)
         {
             return indices.Rows.Select(row => source[int.Parse(row["Index"]) - 1]).ToList();

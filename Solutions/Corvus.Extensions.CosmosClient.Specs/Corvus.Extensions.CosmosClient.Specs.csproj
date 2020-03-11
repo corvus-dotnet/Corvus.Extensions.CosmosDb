@@ -5,6 +5,13 @@
     <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
     <RootNamespace>Corvus.Extensions.CosmosClient.Specs</RootNamespace>
+    <!-- Disabling SA1204 because it prioritizes static/non-static over public/non-public, which doesn't fit very well
+         with bindings in SpecFlow.
+         Disabling SA1600, SA1602 (all public types and members to be documented) because test projects need to make lots of types
+         public for technical reasaons, but they are not meant for public consumption, so XML doc comments are only
+         appropriate if they aid understanding within the project.
+    -->
+    <NoWarn>SA0001;SA1204;SA1600;SA1602;CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,15 +20,19 @@
     <PackageReference Include="Corvus.SpecFlow.Extensions" Version="0.6.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.1" />
+    <PackageReference Include="Endjin.RecommendedPractices" Version="0.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SpecFlow" Version="3.1.80" />
-    <PackageReference Include="SpecFlow.NUnit" Version="3.1.80" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.1.80" />
+    <PackageReference Include="SpecFlow" Version="3.1.86" />
+    <PackageReference Include="SpecFlow.NUnit" Version="3.1.86" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.1.86" />
     <PackageReference Include="nunit" Version="3.12.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="coverlet.msbuild" Version="2.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
