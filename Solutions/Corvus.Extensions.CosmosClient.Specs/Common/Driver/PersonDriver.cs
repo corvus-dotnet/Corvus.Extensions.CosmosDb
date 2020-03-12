@@ -67,7 +67,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.Common.Driver
         /// </summary>
         /// <param name="source">The source list.</param>
         /// <param name="indices">A table with a single <c>Index</c> column which defines the indices of the items in the source table.</param>
-        /// <returns>A list if Person objects.</returns>
+        /// <returns>A list of Person objects.</returns>
         internal static IList<Person> GetPeopleFromIndices(IList<Person> source, Table indices)
         {
             return indices.Rows.Select(row => source[int.Parse(row["Index"]) - 1]).ToList();
