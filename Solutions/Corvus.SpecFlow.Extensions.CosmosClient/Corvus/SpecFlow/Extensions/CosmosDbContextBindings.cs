@@ -76,7 +76,7 @@ namespace Corvus.SpecFlow.Extensions
                 configRoot,
                 "kv:" + settings.CosmosDbKeySecretName,
                 keyVaultName,
-                settings.CosmosDbKeySecretName);
+                settings.CosmosDbKeySecretName).ConfigureAwait(false);
 
             string partitionKeyPath = configRoot["CosmosDbPartitionKeyPath"];
             featureContext.Set(partitionKeyPath, CosmosDbContextKeys.PartitionKeyPath);
@@ -136,7 +136,7 @@ namespace Corvus.SpecFlow.Extensions
                 .WithConnectionModeDirect();
 
             CosmosClient client = builder.Build();
-            Database database = await client.CreateDatabaseIfNotExistsAsync(settings.CosmosDbDatabaseName, settings.CosmosDbDefaultOfferThroughput);
+            Database database = await client.CreateDatabaseIfNotExistsAsync(settings.CosmosDbDatabaseName, settings.CosmosDbDefaultOfferThroughput).ConfigureAwait(false);
             featureContext.Set(client, CosmosDbContextKeys.CosmosDbClient);
             featureContext.Set(database, CosmosDbContextKeys.CosmosDbDatabase);
         }
@@ -173,7 +173,7 @@ namespace Corvus.SpecFlow.Extensions
         {
             string partitionKeyPath = featureContext.Get<string>(CosmosDbContextKeys.PartitionKeyPath);
             Database database = featureContext.Get<Database>(CosmosDbContextKeys.CosmosDbDatabase);
-            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath);
+            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath).ConfigureAwait(false);
             featureContext.Set(container, CosmosDbContextKeys.CosmosDbContainer);
             AddFeatureLevelCosmosDbContainerForCleanup(featureContext, container);
         }

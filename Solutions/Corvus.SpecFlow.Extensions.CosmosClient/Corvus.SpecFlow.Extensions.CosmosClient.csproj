@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace />
   </PropertyGroup>
 
   <PropertyGroup>
@@ -11,14 +12,16 @@
     <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
-  <Import Project="..\Common.NetStandard_2_0.proj" />
-
   <ItemGroup>
     <PackageReference Include="Corvus.Configuration.TestEnvironment" Version="0.4.0" />
     <PackageReference Include="Corvus.SpecFlow.Extensions" Version="0.6.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="SpecFlow" Version="3.1.80" />
+    <PackageReference Include="SpecFlow" Version="3.1.86" />
+    <PackageReference Include="Endjin.RecommendedPractices" Version="0.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

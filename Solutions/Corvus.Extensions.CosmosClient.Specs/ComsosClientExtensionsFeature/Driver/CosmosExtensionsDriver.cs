@@ -1,4 +1,8 @@
-﻿namespace Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature.Driver
+﻿// <copyright file="CosmosExtensionsDriver.cs" company="Endjin Limited">
+// Copyright (c) Endjin Limited. All rights reserved.
+// </copyright>
+
+namespace Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature.Driver
 {
     using System;
     using System.Collections.Generic;
@@ -26,19 +30,22 @@
         /// <summary>
         /// Create a container against a database.
         /// </summary>
+        /// <param name="partitionKeyPath">The partition key path to use when creating the container.</param>
         /// <param name="databaseContext">The context from which to get the <see cref="Database"/>.</param>
         /// <param name="containerContext">The context into which to store the <see cref="Container"/>, or null if you do not need to store it.</param>
         /// <param name="containerKey">The key at which to store the <see cref="Container"/>, or null if you do not need to store it.</param>
-        /// <returns></returns>
+        /// <returns>A task that completes when the container has been created.</returns>
         internal static async Task<Container> CreateContainer(string partitionKeyPath, SpecFlowContext databaseContext, ScenarioContext containerContext = null, string containerKey = null)
         {
             Database database = databaseContext.Get<Database>(CosmosDbContextKeys.CosmosDbDatabase);
-            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath);
+            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath).ConfigureAwait(false);
+
             if (containerContext != null && containerKey != null)
             {
                 containerContext.Set(container, containerKey);
                 CosmosDbContextBindings.AddScenarioLevelCosmosDbContainerForCleanup(containerContext, container);
             }
+
             return container;
         }
 
@@ -61,7 +68,7 @@
         /// <param name="containerContext">The context from which to get the Cosmos Container.</param>
         /// <param name="containerKey">The key in the context with which to get the Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
-        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
+        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
         /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
         /// <returns>The people found when iterating the query.</returns>
@@ -77,7 +84,7 @@
         /// <param name="queryText">The query text.</param>
         /// <param name="container">The Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
-        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
+        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
         /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
         /// <returns>The people found when iterating the query.</returns>
@@ -98,7 +105,7 @@
         /// <param name="containerContext">The context from which to get the Cosmos Container.</param>
         /// <param name="containerKey">The key in the context with which to get the Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
-        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
+        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
         /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
         /// <returns>The people found when iterating the query.</returns>
@@ -114,7 +121,7 @@
         /// <param name="queryText">The query text.</param>
         /// <param name="container">The Cosmos Container.</param>
         /// <param name="scenarioContext">The scenario context in which to set the results (or null if the results do not need to be set).</param>
-        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set)</param>
+        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set).</param>
         /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
         /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
         /// <returns>The people found when iterating the query.</returns>
@@ -122,7 +129,15 @@
         {
             QueryRequestOptions requestOptions = batchSize.HasValue ? new QueryRequestOptions { MaxItemCount = batchSize } : null;
             var results = new List<T>();
-            await container.ForEachAsync<T>(queryText, t => { results.Add(t); return Task.CompletedTask; }, requestOptions, maxBatchCount).ConfigureAwait(false);
+            await container.ForEachAsync<T>(
+                queryText,
+                t =>
+                {
+                    results.Add(t);
+                    return Task.CompletedTask;
+                },
+                requestOptions,
+                maxBatchCount).ConfigureAwait(false);
             scenarioContext.Set(results, resultsKey);
             return results;
         }
