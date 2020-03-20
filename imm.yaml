@@ -31,15 +31,15 @@
     Id: 64ed80dc-d354-45a9-9a56-c32437306afa
     Measures:
         -
-            Score: 1
-            Description: 'Good quality'
+            Score: 0
+            Description: None
 -
     Name: 'Reference Documentation'
     Id: 2a7fc206-d578-41b0-85f6-a28b6b0fec5f
     Measures:
         -
-            Score: 0
-            Description: None
+            Score: 1
+            Description: 'Good quality'
 -
     Name: 'Design & Implementation Documentation'
     Id: f026d5a2-ce1a-4e04-af15-5a35792b164b
