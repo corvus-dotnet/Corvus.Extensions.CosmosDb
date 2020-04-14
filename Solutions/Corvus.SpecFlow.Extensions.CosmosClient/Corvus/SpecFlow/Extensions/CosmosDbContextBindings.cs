@@ -36,7 +36,7 @@ namespace Corvus.SpecFlow.Extensions
         public static void AddFeatureLevelCosmosDbContainerForCleanup(
             FeatureContext featureContext,
             Container container,
-            Database database = null)
+            Database? database = null)
         {
             AddCosmosDbContainerForCleanup(featureContext, container, database);
         }
@@ -51,7 +51,7 @@ namespace Corvus.SpecFlow.Extensions
         public static void AddScenarioLevelCosmosDbContainerForCleanup(
             ScenarioContext scenarioContext,
             Container container,
-            Database database = null)
+            Database? database = null)
         {
             AddCosmosDbContainerForCleanup(scenarioContext, container, database);
         }
@@ -70,6 +70,12 @@ namespace Corvus.SpecFlow.Extensions
             IConfigurationRoot configRoot = serviceProvider.GetRequiredService<IConfigurationRoot>();
 
             CosmosDbSettings settings = configRoot.Get<CosmosDbSettings>();
+
+            if (settings.CosmosDbKeySecretName == null)
+            {
+                throw new NullReferenceException("CosmosDbKeySecretName must be set in config.");
+            }
+
             string keyVaultName = configRoot["KeyVaultName"];
 
             string secret = await SecretHelper.GetSecretFromConfigurationOrKeyVaultAsync(
@@ -116,6 +122,11 @@ namespace Corvus.SpecFlow.Extensions
         public static async Task SetupCosmosDbDatabaseForFeature(FeatureContext featureContext)
         {
             CosmosDbSettings settings = featureContext.Get<CosmosDbSettings>();
+
+            if (settings.CosmosDbAccountUri == null)
+            {
+                throw new NullReferenceException("CosmosDbAccountUri must be set in config.");
+            }
 
             ICosmosClientBuilderFactory clientBuilderFactory = ContainerBindings.GetServiceProvider(featureContext).GetService<ICosmosClientBuilderFactory>();
 
@@ -265,7 +276,7 @@ namespace Corvus.SpecFlow.Extensions
         private static void AddCosmosDbContainerForCleanup(
             SpecFlowContext context,
             Container container,
-            Database database = null)
+            Database? database = null)
         {
             if (!context.ContainsKey(CosmosDbContainersToDelete))
             {

@@ -42,8 +42,8 @@ namespace Corvus.SpecFlow.Extensions
         /// <param name="graphDatabaseName">The name of the CosmosDB database in which to create graph collections.</param>
         public static void AddNonSharedThroughputCosmosDbTestServices(
             this IServiceCollection serviceCollection,
-            string sqlDatabaseName = null,
-            string graphDatabaseName = null)
+            string? sqlDatabaseName = null,
+            string? graphDatabaseName = null)
         {
             AddStandardServices(serviceCollection);
 
@@ -62,9 +62,9 @@ namespace Corvus.SpecFlow.Extensions
 
         private static IConfigurationRoot AddConfiguration(
             IServiceCollection serviceCollection,
-            string cosmosDbDatabaseName,
-            string cosmosDbGraphDatabaseName,
-            string partitionKeyPath)
+            string? cosmosDbDatabaseName,
+            string? cosmosDbGraphDatabaseName,
+            string? partitionKeyPath)
         {
             const string CosmosDbLocalEmulatorWellKnownKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
 
@@ -79,7 +79,7 @@ namespace Corvus.SpecFlow.Extensions
             // against a real CosmosDB instance up in Azure to repro a problem.
             // Typically this will set the CosmosDbAccountUri and CosmosDbKeySecretName. Generally
             // the other settings can remain the same.
-            var fallbackSettings = new Dictionary<string, string>
+            var fallbackSettings = new Dictionary<string, string?>
                 {
                     { "CosmosDbAccountUri", "https://localhost:8081/" },
                     { "CosmosDbKeySecretName", "SecretForLocalEmulator" },
