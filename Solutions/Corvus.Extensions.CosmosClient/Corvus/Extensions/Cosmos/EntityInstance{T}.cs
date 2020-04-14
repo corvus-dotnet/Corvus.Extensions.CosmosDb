@@ -16,14 +16,8 @@ namespace Corvus.Extensions.Cosmos
     /// <remarks>This provides a serializable version of the response which decorates the entity with an <see cref="ETag"/>.</remarks>
     [JsonConverter(typeof(EntityInstanceJsonConverter))]
     public sealed class EntityInstance<T> : IEquatable<IEntityInstance<T>>, IEntityInstance<T>
+        where T : class
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EntityInstance{T}"/> class.
-        /// </summary>
-        public EntityInstance()
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityInstance{T}"/> struct.
         /// </summary>
