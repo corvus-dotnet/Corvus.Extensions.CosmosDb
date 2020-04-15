@@ -84,10 +84,7 @@ namespace Corvus.Extensions.Cosmos
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            int hashCode = -279769478;
-            hashCode = (hashCode * -1521134295) + (this.ETag == null ? 0 : EqualityComparer<string>.Default.GetHashCode(this.ETag));
-            hashCode = (hashCode * -1521134295) + EqualityComparer<T>.Default.GetHashCode(this.Entity);
-            return hashCode;
+            return HashCode.Combine(this.ETag, this.Entity);
         }
     }
 }

@@ -40,11 +40,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.Common
 
         public override int GetHashCode()
         {
-            int hashCode = -605153749;
-            hashCode = (hashCode * -1521134295) + (this.Name == null ? 0 : EqualityComparer<string>.Default.GetHashCode(this.Name));
-            hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(this.Id);
-            hashCode = (hashCode * -1521134295) + (!this.DateOfBirth.HasValue ? 0 : EqualityComparer<DateTimeOffset>.Default.GetHashCode(this.DateOfBirth.Value));
-            return hashCode;
+            return HashCode.Combine(this.Name, this.Id, this.DateOfBirth);
         }
     }
 }
