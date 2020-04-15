@@ -16,7 +16,6 @@ namespace Corvus.Extensions.Cosmos
     /// <remarks>This provides a serializable version of the response which decorates the entity with an <see cref="ETag"/>.</remarks>
     [JsonConverter(typeof(EntityInstanceJsonConverter))]
     public sealed class EntityInstance<T> : IEquatable<IEntityInstance<T>>, IEntityInstance<T>
-        where T : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityInstance{T}"/> struct.
@@ -40,7 +39,7 @@ namespace Corvus.Extensions.Cosmos
         public T Entity { get; set; }
 
         /// <inheritdoc/>
-        object IEntityInstance.Entity
+        object? IEntityInstance.Entity
         {
             get => this.Entity;
             set => this.Entity = CastTo<T>.From(value);

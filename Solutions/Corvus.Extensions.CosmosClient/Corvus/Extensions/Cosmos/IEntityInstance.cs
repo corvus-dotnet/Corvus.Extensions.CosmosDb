@@ -12,7 +12,7 @@ namespace Corvus.Extensions.Cosmos
         /// <summary>
         /// Gets or sets the entity.
         /// </summary>
-        object Entity { get; set; }
+        object? Entity { get; set; }
 
         /// <summary>
         /// Gets or sets the ETag for the entity.
