@@ -17,7 +17,7 @@ namespace Corvus.Extensions.Cosmos
         /// <summary>
         /// Gets or sets the ETag for the entity.
         /// </summary>
-        string ETag { get; set; }
+        string? ETag { get; set; }
     }
 
     /// <summary>
@@ -25,6 +25,7 @@ namespace Corvus.Extensions.Cosmos
     /// </summary>
     /// <typeparam name="T">The type of the entity.</typeparam>
     public interface IEntityInstance<T> : IEntityInstance
+        where T : notnull
     {
         /// <summary>
         /// Gets or sets the entity of the given type.

@@ -91,7 +91,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature
         [Then(@"the Equals comparison of the EntityInstance called ""(.*)"" with a null object should be ""(.*)""")]
         public void ThenTheEqualsComparisonOfTheEntityInstanceCalledWithANullObjectShouldBe(string leftKey, bool comparison)
         {
-            Assert.AreEqual(comparison, this.ScenarioContext.Get<EntityInstance<Person>>(leftKey).Equals((object)null));
+            Assert.AreEqual(comparison, this.ScenarioContext.Get<EntityInstance<Person>>(leftKey).Equals((object?)null));
         }
     }
 }

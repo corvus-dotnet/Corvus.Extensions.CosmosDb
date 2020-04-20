@@ -13,7 +13,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.Common.Driver
         /// </summary>
         /// <param name="nullableString">The string value, or the string <c>null</c> for null.</param>
         /// <returns>A string, or null if the input string contained <c>null</c>.</returns>
-        internal static string GetNullableString(string nullableString)
+        internal static string? GetNullableString(string nullableString)
         {
             return nullableString == "null" ? null : nullableString;
         }

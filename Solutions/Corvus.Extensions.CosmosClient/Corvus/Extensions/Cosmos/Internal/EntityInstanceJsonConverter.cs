@@ -22,7 +22,7 @@ namespace Corvus.Extensions.Cosmos.Internal
         }
 
         /// <inheritdoc/>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader is null)
             {
@@ -42,16 +42,17 @@ namespace Corvus.Extensions.Cosmos.Internal
             var jo = JObject.Load(reader);
 
             string etag = (string)jo["_etag"];
+            object entity = serializer.Deserialize(jo.CreateReader(), objectType.GetGenericArguments()[0]);
 
-            object instance = Activator.CreateInstance(objectType);
-            var entityInstance = (IEntityInstance)instance;
-            entityInstance.ETag = etag;
-            entityInstance.Entity = serializer.Deserialize(jo.CreateReader(), objectType.GetGenericArguments()[0]);
+            // We are certain that the object is of type EntityInstance<> at this point
+            // so we can instantiate it using the (Entity, ETag) constructor.
+            object instance = Activator.CreateInstance(objectType, entity, etag);
+
             return instance;
         }
 
         /// <inheritdoc/>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             if (writer is null)
             {
@@ -63,7 +64,11 @@ namespace Corvus.Extensions.Cosmos.Internal
                 throw new ArgumentNullException(nameof(serializer));
             }
 
-            var entityInstance = value as IEntityInstance;
+            if (!(value is IEntityInstance entityInstance))
+            {
+                throw new ArgumentException(ExceptionMessages.ValueIsNotAnIEntityInstance, nameof(value));
+            }
+
             var jobject = JObject.FromObject(entityInstance.Entity, serializer);
             jobject["_etag"] = entityInstance.ETag;
             jobject.WriteTo(writer);

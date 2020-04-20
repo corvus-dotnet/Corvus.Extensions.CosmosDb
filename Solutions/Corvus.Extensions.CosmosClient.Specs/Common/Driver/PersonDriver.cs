@@ -17,14 +17,14 @@ namespace Corvus.Extensions.CosmosClient.Specs.Common.Driver
         /// <param name="context">The scenario context (or null if you do not wish to set the value into the context).</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The example person created.</returns>
-        internal static IList<Person> CreatePeople(Table table, ScenarioContext context = null, string keyToSet = null)
+        internal static IList<Person> CreatePeople(Table table, ScenarioContext? context = null, string? keyToSet = null)
         {
             var people = table.Rows.Select(
                 row => new Person
                 {
                     Id = row["Id"],
                     Name = ValueUtilities.GetNullableString(row["Name"]),
-                    DateOfBirth = ValueUtilities.GetNullableDateTimeOffset(row["DateOfBirth"]).Value,
+                    DateOfBirth = ValueUtilities.GetNullableDateTimeOffset(row["DateOfBirth"]),
                 }).ToList();
 
             if (context != null && keyToSet != null)
@@ -44,14 +44,14 @@ namespace Corvus.Extensions.CosmosClient.Specs.Common.Driver
         /// <param name="context">The scenario context (or null if you do not wish to set the value into the context).</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The example person created.</returns>
-        internal static Person CreatePerson(string id, string name, string dateOfBirth, ScenarioContext context = null, string keyToSet = null)
+        internal static Person CreatePerson(string id, string name, string dateOfBirth, ScenarioContext? context = null, string? keyToSet = null)
         {
             var person =
                 new Person
                 {
                     Id = id,
                     Name = ValueUtilities.GetNullableString(name),
-                    DateOfBirth = ValueUtilities.GetNullableDateTimeOffset(dateOfBirth).Value,
+                    DateOfBirth = ValueUtilities.GetNullableDateTimeOffset(dateOfBirth),
                 };
 
             if (context != null && keyToSet != null)

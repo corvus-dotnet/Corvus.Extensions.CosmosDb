@@ -16,20 +16,14 @@ namespace Corvus.Extensions.Cosmos
     /// <remarks>This provides a serializable version of the response which decorates the entity with an <see cref="ETag"/>.</remarks>
     [JsonConverter(typeof(EntityInstanceJsonConverter))]
     public sealed class EntityInstance<T> : IEquatable<IEntityInstance<T>>, IEntityInstance<T>
+        where T : notnull
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EntityInstance{T}"/> class.
-        /// </summary>
-        public EntityInstance()
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityInstance{T}"/> struct.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <param name="eTag">The etag.</param>
-        public EntityInstance(T entity, string eTag)
+        public EntityInstance(T entity, string? eTag)
         {
             this.Entity = entity;
             this.ETag = eTag;
@@ -38,7 +32,7 @@ namespace Corvus.Extensions.Cosmos
         /// <summary>
         /// Gets or sets the ETag for the instance.
         /// </summary>
-        public string ETag { get; set; }
+        public string? ETag { get; set; }
 
         /// <summary>
         /// Gets or sets the entity.
@@ -76,13 +70,13 @@ namespace Corvus.Extensions.Cosmos
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is IEntityInstance<T> instance && this.Equals(instance);
         }
 
         /// <inheritdoc/>
-        public bool Equals(IEntityInstance<T> other)
+        public bool Equals(IEntityInstance<T>? other)
         {
             return !(other is null) && this.ETag == other.ETag &&
                    EqualityComparer<T>.Default.Equals(this.Entity, other.Entity);
@@ -91,10 +85,7 @@ namespace Corvus.Extensions.Cosmos
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            int hashCode = -279769478;
-            hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(this.ETag);
-            hashCode = (hashCode * -1521134295) + EqualityComparer<T>.Default.GetHashCode(this.Entity);
-            return hashCode;
+            return HashCode.Combine(this.ETag, this.Entity);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
         {
             Assert.AreEqual(expectedId, actualEntityInstance.Entity.Id);
             Assert.AreEqual(ValueUtilities.GetNullableString(expectedName), actualEntityInstance.Entity.Name);
-            Assert.AreEqual(ValueUtilities.GetNullableDateTimeOffset(expectedDateOfBirth).Value, actualEntityInstance.Entity.DateOfBirth);
+            Assert.AreEqual(ValueUtilities.GetNullableDateTimeOffset(expectedDateOfBirth), actualEntityInstance.Entity.DateOfBirth);
             Assert.AreEqual(ValueUtilities.GetNullableString(expectedETag), actualEntityInstance.ETag);
         }
 
@@ -38,7 +38,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
         /// <param name="context">The scenario context.</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The resulting <see cref="EntityInstance{T}"/> for the person.</returns>
-        internal static EntityInstance<Person> CreateEntityInstance(string personKey, string eTag, ScenarioContext context, string keyToSet = null)
+        internal static EntityInstance<Person> CreateEntityInstance(string personKey, string eTag, ScenarioContext context, string? keyToSet = null)
         {
             Person person = context.Get<Person>(personKey);
             return CreateEntityInstance(person, eTag, context, keyToSet);
@@ -52,7 +52,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
         /// <param name="context">The scenario context.</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The resulting <see cref="EntityInstance{T}"/> for the person.</returns>
-        internal static EntityInstance<Person> CreateEntityInstance(Person person, string eTag, ScenarioContext context = null, string keyToSet = null)
+        internal static EntityInstance<Person> CreateEntityInstance(Person person, string eTag, ScenarioContext? context = null, string? keyToSet = null)
         {
             var entityInstance = new EntityInstance<Person>(person, ValueUtilities.GetNullableString(eTag));
 
@@ -72,7 +72,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
         /// <param name="context">The scenario context.</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The serialized <see cref="Person"/>.</returns>
-        internal static string SerializePersonToDocument(string personKey, string eTag, ScenarioContext context, string keyToSet = null)
+        internal static string SerializePersonToDocument(string personKey, string eTag, ScenarioContext context, string? keyToSet = null)
         {
             Person person = context.Get<Person>(personKey);
             return SerializePersonToDocument(person, eTag, context, keyToSet);
@@ -86,7 +86,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
         /// <param name="context">The scenario context (or null if you do not wish to set the value into the context).</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The serialized <see cref="Person"/>.</returns>
-        internal static string SerializePersonToDocument(Person person, string eTag, ScenarioContext context = null, string keyToSet = null)
+        internal static string SerializePersonToDocument(Person person, string eTag, ScenarioContext? context = null, string? keyToSet = null)
         {
             string serializedPerson = JsonConvert.SerializeObject(person);
             var jobject = JObject.Parse(serializedPerson);
@@ -109,7 +109,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
         /// <param name="context">The scenario context.</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The deserialized <see cref="EntityInstance{T}"/>.</returns>
-        internal static EntityInstance<Person> DeserializeEntityInstanceOfPersonFromKey(string documentKey, ScenarioContext context, string keyToSet = null)
+        internal static EntityInstance<Person> DeserializeEntityInstanceOfPersonFromKey(string documentKey, ScenarioContext context, string? keyToSet = null)
         {
             string document = context.Get<string>(documentKey);
             return DeserializeEntityInstanceOfPerson(document, context, keyToSet);
@@ -122,7 +122,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
         /// <param name="context">The scenario context (or null if you do not wish to set the value into the context).</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The deserialized <see cref="EntityInstance{T}"/>.</returns>
-        internal static EntityInstance<Person> DeserializeEntityInstanceOfPerson(string document, ScenarioContext context = null, string keyToSet = null)
+        internal static EntityInstance<Person> DeserializeEntityInstanceOfPerson(string document, ScenarioContext? context = null, string? keyToSet = null)
         {
             EntityInstance<Person> entityInstance = JsonConvert.DeserializeObject<EntityInstance<Person>>(document);
 
@@ -141,7 +141,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
         /// <param name="context">The scenario context.</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The serialized <see cref="EntityInstance{Person}"/>.</returns>
-        internal static string SerializeEntityInstanceToDocument(string entityInstanceKey, ScenarioContext context, string keyToSet = null)
+        internal static string SerializeEntityInstanceToDocument(string entityInstanceKey, ScenarioContext context, string? keyToSet = null)
         {
             EntityInstance<Person> entityInstance = context.Get<EntityInstance<Person>>(entityInstanceKey);
             return SerializeEntityInstanceToDocument(entityInstance, context, keyToSet);
@@ -154,7 +154,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.EntityInstanceFeature.Driver
         /// <param name="context">The scenario context (or null if you do not wish to set the value into the context).</param>
         /// <param name="keyToSet">The key to set in the scenario context (or null if you do not wish to set the value into the context).</param>
         /// <returns>The serialized <see cref="EntityInstance{Person}"/>.</returns>
-        internal static string SerializeEntityInstanceToDocument(EntityInstance<Person> entityInstance, ScenarioContext context = null, string keyToSet = null)
+        internal static string SerializeEntityInstanceToDocument(EntityInstance<Person> entityInstance, ScenarioContext? context = null, string? keyToSet = null)
         {
             string serializedDocument = JsonConvert.SerializeObject(entityInstance);
 
