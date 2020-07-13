@@ -79,13 +79,12 @@ namespace Corvus.SpecFlow.Extensions
             // against a real CosmosDB instance up in Azure to repro a problem.
             // Typically this will set the CosmosDbAccountUri and CosmosDbKeySecretName. Generally
             // the other settings can remain the same.
-            var fallbackSettings = new Dictionary<string, string?>
+            var fallbackSettings = new Dictionary<string, string>
                 {
                     { "CosmosDbAccountUri", "https://localhost:8081/" },
                     { "CosmosDbKeySecretName", "SecretForLocalEmulator" },
                     { "Graph:CosmosDbAccountUri", "https://localhost:8081/" },
                     { "Graph:CosmosDbKeySecretName", "SecretForLocalEmulator" },
-                    { "Graph:CosmosDbDatabaseName", cosmosDbGraphDatabaseName },
                     { "Graph:CosmosDbDefaultOfferThroughput", "400" },
 
                     // Note: the Cosmos DB emulator does not enable Gremlin by default. You can
@@ -96,7 +95,6 @@ namespace Corvus.SpecFlow.Extensions
                     { "Graph:CosmosDbGremlinHost", "localhost" },
                     { "Graph:CosmosDbGremlinPort", "8901" },
                     { "kv:SecretForLocalEmulator", CosmosDbLocalEmulatorWellKnownKey },
-                    { "CosmosDbDatabaseName", cosmosDbDatabaseName },
                     { "CosmosDbDefaultOfferThroughput", "400" },
                 };
 
@@ -106,8 +104,18 @@ namespace Corvus.SpecFlow.Extensions
                 fallbackSettings.Add("CosmosDbUseDatabaseThroughput", "true");
             }
 
+            if (cosmosDbGraphDatabaseName != null)
+            {
+                fallbackSettings.Add("Graph:CosmosDbDatabaseName", cosmosDbGraphDatabaseName);
+            }
+
+            if (cosmosDbDatabaseName != null)
+            {
+                fallbackSettings.Add("CosmosDbDatabaseName", cosmosDbDatabaseName);
+            }
+
             var builder = new ConfigurationBuilder();
-            builder.AddTestConfiguration("local.settings.json", fallbackSettings);
+            builder.AddConfigurationForTest("local.settings.json", fallbackSettings);
             IConfigurationRoot configuration = builder.Build();
             serviceCollection.AddSingleton(configuration);
             return configuration;
