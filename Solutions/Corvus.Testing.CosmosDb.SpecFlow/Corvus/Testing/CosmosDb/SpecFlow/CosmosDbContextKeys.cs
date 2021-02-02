@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.SpecFlow.Extensions
+namespace Corvus.Testing.CosmosDb.SpecFlow
 {
     /// <summary>
     /// Keys used to store items in SpecFlow feature context relating to Cosmos DB tests.

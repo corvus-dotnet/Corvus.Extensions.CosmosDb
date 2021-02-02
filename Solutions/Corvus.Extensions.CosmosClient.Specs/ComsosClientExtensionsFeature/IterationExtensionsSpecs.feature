@@ -1,4 +1,4 @@
-﻿@setupContainer
+﻿@perFeatureContainer
 @setupCosmosDBKeys
 @withSharedDatabase
 Feature: IterationExtensions

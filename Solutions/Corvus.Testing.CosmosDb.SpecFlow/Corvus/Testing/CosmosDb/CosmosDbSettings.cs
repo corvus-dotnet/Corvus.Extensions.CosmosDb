@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.SpecFlow.Extensions
+namespace Corvus.Testing.CosmosDb
 {
     /// <summary>
     /// Settings for CosmosDB databases and collections used in tests.

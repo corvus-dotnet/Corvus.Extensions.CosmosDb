@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.SpecFlow.Extensions
+namespace Corvus.Testing.CosmosDb.SpecFlow
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,8 @@ namespace Corvus.SpecFlow.Extensions
     using System.Threading.Tasks;
     using Corvus.Extensions;
     using Corvus.Extensions.Cosmos;
-    using Corvus.Specflow.Extensions;
+    using Corvus.Testing.SpecFlow;
+
     using Microsoft.Azure.Cosmos;
     using Microsoft.Azure.Cosmos.Fluent;
     using Microsoft.Extensions.Configuration;
