@@ -4,7 +4,8 @@
 
 namespace Corvus.Extensions.Cosmos.Specs.CosmosClientExtensionsFeature.Bindings
 {
-    using Corvus.SpecFlow.Extensions;
+    using Corvus.Testing.SpecFlow;
+    using Corvus.Testing.CosmosDb.Extensions;
     using TechTalk.SpecFlow;
 
     /// <summary>
@@ -18,7 +19,7 @@ namespace Corvus.Extensions.Cosmos.Specs.CosmosClientExtensionsFeature.Bindings
         /// </summary>
         /// <param name="featureContext">The SpecFlow test context.</param>
         /// <remarks>We expect features run in parallel to be executing in separate app domains.</remarks>
-        [BeforeFeature("@setupContainer", Order = ContainerBeforeFeatureOrder.PopulateServiceCollection)]
+        [BeforeFeature("@perFeatureContainer", Order = ContainerBeforeFeatureOrder.PopulateServiceCollection)]
         public static void SetupFeature(FeatureContext featureContext)
         {
             ContainerBindings.ConfigureServices(

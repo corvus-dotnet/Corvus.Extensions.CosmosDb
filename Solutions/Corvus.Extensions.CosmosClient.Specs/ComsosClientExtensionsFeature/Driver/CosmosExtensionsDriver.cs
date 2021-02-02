@@ -9,7 +9,7 @@ namespace Corvus.Extensions.CosmosClient.Specs.ComsosClientExtensionsFeature.Dri
     using System.Threading.Tasks;
     using Corvus.Extensions.Cosmos;
     using Corvus.Extensions.CosmosClient.Specs.Common;
-    using Corvus.SpecFlow.Extensions;
+    using Corvus.Testing.CosmosDb.SpecFlow;
     using Microsoft.Azure.Cosmos;
     using TechTalk.SpecFlow;
 

@@ -2,8 +2,11 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.SpecFlow.Extensions
+namespace Corvus.Testing.CosmosDb.SpecFlow
 {
+    using Corvus.Testing.CosmosDb.Extensions;
+    using Corvus.Testing.SpecFlow;
+
     using TechTalk.SpecFlow;
 
     /// <summary>

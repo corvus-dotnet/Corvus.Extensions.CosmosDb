@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.Specflow.Extensions
+namespace Corvus.Testing
 {
     using System.Threading.Tasks;
 

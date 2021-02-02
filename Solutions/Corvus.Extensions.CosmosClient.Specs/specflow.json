@@ -1,6 +1,6 @@
 {
   "stepAssemblies": [
-    { "assembly": "Corvus.SpecFlow.Extensions" },
-    { "assembly": "Corvus.SpecFlow.Extensions.CosmosClient" }
+    { "assembly": "Corvus.Testing.SpecFlow" },
+    { "assembly": "Corvus.Testing.CosmosDb.SpecFlow" }
   ]
 }

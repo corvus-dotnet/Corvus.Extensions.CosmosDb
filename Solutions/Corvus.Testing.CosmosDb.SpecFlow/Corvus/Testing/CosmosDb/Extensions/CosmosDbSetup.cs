@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.SpecFlow.Extensions
+namespace Corvus.Testing.CosmosDb.Extensions
 {
     using System.Collections.Generic;
     using Corvus.Configuration;
