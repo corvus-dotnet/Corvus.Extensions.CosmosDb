@@ -57,7 +57,7 @@ namespace Corvus.Testing.CosmosDb.Extensions
         private static void AddStandardServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddTestNameProvider();
-            serviceCollection.AddCosmosClientExtensions();
+            serviceCollection.AddCosmosClientBuilder();
         }
 
         private static IConfigurationRoot AddConfiguration(
