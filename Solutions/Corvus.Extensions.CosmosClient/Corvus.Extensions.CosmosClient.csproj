@@ -17,16 +17,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Corvus.Extensions" Version="1.1.3" />
-    <PackageReference Include="Corvus.Extensions.Newtonsoft.Json" Version="2.0.4" />
+    <PackageReference Include="Corvus.Extensions" Version="1.1.4" />
+    <PackageReference Include="Corvus.Extensions.Newtonsoft.Json" Version="2.0.5" />
     <PackageReference Include="Corvus.Retry" Version="1.0.2" />
     <PackageReference Include="Endjin.RecommendedPractices" Version="1.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.18.0" />
-    <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
-    <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.1" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.20.1" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
       <PrivateAssets>all</PrivateAssets>

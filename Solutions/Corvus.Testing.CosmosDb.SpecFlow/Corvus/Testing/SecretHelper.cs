@@ -4,10 +4,12 @@
 
 namespace Corvus.Testing
 {
+    using System;
     using System.Threading.Tasks;
 
-    using Microsoft.Azure.KeyVault;
-    using Microsoft.Azure.Services.AppAuthentication;
+    using Azure;
+    using Azure.Security.KeyVault.Secrets;
+
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -98,15 +100,15 @@ namespace Corvus.Testing
                 throw new System.ArgumentException("message", nameof(keyVaultSecretName));
             }
 
-            var azureServiceTokenProvider = new AzureServiceTokenProvider(configuration["AzureServicesAuthConnectionString"]);
+            string azureServicesAuthConnectionString = configuration["AzureServicesAuthConnectionString"];
+            var keyVaultCredentials = Corvus.Identity.ClientAuthentication.Azure.LegacyAzureServiceTokenProviderConnectionString.ToTokenCredential(azureServicesAuthConnectionString);
 
-            var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+            var keyVaultUri = new Uri($"https://{keyVaultName}.vault.azure.net/");
+            var keyVaultClient = new SecretClient(keyVaultUri, keyVaultCredentials);
 
-            Microsoft.Azure.KeyVault.Models.SecretBundle accountKey = await keyVaultClient
-                                 .GetSecretAsync($"https://{keyVaultName}.vault.azure.net/secrets/{keyVaultSecretName}")
-                                 .ConfigureAwait(false);
+            Response<KeyVaultSecret> accountKeyResponse = await keyVaultClient.GetSecretAsync(keyVaultSecretName).ConfigureAwait(false);
 
-            return accountKey.Value;
+            return accountKeyResponse.Value.Value;
         }
     }
 }
