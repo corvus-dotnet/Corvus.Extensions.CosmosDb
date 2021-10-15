@@ -1,6 +1,6 @@
 # Corvus.Extensions.CosmosDb
-[![Build Status](https://dev.azure.com/endjin-labs/Corvus.Extensions.CosmosDb/_apis/build/status/corvus-dotnet.Corvus.Extensions.CosmosDb?branchName=master)](https://dev.azure.com/endjin-labs/Corvus.Extensions.CosmosDb/_build/latest?definitionId=4&branchName=master)
-[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Extensions.CosmosDb/master/LICENSE)
+[![Build Status](https://dev.azure.com/endjin-labs/Corvus.Extensions.CosmosDb/_apis/build/status/corvus-dotnet.Corvus.Extensions.CosmosDb?branchName=main)](https://dev.azure.com/endjin-labs/Corvus.Extensions.CosmosDb/_build/latest?definitionId=4&branchName=main)
+[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Extensions.CosmosDb/main/LICENSE)
 [![IMM](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Extensions.CosmosDb/total?cache=false)](https://endimmfuncdev.azurewebsites.net/api/imm/github/corvus-dotnet/Corvus.Extensions.CosmosDb/total?cache=false)
 
 This provides useful extensions for Cosmos V3 SDK.
@@ -14,7 +14,7 @@ It is built for netstandard2.0.
 
 ## Licenses
 
-[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Extensions.CosmosDb/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/License-Apache%202-blue.svg)](https://raw.githubusercontent.com/corvus-dotnet/Corvus.Extensions.CosmosDb/main/LICENSE)
 
 Corvus.Extensions.CosmosDb is available under the Apache 2.0 open source license.
 
