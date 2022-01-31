@@ -4,8 +4,8 @@
 
 namespace Corvus.Extensions.Cosmos.Specs.CosmosClientExtensionsFeature.Bindings
 {
-    using Corvus.Testing.SpecFlow;
     using Corvus.Testing.CosmosDb.Extensions;
+    using Corvus.Testing.SpecFlow;
     using TechTalk.SpecFlow;
 
     /// <summary>

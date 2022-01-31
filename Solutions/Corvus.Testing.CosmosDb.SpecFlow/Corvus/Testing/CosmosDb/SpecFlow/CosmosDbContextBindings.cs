@@ -284,7 +284,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
                 context.Set(new List<Container>(), CosmosDbContainersToDelete);
             }
 
-            if (!(database is null))
+            if (database is not null)
             {
                 if (!context.ContainsKey(CosmosDbDatabasesToDelete))
                 {
