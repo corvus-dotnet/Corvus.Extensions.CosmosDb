@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
 
   <PropertyGroup>
@@ -13,22 +13,16 @@
     <PackageDescription></PackageDescription>
     <PackageTags></PackageTags>
     <PackageReleaseNotes></PackageReleaseNotes>
+    <NeutralLanguage>en-GB</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.2.0" />
-    <PackageReference Include="Corvus.Configuration.TestEnvironment" Version="1.2.5" />
-    <PackageReference Include="Corvus.Identity.Azure" Version="3.0.0" />
-    <PackageReference Include="Corvus.Testing.SpecFlow" Version="1.4.7" />
+    <PackageReference Include="Corvus.Retry" Version="1.0.2" />
     <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="[6.0.*,)" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.24.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[6.0.*,)" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Corvus.CosmosClient.NewtonSoft.Json.Extensions\Corvus.CosmosClient.NewtonSoft.Json.Extensions.csproj" />
-  </ItemGroup>
-
 </Project>
