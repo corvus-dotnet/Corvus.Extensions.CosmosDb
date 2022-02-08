@@ -1,7 +1,6 @@
 trigger:
   branches:
     include:
-    - master
     - main
     - feature/*
   tags:
@@ -16,7 +15,7 @@ resources:
       endpoint: corvus-dotnet-github
 
 jobs:
-- template: templates/build.and.release.yml@recommended_practices
+- template: templates/build.and.release.scripted.yml@recommended_practices
   parameters:
     vmImage: 'ubuntu-latest'
     service_connection_nuget_org: $(Endjin_Service_Connection_NuGet_Org)
@@ -34,4 +33,4 @@ jobs:
           ENDJIN_COSMOSDBKEYSECRETNAME: $(Endjin_CosmosDbKeySecretName)
           ENDJIN_KEYVAULTNAME: $(Endjin_KeyVaultName)
           ENDJIN_AZURESERVICESAUTHCONNECTIONSTRING: $(Endjin_AzureServicesAuthConnectionString)
-    netSdkVersion: '3.x'
+    netSdkVersion: '6.x'

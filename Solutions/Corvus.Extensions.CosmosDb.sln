@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{BDC86884-4D8A-4D2F-ADA3-C8C27A2A01BF}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{BDC868
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CosmosDb.Extensions", "CosmosDb.Extensions", "{49894748-0D71-4BA8-A17E-F346E5036130}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Extensions.CosmosClient", "Corvus.Extensions.CosmosClient\Corvus.Extensions.CosmosClient.csproj", "{331E5D3A-8F7A-4E87-94CF-D73A6B327A5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.CosmosClient.Extensions", "Corvus.CosmosClient.Extensions\Corvus.CosmosClient.Extensions.csproj", "{331E5D3A-8F7A-4E87-94CF-D73A6B327A5C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Extensions.CosmosClient.Specs", "Corvus.Extensions.CosmosClient.Specs\Corvus.Extensions.CosmosClient.Specs.csproj", "{1EB1E15D-E243-4BE4-8AF9-7394EEE500BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.CosmosClient.Extensions.Specs", "Corvus.CosmosClient.Extensions.Specs\Corvus.CosmosClient.Extensions.Specs.csproj", "{1EB1E15D-E243-4BE4-8AF9-7394EEE500BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.Testing.CosmosDb.SpecFlow", "Corvus.Testing.CosmosDb.SpecFlow\Corvus.Testing.CosmosDb.SpecFlow.csproj", "{02BA547F-1594-4998-95CB-F2133253A3D0}"
 EndProject
@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.build.targets = Directory.build.targets
 		StyleCop.ruleset = StyleCop.ruleset
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corvus.CosmosClient.NewtonSoft.Json.Extensions", "Corvus.CosmosClient.NewtonSoft.Json.Extensions\Corvus.CosmosClient.NewtonSoft.Json.Extensions.csproj", "{B262321F-65E5-4E34-8AA2-90A96E1C7F5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{02BA547F-1594-4998-95CB-F2133253A3D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02BA547F-1594-4998-95CB-F2133253A3D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02BA547F-1594-4998-95CB-F2133253A3D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B262321F-65E5-4E34-8AA2-90A96E1C7F5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B262321F-65E5-4E34-8AA2-90A96E1C7F5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B262321F-65E5-4E34-8AA2-90A96E1C7F5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B262321F-65E5-4E34-8AA2-90A96E1C7F5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +62,7 @@ Global
 		{331E5D3A-8F7A-4E87-94CF-D73A6B327A5C} = {49894748-0D71-4BA8-A17E-F346E5036130}
 		{1EB1E15D-E243-4BE4-8AF9-7394EEE500BA} = {49894748-0D71-4BA8-A17E-F346E5036130}
 		{02BA547F-1594-4998-95CB-F2133253A3D0} = {49894748-0D71-4BA8-A17E-F346E5036130}
+		{B262321F-65E5-4E34-8AA2-90A96E1C7F5E} = {49894748-0D71-4BA8-A17E-F346E5036130}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2FE6918-F86F-4AAC-BC28-D5141DEB816B}

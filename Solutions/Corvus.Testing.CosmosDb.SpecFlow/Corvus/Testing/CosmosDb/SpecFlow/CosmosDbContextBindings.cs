@@ -8,14 +8,15 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Corvus.Extensions;
-    using Corvus.Extensions.Cosmos;
+
+    using Corvus.CosmosClient;
     using Corvus.Testing.SpecFlow;
 
     using Microsoft.Azure.Cosmos;
     using Microsoft.Azure.Cosmos.Fluent;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+
     using TechTalk.SpecFlow;
 
     /// <summary>
@@ -129,7 +130,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
                 throw new NullReferenceException("CosmosDbAccountUri must be set in config.");
             }
 
-            ICosmosClientBuilderFactory clientBuilderFactory = ContainerBindings.GetServiceProvider(featureContext).GetService<ICosmosClientBuilderFactory>();
+            ICosmosClientBuilderFactory clientBuilderFactory = ContainerBindings.GetServiceProvider(featureContext).GetRequiredService<ICosmosClientBuilderFactory>();
 
             string accountKey = featureContext.Get<string>(CosmosDbContextKeys.AccountKey);
 
