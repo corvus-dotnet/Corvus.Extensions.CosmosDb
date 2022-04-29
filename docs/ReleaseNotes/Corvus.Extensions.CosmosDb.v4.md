@@ -1,5 +1,13 @@
 # Release notes for Corvus.Extensions.CosmosDb v3.
 
+## v4.1
+
+NuGet upgrades:
+
+* `Microsoft.Azure.Cosmos` 3.25.0 -> 3.26.1
+* `Azure.Security.KeyVault.Secrets` 4.2.0 -> 4.3.0
+* `Corvus.Identity.Azure` 3.0.0 -> 3.1.0
+
 ## v4.0
 
 Breaking changes:
