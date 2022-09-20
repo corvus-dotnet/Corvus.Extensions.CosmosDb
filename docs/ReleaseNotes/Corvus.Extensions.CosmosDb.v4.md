@@ -1,4 +1,4 @@
-# Release notes for Corvus.Extensions.CosmosDb v3.
+# Release notes for Corvus.Extensions.CosmosDb v4.
 
 ## v4.1
 

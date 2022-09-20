@@ -55,7 +55,7 @@ namespace Corvus.CosmosClient.Internal
 
                 using var sr = new StreamReader(stream);
                 using var jsonTextReader = new JsonTextReader(sr);
-                return this.serializer.Deserialize<T>(jsonTextReader);
+                return this.serializer.Deserialize<T>(jsonTextReader)!;
             }
         }
 
