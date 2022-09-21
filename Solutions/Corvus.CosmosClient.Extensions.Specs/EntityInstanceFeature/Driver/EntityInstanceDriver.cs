@@ -127,7 +127,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.EntityInstanceFeature.Driver
         /// <returns>The deserialized <see cref="EntityInstance{T}"/>.</returns>
         internal static EntityInstance<Person> DeserializeEntityInstanceOfPerson(string document, ScenarioContext? context = null, string? keyToSet = null)
         {
-            EntityInstance<Person> entityInstance = JsonConvert.DeserializeObject<EntityInstance<Person>>(document);
+            EntityInstance<Person> entityInstance = JsonConvert.DeserializeObject<EntityInstance<Person>>(document)!;
 
             if (context != null && keyToSet != null)
             {

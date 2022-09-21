@@ -36,8 +36,8 @@ namespace Corvus.Extensions.Cosmos.Internal
 
             var jo = JObject.Load(reader);
 
-            string etag = (string)jo["_etag"];
-            object entity = serializer.Deserialize(jo.CreateReader(), objectType.GetGenericArguments()[0]);
+            string etag = (string)jo["_etag"]!;
+            object entity = serializer.Deserialize(jo.CreateReader(), objectType.GetGenericArguments()[0])!;
 
             // We are certain that the object is of type EntityInstance<> at this point
             // so we can instantiate it using the (Entity, ETag) constructor.
