@@ -33,7 +33,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature
         [Given(@"that I create a Cosmos Container called ""([^""]*)""")]
         public Task GivenThatICreateACosmosContainerCalled(string containerKey)
         {
-            return CosmosExtensionsDriver.CreateContainer("/partitionKey", this.FeatureContext, this.ScenarioContext, containerKey);
+            return CosmosExtensionsDriver.CreateContainer("/id", this.FeatureContext, this.ScenarioContext, containerKey);
         }
 
         [Given(@"I add a collection of Person objects called ""([^""]*)"" to the Cosmos Container called ""([^""]*)""")]
