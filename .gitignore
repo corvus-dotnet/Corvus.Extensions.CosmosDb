@@ -337,4 +337,4 @@ coverage.cobertura.xml
 
 # SpecFlow generated feature files
 *.feature.cs
-/Solutions/Corvus.CosmosClient.Extensions.Specs/local.settings.json
+local.settings.json
