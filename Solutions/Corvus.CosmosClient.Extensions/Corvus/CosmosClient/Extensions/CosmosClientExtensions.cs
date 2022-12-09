@@ -86,8 +86,6 @@ namespace Corvus.CosmosClient.Extensions
             {
                 while (iterator.HasMoreResults && (!maxBatchCount.HasValue || batchCount < maxBatchCount.Value))
                 {
-                    batchCount++;
-
                     FeedResponse<T> response = await Retriable.RetryAsync(
                         () => iterator.ReadNextAsync(cancellationToken),
                         CancellationToken.None,
@@ -98,10 +96,17 @@ namespace Corvus.CosmosClient.Extensions
 
                     previousContinuationToken = responseContinuationToken;
                     responseContinuationToken = response.ContinuationToken;
+                    bool batchHadAtLeastOneItem = false;
                     foreach (T item in response)
                     {
+                        batchHadAtLeastOneItem = true;
                         action(item);
                         cancellationToken.ThrowIfCancellationRequested();
+                    }
+
+                    if (batchHadAtLeastOneItem)
+                    {
+                        batchCount++;
                     }
                 }
             }
@@ -184,8 +189,6 @@ namespace Corvus.CosmosClient.Extensions
             {
                 while (iterator.HasMoreResults && (!maxBatchCount.HasValue || batchCount < maxBatchCount.Value))
                 {
-                    batchCount++;
-
                     FeedResponse<T> response = await Retriable.RetryAsync(
                         () => iterator.ReadNextAsync(cancellationToken),
                         CancellationToken.None,
@@ -196,10 +199,17 @@ namespace Corvus.CosmosClient.Extensions
 
                     previousContinuationToken = responseContinuationToken;
                     responseContinuationToken = response.ContinuationToken;
+                    bool batchHadAtLeastOneItem = false;
                     foreach (T item in response)
                     {
+                        batchHadAtLeastOneItem = true;
                         await actionAsync(item).ConfigureAwait(false);
                         cancellationToken.ThrowIfCancellationRequested();
+                    }
+
+                    if (batchHadAtLeastOneItem)
+                    {
+                        batchCount++;
                     }
                 }
             }
