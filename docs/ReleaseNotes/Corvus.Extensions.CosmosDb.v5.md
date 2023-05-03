@@ -1,5 +1,11 @@
 # Release notes for Corvus.Extensions.CosmosDb v5.
 
+## v5.2
+
+* `Microsoft.Azure.Cosmos` 3.31 -> 3.33
+* `Corvus.Identity.Azure` 3.2 -> 3.3
+* `Azure.Security.KeyVault.Secrets` 4.4 -> 4.5
+
 ## v5.1
 
 * `Microsoft.Azure.Cosmos` 3.30 -> 3.31
