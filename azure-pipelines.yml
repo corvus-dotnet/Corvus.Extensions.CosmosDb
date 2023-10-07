@@ -33,4 +33,7 @@ jobs:
           ENDJIN_COSMOSDBKEYSECRETNAME: $(Endjin_CosmosDbKeySecretName)
           ENDJIN_KEYVAULTNAME: $(Endjin_KeyVaultName)
           ENDJIN_AZURESERVICESAUTHCONNECTIONSTRING: $(Endjin_AzureServicesAuthConnectionString)
-    netSdkVersion: '6.x'
+    additionalNetSdkVersions:
+    - '8.x'
+    includeNetSdkPreviewVersions: 'true'
+    compileTasksServiceConnection: endjin-acr-reader
