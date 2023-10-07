@@ -12,13 +12,6 @@ using Microsoft.Azure.Cosmos.Fluent;
 /// <summary>
 /// Creates instances of a <see cref="CosmosClient"/>.
 /// </summary>
-/// <remarks>
-/// TODO: is this the right project for this? I don't like the way anything just wanting this factory interface
-/// ends up dragging in Corvus.Retry because it happens to share a library with a bunch of ForEachAsync extension
-/// methods for Container.
-/// Should this just be in a library called Corvus.CosmosClient? (And Corvus.CosmosClient.NewtonSoft.Json.Extensions
-/// should just be Corvus.CosmosClient.NewtonSoft.Json, since it has no extension methods.)
-/// </remarks>
 public interface ICosmosClientBuilderFactory
 {
     /// <summary>

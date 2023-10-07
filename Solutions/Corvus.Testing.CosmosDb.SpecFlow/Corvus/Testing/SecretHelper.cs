@@ -16,8 +16,8 @@ namespace Corvus.Testing
     ///     Helper methods for obtaining secrets.
     /// </summary>
     /// <remarks>
-    /// We need this as different tenants may be configured to use different keyvaults (in a BYO scenario).
-    /// Therefore we cannot simply configure the keyvault fallback for configuration.
+    /// We need this as different tenants may be configured to use different KeyVaults (in a BYO scenario).
+    /// Therefore we cannot simply configure the KeyVault fallback for configuration.
     /// </remarks>
     internal static class SecretHelper
     {
@@ -41,25 +41,28 @@ namespace Corvus.Testing
         /// </returns>
         internal static async Task<string> GetSecretFromConfigurationOrKeyVaultAsync(
             IConfiguration configuration,
-            string configurationKey,
-            string keyVaultName,
-            string keyVaultSecretName)
+            string? configurationKey,
+            string? keyVaultName,
+            string? keyVaultSecretName)
         {
-            if (configuration is null)
-            {
-                throw new System.ArgumentNullException(nameof(configuration));
-            }
+            ArgumentNullException.ThrowIfNull(configuration);
+            ArgumentException.ThrowIfNullOrEmpty(configurationKey);
 
-            if (string.IsNullOrEmpty(configurationKey))
-            {
-                throw new System.ArgumentException("message", nameof(configurationKey));
-            }
-
-            string secret = configuration[configurationKey];
+            string? secret = configuration[configurationKey];
 
             if (string.IsNullOrEmpty(secret))
             {
-                secret = await GetSecretFromKeyVaultAsync(configuration, keyVaultName, keyVaultSecretName).ConfigureAwait(false);
+                if (keyVaultName is not string kvn)
+                {
+                    throw new InvalidOperationException("Either the configuration must contain the secret, or the key vault name and the key vault secret name must be specified.");
+                }
+
+                if (keyVaultSecretName is not string kvsn)
+                {
+                    throw new InvalidOperationException("Either the configuration must contain the secret, or the key vault name and the key vault secret name must be specified.");
+                }
+
+                secret = await GetSecretFromKeyVaultAsync(configuration, kvn, kvsn).ConfigureAwait(false);
             }
 
             return secret;
@@ -85,22 +88,17 @@ namespace Corvus.Testing
             string keyVaultName,
             string keyVaultSecretName)
         {
-            if (configuration is null)
+            ArgumentNullException.ThrowIfNull(configuration);
+            ArgumentException.ThrowIfNullOrEmpty(keyVaultName);
+            ArgumentException.ThrowIfNullOrEmpty(keyVaultSecretName);
+
+            string? azureServicesAuthConnectionString = configuration["AzureServicesAuthConnectionString"];
+
+            if (string.IsNullOrEmpty(azureServicesAuthConnectionString))
             {
-                throw new System.ArgumentNullException(nameof(configuration));
+                throw new InvalidOperationException("The 'AzureServicesAuthConnectionString' must be provided in the configuration to use KeyVault secrets");
             }
 
-            if (string.IsNullOrEmpty(keyVaultName))
-            {
-                throw new System.ArgumentException("message", nameof(keyVaultName));
-            }
-
-            if (string.IsNullOrEmpty(keyVaultSecretName))
-            {
-                throw new System.ArgumentException("message", nameof(keyVaultSecretName));
-            }
-
-            string azureServicesAuthConnectionString = configuration["AzureServicesAuthConnectionString"];
             var keyVaultCredentials = Corvus.Identity.ClientAuthentication.Azure.LegacyAzureServiceTokenProviderConnectionString.ToTokenCredential(azureServicesAuthConnectionString);
 
             var keyVaultUri = new Uri($"https://{keyVaultName}.vault.azure.net/");

@@ -71,14 +71,14 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
             IServiceProvider serviceProvider = ContainerBindings.GetServiceProvider(featureContext);
             IConfigurationRoot configRoot = serviceProvider.GetRequiredService<IConfigurationRoot>();
 
-            CosmosDbSettings settings = configRoot.Get<CosmosDbSettings>();
+            CosmosDbSettings? settings = configRoot.Get<CosmosDbSettings>();
 
-            if (settings.CosmosDbKeySecretName == null)
+            if (settings?.CosmosDbKeySecretName == null)
             {
                 throw new NullReferenceException("CosmosDbKeySecretName must be set in config.");
             }
 
-            string keyVaultName = configRoot["KeyVaultName"];
+            string? keyVaultName = configRoot["KeyVaultName"];
 
             string secret = await SecretHelper.GetSecretFromConfigurationOrKeyVaultAsync(
                 configRoot,
@@ -86,7 +86,13 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
                 keyVaultName,
                 settings.CosmosDbKeySecretName).ConfigureAwait(false);
 
-            string partitionKeyPath = configRoot["CosmosDbPartitionKeyPath"];
+            string? partitionKeyPath = configRoot["CosmosDbPartitionKeyPath"];
+
+            if (partitionKeyPath is null)
+            {
+                throw new NullReferenceException("CosmosDbPartitionKeyPath must be set in config.");
+            }
+
             featureContext.Set(partitionKeyPath, CosmosDbContextKeys.PartitionKeyPath);
             featureContext.Set(settings);
             featureContext.Set(secret, CosmosDbContextKeys.AccountKey);
@@ -216,7 +222,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
         }
 
         /// <summary>
-        /// Tear down the cosmos DB datbase for the sceanario.
+        /// Tear down the cosmos DB database for the scenario.
         /// </summary>
         /// <param name="scenarioContext">The scenario context.</param>
         /// <returns>A <see cref="Task"/> which completes once the operation has completed.</returns>

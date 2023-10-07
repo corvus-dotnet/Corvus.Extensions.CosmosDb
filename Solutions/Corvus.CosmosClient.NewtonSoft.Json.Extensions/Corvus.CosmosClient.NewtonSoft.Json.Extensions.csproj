@@ -3,7 +3,7 @@
   <Import Project="$(EndjinProjectPropsPath)" Condition="$(EndjinProjectPropsPath) != ''" />
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Corvus.CosmosClient.Extensions\Corvus.CosmosClient.Extensions.csproj" />
+    <ProjectReference Include="..\Corvus.CosmosClient\Corvus.CosmosClient.csproj" />
   </ItemGroup>
 
 </Project>
