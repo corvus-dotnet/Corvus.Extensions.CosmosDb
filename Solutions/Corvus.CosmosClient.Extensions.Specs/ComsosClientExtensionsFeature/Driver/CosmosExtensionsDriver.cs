@@ -40,8 +40,17 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
         /// <returns>A task that completes when the container has been created.</returns>
         internal static async Task<Container> CreateContainer(string partitionKeyPath, SpecFlowContext databaseContext, ScenarioContext? containerContext = null, string? containerKey = null)
         {
+            int? defaultTtl = null;
+            if (databaseContext.TryGetValue(CosmosDbContextKeys.ContainerTimeToLive, out string defaultTtlString))
+            {
+                if (int.TryParse(defaultTtlString, out int parsedDefaultTtl))
+                {
+                    defaultTtl = parsedDefaultTtl;
+                }
+            }
+
             Database database = databaseContext.Get<Database>(CosmosDbContextKeys.CosmosDbDatabase);
-            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath).ConfigureAwait(false);
+            Container container = await database.CreateContainerIfNotExistsAsync(BuildContainerProperties("client-" + Guid.NewGuid(), partitionKeyPath, defaultTtl)).ConfigureAwait(false);
 
             if (containerContext != null && containerKey != null)
             {
@@ -146,6 +155,18 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
                 maxBatchCount).ConfigureAwait(false);
             scenarioContext.Set(results, resultsKey);
             return results;
+        }
+
+        private static ContainerProperties BuildContainerProperties(string id, string partitionKeyPath, int? ttl)
+        {
+            // We support hierarchical partition keys if the path contains multiple elements delimited by a semicolon.
+            string[] paths = partitionKeyPath.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (paths.Length > 0)
+            {
+                return new ContainerProperties { Id = id, PartitionKeyPaths = paths, DefaultTimeToLive = ttl };
+            }
+
+            return new ContainerProperties { Id = id, PartitionKeyPath = paths[0] };
         }
 
         private static Container GetCosmosContainer(SpecFlowContext containerContext, string containerKey = CosmosDbContextKeys.CosmosDbContainer)
