@@ -267,7 +267,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
         {
             // We support hierarchical partition keys if the path contains multiple elements delimited by a semicolon.
             string[] paths = partitionKeyPath.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            if (paths.Length > 0)
+            if (paths.Length > 1)
             {
                 return new ContainerProperties { Id = id, PartitionKeyPaths = paths, DefaultTimeToLive = ttl };
             }

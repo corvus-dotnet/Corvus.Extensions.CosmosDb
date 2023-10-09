@@ -41,6 +41,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="ComsosClientExtensionsFeature\IterationExtensionsSpecs - Copy.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Corvus.Configuration.TestEnvironment" Version="1.2.6" />
     <PackageReference Include="Corvus.Testing.SpecFlow.NUnit" Version="2.0.1" />
     <PackageReference Include="Endjin.RecommendedPractices.GitHub" Version="2.1.6">
@@ -53,8 +57,29 @@
     <ProjectReference Include="..\Corvus.Testing.CosmosDb.SpecFlow\Corvus.Testing.CosmosDb.SpecFlow.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="ComsosClientExtensionsFeature\IterationExtensionsSpecsWithHierarchicalPKAndFeedRange.feature.cs">
+      <Visible>true</Visible>
+      <DependentUpon>IterationExtensionsSpecsWithHierarchicalPKAndFeedRange.feature</DependentUpon>
+      <DesignTime>true</DesignTime>
+      <AutoGen>true</AutoGen>
+    </Compile>
+    <Compile Update="ComsosClientExtensionsFeature\IterationExtensionsSpecsWithHierarchicalPK.feature.cs">
+      <DependentUpon>IterationExtensionsSpecsWithHierarchicalPK.feature</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <None Update="specflow.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <SpecFlowFeatureFiles Update="ComsosClientExtensionsFeature\IterationExtensionsSpecsWithHierarchicalPKAndFeedRange.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="ComsosClientExtensionsFeature\IterationExtensionsSpecsWithHierarchicalPK.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 </Project>

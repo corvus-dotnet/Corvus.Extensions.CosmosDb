@@ -26,9 +26,10 @@ namespace Corvus.CosmosClient.Extensions
         /// <param name="requestOptions">Request options for the query.</param>
         /// <param name="maxBatchCount">The maximum number of batches to process.</param>
         /// <param name="continuationToken">The continuation token from which to resume processing.</param>
+        /// <param name="feedRange">The feed range over which to execute the iterator.</param>
         /// <param name="cancellationToken">A cancellation token to terminate the option early.</param>
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
-        public static Task<string?> ForEachAsync<T>(this Container container, string queryText, Action<T> action, QueryRequestOptions? requestOptions = null, int? maxBatchCount = null, string? continuationToken = null, CancellationToken cancellationToken = default)
+        public static Task<string?> ForEachAsync<T>(this Container container, string queryText, Action<T> action, QueryRequestOptions? requestOptions = null, int? maxBatchCount = null, string? continuationToken = null, FeedRange? feedRange = null, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(container);
 
@@ -36,7 +37,7 @@ namespace Corvus.CosmosClient.Extensions
 
             ArgumentNullException.ThrowIfNull(action);
 
-            return ForEachAsync(container, new QueryDefinition(queryText), action, requestOptions, maxBatchCount, continuationToken, cancellationToken);
+            return ForEachAsync(container, new QueryDefinition(queryText), action, requestOptions, maxBatchCount, continuationToken, feedRange, cancellationToken);
         }
 
         /// <summary>
@@ -49,9 +50,10 @@ namespace Corvus.CosmosClient.Extensions
         /// <param name="requestOptions">Request options for the query.</param>
         /// <param name="maxBatchCount">The maximum number of batches to process.</param>
         /// <param name="continuationToken">The continuation token from which to resume processing.</param>
+        /// <param name="feedRange">The feed range over which to execute the iterator.</param>
         /// <param name="cancellationToken">A cancellation token to terminate the option early.</param>
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
-        public static async Task<string?> ForEachAsync<T>(this Container container, QueryDefinition queryDefinition, Action<T> action, QueryRequestOptions? requestOptions = null, int? maxBatchCount = null, string? continuationToken = null, CancellationToken cancellationToken = default)
+        public static async Task<string?> ForEachAsync<T>(this Container container, QueryDefinition queryDefinition, Action<T> action, QueryRequestOptions? requestOptions = null, int? maxBatchCount = null, string? continuationToken = null, FeedRange? feedRange = null, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(container);
 
@@ -59,7 +61,10 @@ namespace Corvus.CosmosClient.Extensions
 
             ArgumentNullException.ThrowIfNull(action);
 
-            FeedIterator<T> iterator = container.GetItemQueryIterator<T>(queryDefinition, continuationToken, requestOptions);
+            FeedIterator<T> iterator =
+                feedRange is FeedRange fr ?
+                    container.GetItemQueryIterator<T>(fr, queryDefinition, continuationToken, requestOptions) :
+                    container.GetItemQueryIterator<T>(queryDefinition, continuationToken, requestOptions);
 
             int batchCount = 0;
             string? previousContinuationToken = null;
@@ -111,9 +116,10 @@ namespace Corvus.CosmosClient.Extensions
         /// <param name="requestOptions">Request options for the query.</param>
         /// <param name="maxBatchCount">The maximum number of batches to process.</param>
         /// <param name="continuationToken">The continuation token from which to resume processing.</param>
+        /// <param name="feedRange">The feed range over which to execute the iterator.</param>
         /// <param name="cancellationToken">A cancellation token to terminate the option early.</param>
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
-        public static Task<string?> ForEachAsync<T>(this Container container, string queryText, Func<T, Task> actionAsync, QueryRequestOptions? requestOptions = null, int? maxBatchCount = null, string? continuationToken = null, CancellationToken cancellationToken = default)
+        public static Task<string?> ForEachAsync<T>(this Container container, string queryText, Func<T, Task> actionAsync, QueryRequestOptions? requestOptions = null, int? maxBatchCount = null, string? continuationToken = null, FeedRange? feedRange = null, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(container);
 
@@ -121,7 +127,7 @@ namespace Corvus.CosmosClient.Extensions
 
             ArgumentNullException.ThrowIfNull(actionAsync);
 
-            return ForEachAsync(container, new QueryDefinition(queryText), actionAsync, requestOptions, maxBatchCount, continuationToken, cancellationToken);
+            return ForEachAsync(container, new QueryDefinition(queryText), actionAsync, requestOptions, maxBatchCount, continuationToken, feedRange, cancellationToken);
         }
 
         /// <summary>
@@ -134,9 +140,10 @@ namespace Corvus.CosmosClient.Extensions
         /// <param name="requestOptions">Request options for the query.</param>
         /// <param name="maxBatchCount">The maximum number of batches to process.</param>
         /// <param name="continuationToken">The continuation token from which to resume processing.</param>
+        /// <param name="feedRange">The feed range over which to execute the iterator.</param>
         /// <param name="cancellationToken">A cancellation token to terminate the option early.</param>
         /// <returns>A <see cref="Task"/> which provides a continuation token if it terminates before .</returns>
-        public static async Task<string?> ForEachAsync<T>(this Container container, QueryDefinition queryDefinition, Func<T, Task> actionAsync, QueryRequestOptions? requestOptions = null, int? maxBatchCount = null, string? continuationToken = null, CancellationToken cancellationToken = default)
+        public static async Task<string?> ForEachAsync<T>(this Container container, QueryDefinition queryDefinition, Func<T, Task> actionAsync, QueryRequestOptions? requestOptions = null, int? maxBatchCount = null, string? continuationToken = null, FeedRange? feedRange = null, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(container);
 
@@ -144,7 +151,9 @@ namespace Corvus.CosmosClient.Extensions
 
             ArgumentNullException.ThrowIfNull(actionAsync);
 
-            FeedIterator<T> iterator = container.GetItemQueryIterator<T>(queryDefinition, continuationToken, requestOptions);
+            FeedIterator<T> iterator = feedRange is FeedRange fr ?
+                container.GetItemQueryIterator<T>(fr, queryDefinition, continuationToken, requestOptions) :
+                container.GetItemQueryIterator<T>(queryDefinition, continuationToken, requestOptions);
 
             int batchCount = 0;
             string? previousContinuationToken = null;

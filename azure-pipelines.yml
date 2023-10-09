@@ -34,6 +34,7 @@ jobs:
           ENDJIN_KEYVAULTNAME: $(Endjin_KeyVaultName)
           ENDJIN_AZURESERVICESAUTHCONNECTIONSTRING: $(Endjin_AzureServicesAuthConnectionString)
     additionalNetSdkVersions:
+    - '6.x'
     - '8.x'
     includeNetSdkPreviewVersions: 'true'
     compileTasksServiceConnection: endjin-acr-reader
