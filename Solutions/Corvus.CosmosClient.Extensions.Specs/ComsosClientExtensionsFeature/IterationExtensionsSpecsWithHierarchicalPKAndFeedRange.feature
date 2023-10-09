@@ -17,7 +17,7 @@ Scenario: Iterate a collection with a synchronous action.
 		| 4     | 0f06465c-5639-47e2-906e-09c208360e37 | 6ED54E7C-D39C-4A2D-8781-91D15EC047F1 | Darrell | 1933-08-14  |
 		| 5     | 0f06465c-5639-47e2-906e-09c208360e37 | EB7DF71C-762E-49D9-BC32-95C608EDE208 | Sally   | 1932-04-09  |
 		| 6     | 0f06465c-5639-47e2-906e-09c208360e37 | DC62035F-039D-40EE-8307-BD77CE6FEC67 | Alicia  | 1933-06-12  |
-	When I iterate the query "SELECT * FROM People p WHERE p.Tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a synchronous action and store the Person objects seen in "PersonItemsSeen"
+	When I iterate the query "SELECT * FROM People p WHERE p.tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a synchronous action and store the Person objects seen in "PersonItemsSeen"
 	Then the Person collection "PersonItemsSeen" should contain the following items from the Person collection "People"
 		| Index |
 		| 4     |
@@ -34,7 +34,7 @@ Scenario: Iterate a collection with a synchronous action and a batch size of 1
 		| 4     | 0f06465c-5639-47e2-906e-09c208360e37 | 6ED54E7C-D39C-4A2D-8781-91D15EC047F1 | Darrell | 1933-08-14  |
 		| 5     | 0f06465c-5639-47e2-906e-09c208360e37 | EB7DF71C-762E-49D9-BC32-95C608EDE208 | Sally   | 1932-04-09  |
 		| 6     | 0f06465c-5639-47e2-906e-09c208360e37 | DC62035F-039D-40EE-8307-BD77CE6FEC67 | Alicia  | 1933-06-12  |
-	When I iterate the query "SELECT * FROM People p WHERE p.Tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a batch size of "1" and a synchronous action and store the Person objects seen in "PersonItemsSeen"
+	When I iterate the query "SELECT * FROM People p WHERE p.tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a batch size of "1" and a synchronous action and store the Person objects seen in "PersonItemsSeen"
 	Then the Person collection "PersonItemsSeen" should contain the following items from the Person collection "People"
 		| Index |
 		| 4     |
@@ -51,7 +51,7 @@ Scenario: Iterate a collection with a synchronous action, a batch size of 1 and 
 		| 4     | 0f06465c-5639-47e2-906e-09c208360e37 | 6ED54E7C-D39C-4A2D-8781-91D15EC047F1 | Darrell | 1933-08-14  |
 		| 5     | 0f06465c-5639-47e2-906e-09c208360e37 | EB7DF71C-762E-49D9-BC32-95C608EDE208 | Sally   | 1932-04-09  |
 		| 6     | 0f06465c-5639-47e2-906e-09c208360e37 | DC62035F-039D-40EE-8307-BD77CE6FEC67 | Alicia  | 1933-06-12  |
-	When I iterate the query "SELECT * FROM People p WHERE p.Tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a batch size of "1", a max batch count of "2" and a synchronous action and store the Person objects seen in "PersonItemsSeen"
+	When I iterate the query "SELECT * FROM People p WHERE p.tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a batch size of "1", a max batch count of "2" and a synchronous action and store the Person objects seen in "PersonItemsSeen"
 	Then the Person collection "PersonItemsSeen" should contain the following items from the Person collection "People"
 		| Index |
 		| 4     |
@@ -67,7 +67,7 @@ Scenario: Iterate a collection of Entity Instances with a synchronous action.
 		| 4     | 0f06465c-5639-47e2-906e-09c208360e37 | 6ED54E7C-D39C-4A2D-8781-91D15EC047F1 | Darrell | 1933-08-14  |
 		| 5     | 0f06465c-5639-47e2-906e-09c208360e37 | EB7DF71C-762E-49D9-BC32-95C608EDE208 | Sally   | 1932-04-09  |
 		| 6     | 0f06465c-5639-47e2-906e-09c208360e37 | DC62035F-039D-40EE-8307-BD77CE6FEC67 | Alicia  | 1933-06-12  |
-	When I iterate the query "SELECT * FROM People p WHERE p.Tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a synchronous action and store the Entity Instance of Person objects seen in "PersonItemsSeen"
+	When I iterate the query "SELECT * FROM People p WHERE p.tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a synchronous action and store the Entity Instance of Person objects seen in "PersonItemsSeen"
 	Then the Entity Instance of Person collection "PersonItemsSeen" should contain the following items from the Person collection "People"
 		| Index |
 		| 4     |
@@ -84,7 +84,7 @@ Scenario: Iterate a collection with an asynchronous action
 		| 4     | 0f06465c-5639-47e2-906e-09c208360e37 | 6ED54E7C-D39C-4A2D-8781-91D15EC047F1 | Darrell | 1933-08-14  |
 		| 5     | 0f06465c-5639-47e2-906e-09c208360e37 | EB7DF71C-762E-49D9-BC32-95C608EDE208 | Sally   | 1932-04-09  |
 		| 6     | 0f06465c-5639-47e2-906e-09c208360e37 | DC62035F-039D-40EE-8307-BD77CE6FEC67 | Alicia  | 1933-06-12  |
-	When I iterate the query "SELECT * FROM People p WHERE p.Tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with an asynchronous action and store the Person objects seen in "PersonItemsSeen"
+	When I iterate the query "SELECT * FROM People p WHERE p.tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with an asynchronous action and store the Person objects seen in "PersonItemsSeen"
 	Then the Person collection "PersonItemsSeen" should contain the following items from the Person collection "People"
 		| Index |
 		| 4     |
@@ -101,7 +101,7 @@ Scenario: Iterate a collection with an asynchronous action and a batch size of 1
 		| 4     | 0f06465c-5639-47e2-906e-09c208360e37 | 6ED54E7C-D39C-4A2D-8781-91D15EC047F1 | Darrell | 1933-08-14  |
 		| 5     | 0f06465c-5639-47e2-906e-09c208360e37 | EB7DF71C-762E-49D9-BC32-95C608EDE208 | Sally   | 1932-04-09  |
 		| 6     | 0f06465c-5639-47e2-906e-09c208360e37 | DC62035F-039D-40EE-8307-BD77CE6FEC67 | Alicia  | 1933-06-12  |
-	When I iterate the query "SELECT * FROM People p WHERE p.Tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a batch size of "1" and an asynchronous action and store the Person objects seen in "PersonItemsSeen"
+	When I iterate the query "SELECT * FROM People p WHERE p.tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a batch size of "1" and an asynchronous action and store the Person objects seen in "PersonItemsSeen"
 	Then the Person collection "PersonItemsSeen" should contain the following items from the Person collection "People"
 		| Index |
 		| 4     |
@@ -118,7 +118,7 @@ Scenario: Iterate a collection with an asynchronous action, a batch size of 1 an
 		| 4     | 0f06465c-5639-47e2-906e-09c208360e37 | 6ED54E7C-D39C-4A2D-8781-91D15EC047F1 | Darrell | 1933-08-14  |
 		| 5     | 0f06465c-5639-47e2-906e-09c208360e37 | EB7DF71C-762E-49D9-BC32-95C608EDE208 | Sally   | 1932-04-09  |
 		| 6     | 0f06465c-5639-47e2-906e-09c208360e37 | DC62035F-039D-40EE-8307-BD77CE6FEC67 | Alicia  | 1933-06-12  |
-	When I iterate the query "SELECT * FROM People p WHERE p.Tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a batch size of "1", a max batch count of "2" and an asynchronous action and store the Person objects seen in "PersonItemsSeen"
+	When I iterate the query "SELECT * FROM People p WHERE p.tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with a batch size of "1", a max batch count of "2" and an asynchronous action and store the Person objects seen in "PersonItemsSeen"
 	Then the Person collection "PersonItemsSeen" should contain the following items from the Person collection "People"
 		| Index |
 		| 4     |
@@ -134,7 +134,7 @@ Scenario: Iterate a collection of Entity Instances with an asynchronous action.
 		| 4     | 0f06465c-5639-47e2-906e-09c208360e37 | 6ED54E7C-D39C-4A2D-8781-91D15EC047F1 | Darrell | 1933-08-14  |
 		| 5     | 0f06465c-5639-47e2-906e-09c208360e37 | EB7DF71C-762E-49D9-BC32-95C608EDE208 | Sally   | 1932-04-09  |
 		| 6     | 0f06465c-5639-47e2-906e-09c208360e37 | DC62035F-039D-40EE-8307-BD77CE6FEC67 | Alicia  | 1933-06-12  |
-	When I iterate the query "SELECT * FROM People p WHERE p.Tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with an asynchronous action and store the Entity Instance of Person objects seen in "PersonItemsSeen"
+	When I iterate the query "SELECT * FROM People p WHERE p.tenant = '0f06465c-5639-47e2-906e-09c208360e37' AND p.dateOfBirth < '1992-01-01T00:00:00.000000Z'" against the container called "TestContainer" for the tenant "0f06465c-5639-47e2-906e-09c208360e37" with an asynchronous action and store the Entity Instance of Person objects seen in "PersonItemsSeen"
 	Then the Entity Instance of Person collection "PersonItemsSeen" should contain the following items from the Person collection "People"
 		| Index |
 		| 4     |
