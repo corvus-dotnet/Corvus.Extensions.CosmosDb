@@ -71,14 +71,14 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
             IServiceProvider serviceProvider = ContainerBindings.GetServiceProvider(featureContext);
             IConfigurationRoot configRoot = serviceProvider.GetRequiredService<IConfigurationRoot>();
 
-            CosmosDbSettings settings = configRoot.Get<CosmosDbSettings>();
+            CosmosDbSettings? settings = configRoot.Get<CosmosDbSettings>();
 
-            if (settings.CosmosDbKeySecretName == null)
+            if (settings?.CosmosDbKeySecretName == null)
             {
                 throw new NullReferenceException("CosmosDbKeySecretName must be set in config.");
             }
 
-            string keyVaultName = configRoot["KeyVaultName"];
+            string? keyVaultName = configRoot["KeyVaultName"];
 
             string secret = await SecretHelper.GetSecretFromConfigurationOrKeyVaultAsync(
                 configRoot,
@@ -86,7 +86,20 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
                 keyVaultName,
                 settings.CosmosDbKeySecretName).ConfigureAwait(false);
 
-            string partitionKeyPath = configRoot["CosmosDbPartitionKeyPath"];
+            string? partitionKeyPath = configRoot["CosmosDbPartitionKeyPath"];
+
+            if (partitionKeyPath is null)
+            {
+                throw new NullReferenceException("CosmosDbPartitionKeyPath must be set in config.");
+            }
+
+            string? defaultTtl = configRoot["CosmosDbContainerTimeToLive"];
+
+            if (defaultTtl is string ttl)
+            {
+                featureContext.Set(ttl, CosmosDbContextKeys.ContainerTimeToLive);
+            }
+
             featureContext.Set(partitionKeyPath, CosmosDbContextKeys.PartitionKeyPath);
             featureContext.Set(settings);
             featureContext.Set(secret, CosmosDbContextKeys.AccountKey);
@@ -185,8 +198,19 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
         public static async Task SetupCosmosDbContainerForFeature(FeatureContext featureContext)
         {
             string partitionKeyPath = featureContext.Get<string>(CosmosDbContextKeys.PartitionKeyPath);
+
+            int? defaultTtl = null;
+            if (featureContext.TryGetValue(CosmosDbContextKeys.ContainerTimeToLive, out string defaultTtlString))
+            {
+                if (int.TryParse(defaultTtlString, out int parsedDefaultTtl))
+                {
+                    defaultTtl = parsedDefaultTtl;
+                }
+            }
+
             Database database = featureContext.Get<Database>(CosmosDbContextKeys.CosmosDbDatabase);
-            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath).ConfigureAwait(false);
+
+            Container container = await database.CreateContainerIfNotExistsAsync(BuildContainerProperties("client-" + Guid.NewGuid(), partitionKeyPath, defaultTtl)).ConfigureAwait(false);
             featureContext.Set(container, CosmosDbContextKeys.CosmosDbContainer);
             AddFeatureLevelCosmosDbContainerForCleanup(featureContext, container);
         }
@@ -216,7 +240,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
         }
 
         /// <summary>
-        /// Tear down the cosmos DB datbase for the sceanario.
+        /// Tear down the cosmos DB database for the scenario.
         /// </summary>
         /// <param name="scenarioContext">The scenario context.</param>
         /// <returns>A <see cref="Task"/> which completes once the operation has completed.</returns>
@@ -237,6 +261,18 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
         public static Task TeardownFeatureLevelCosmosDBDatabases(FeatureContext featureContext)
         {
             return featureContext.RunAndStoreExceptionsAsync(() => TeardownCosmosDBDatabasesCoreAsync(featureContext));
+        }
+
+        private static ContainerProperties BuildContainerProperties(string id, string partitionKeyPath, int? ttl)
+        {
+            // We support hierarchical partition keys if the path contains multiple elements delimited by a semicolon.
+            string[] paths = partitionKeyPath.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (paths.Length > 1)
+            {
+                return new ContainerProperties { Id = id, PartitionKeyPaths = paths, DefaultTimeToLive = ttl };
+            }
+
+            return new ContainerProperties { Id = id, PartitionKeyPath = paths[0] };
         }
 
         private static async Task TeardownCosmosDBContainersCoreAsync(SpecFlowContext context)

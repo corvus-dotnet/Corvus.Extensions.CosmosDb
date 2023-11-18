@@ -18,19 +18,12 @@ using Microsoft.Azure.Cosmos;
 /// serialization to support whatever customer serialization the application requires.)
 /// The alternative is the fluent API supported by <see cref="ICosmosClientBuilderFactory"/>.
 /// </para>
-/// <para>
-/// TODO: is this the right project for this? I don't like the way anything just wanting this factory interface
-/// ends up dragging in Corvus.Retry because it happens to share a library with a bunch of ForEachAsync extension
-/// methods for Container.
-/// Should this just be in a library called Corvus.CosmosClient? (And Corvus.CosmosClient.NewtonSoft.Json.Extensions
-/// should just be Corvus.CosmosClient.NewtonSoft.Json, since it has no extension methods.)
-/// </para>
 /// </remarks>
 public interface ICosmosOptionsFactory
 {
     /// <summary>
     /// Create Cosmos Client options.
     /// </summary>
-    /// <returns>A <see cref="CosmosClientOptions"/> preconfigured for the environmentenironment.</returns>
+    /// <returns>A <see cref="CosmosClientOptions"/> preconfigured for the environment.</returns>
     CosmosClientOptions CreateCosmosClientOptions();
 }

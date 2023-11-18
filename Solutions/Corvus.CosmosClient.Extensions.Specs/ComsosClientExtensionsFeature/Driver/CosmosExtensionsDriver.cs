@@ -33,15 +33,29 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
         /// <summary>
         /// Create a container against a database.
         /// </summary>
-        /// <param name="partitionKeyPath">The partition key path to use when creating the container.</param>
         /// <param name="databaseContext">The context from which to get the <see cref="Database"/>.</param>
         /// <param name="containerContext">The context into which to store the <see cref="Container"/>, or null if you do not need to store it.</param>
         /// <param name="containerKey">The key at which to store the <see cref="Container"/>, or null if you do not need to store it.</param>
         /// <returns>A task that completes when the container has been created.</returns>
-        internal static async Task<Container> CreateContainer(string partitionKeyPath, SpecFlowContext databaseContext, ScenarioContext? containerContext = null, string? containerKey = null)
+        internal static async Task<Container> CreateContainer(SpecFlowContext databaseContext, ScenarioContext? containerContext = null, string? containerKey = null)
         {
+            int? defaultTtl = null;
+            if (databaseContext.TryGetValue(CosmosDbContextKeys.ContainerTimeToLive, out string defaultTtlString))
+            {
+                if (int.TryParse(defaultTtlString, out int parsedDefaultTtl))
+                {
+                    defaultTtl = parsedDefaultTtl;
+                }
+            }
+
+            string partitionKeyPath = "/id";
+            if (databaseContext.TryGetValue(CosmosDbContextKeys.PartitionKeyPath, out string partitionKeyPathOverride))
+            {
+                partitionKeyPath = partitionKeyPathOverride;
+            }
+
             Database database = databaseContext.Get<Database>(CosmosDbContextKeys.CosmosDbDatabase);
-            Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath).ConfigureAwait(false);
+            Container container = await database.CreateContainerIfNotExistsAsync(BuildContainerProperties("client-" + Guid.NewGuid(), partitionKeyPath, defaultTtl)).ConfigureAwait(false);
 
             if (containerContext != null && containerKey != null)
             {
@@ -146,6 +160,113 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
                 maxBatchCount).ConfigureAwait(false);
             scenarioContext.Set(results, resultsKey);
             return results;
+        }
+
+        /// <summary>
+        /// Executes a query and iterates the result with a synchronous iterator.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity to iterate.</typeparam>
+        /// <param name="queryText">The query text.</param>
+        /// <param name="containerContext">The context from which to get the Cosmos Container.</param>
+        /// <param name="containerKey">The key in the context with which to get the Cosmos Container.</param>
+        /// <param name="tenant">The tenant to which to scope the iteration.</param>
+        /// <param name="scenarioContext">The scenario context in which to set the results.</param>
+        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set).</param>
+        /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
+        /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
+        /// <returns>The people found when iterating the query.</returns>
+        internal static Task<IList<T>> IteratePeopleWithSyncMethodAndTenantAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, string tenant, ScenarioContext scenarioContext, string? resultsKey = null, int? batchSize = null, int? maxBatchCount = null)
+        {
+            return IteratePeopleWithSyncMethodAndTenantAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), tenant, scenarioContext, resultsKey, batchSize, maxBatchCount);
+        }
+
+        /// <summary>
+        /// Executes a query and iterates the result with a synchronous iterator.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity to iterate.</typeparam>
+        /// <param name="queryText">The query text.</param>
+        /// <param name="container">The Cosmos Container.</param>
+        /// <param name="tenant">The tenant to which to scope the iteration.</param>
+        /// <param name="scenarioContext">The scenario context in which to set the results.</param>
+        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set).</param>
+        /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
+        /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
+        /// <returns>The people found when iterating the query.</returns>
+        internal static async Task<IList<T>> IteratePeopleWithSyncMethodAndTenantAsync<T>(string queryText, Container container, string tenant, ScenarioContext scenarioContext, string? resultsKey = null, int? batchSize = null, int? maxBatchCount = null)
+        {
+            var results = new List<T>();
+            QueryRequestOptions? requestOptions = batchSize.HasValue ? new QueryRequestOptions { MaxItemCount = batchSize } : null;
+            await container.ForEachAsync<T>(queryText, t => results.Add(t), requestOptions, maxBatchCount, feedRange: GetFeedRangeForTenant(tenant)).ConfigureAwait(false);
+            scenarioContext.Set(results, resultsKey);
+            return results;
+        }
+
+        /// <summary>
+        /// Executes a query and iterates the result with a synchronous iterator.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity to iterate.</typeparam>
+        /// <param name="queryText">The query text.</param>
+        /// <param name="containerContext">The context from which to get the Cosmos Container.</param>
+        /// <param name="containerKey">The key in the context with which to get the Cosmos Container.</param>
+        /// <param name="tenant">The tenant to which to scope the iteration.</param>
+        /// <param name="scenarioContext">The scenario context in which to set the results.</param>
+        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set).</param>
+        /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
+        /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
+        /// <returns>The people found when iterating the query.</returns>
+        internal static Task<IList<T>> IteratePeopleWithAsyncMethodAndTenantAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, string tenant, ScenarioContext scenarioContext, string? resultsKey = null, int? batchSize = null, int? maxBatchCount = null)
+        {
+            return IteratePeopleWithAsyncMethodAndTenantAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), tenant, scenarioContext, resultsKey, batchSize, maxBatchCount);
+        }
+
+        /// <summary>
+        /// Executes a query and iterates the result with an asynchronous iterator.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity to iterate.</typeparam>
+        /// <param name="queryText">The query text.</param>
+        /// <param name="container">The Cosmos Container.</param>
+        /// <param name="tenant">The tenant to which to scope the iteration.</param>
+        /// <param name="scenarioContext">The scenario context in which to set the results.</param>
+        /// <param name="resultsKey">The key in which to set the results (or null if the results do not need to be set).</param>
+        /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
+        /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
+        /// <returns>The people found when iterating the query.</returns>
+        internal static async Task<IList<T>> IteratePeopleWithAsyncMethodAndTenantAsync<T>(string queryText, Container container, string tenant, ScenarioContext scenarioContext, string? resultsKey = null, int? batchSize = null, int? maxBatchCount = null)
+        {
+            QueryRequestOptions? requestOptions = batchSize.HasValue ? new QueryRequestOptions { MaxItemCount = batchSize } : null;
+            var results = new List<T>();
+            await container.ForEachAsync<T>(
+                queryText,
+                t =>
+                {
+                    results.Add(t);
+                    return Task.CompletedTask;
+                },
+                requestOptions,
+                maxBatchCount,
+                feedRange: GetFeedRangeForTenant(tenant)).ConfigureAwait(false);
+            scenarioContext.Set(results, resultsKey);
+            return results;
+        }
+
+        private static FeedRange? GetFeedRangeForTenant(string tenant)
+        {
+            // Hierarchical PK with just the root element.
+            PartitionKeyBuilder builder = new();
+            builder.Add(tenant);
+            return FeedRange.FromPartitionKey(builder.Build());
+        }
+
+        private static ContainerProperties BuildContainerProperties(string id, string partitionKeyPath, int? ttl)
+        {
+            // We support hierarchical partition keys if the path contains multiple elements delimited by a semicolon.
+            string[] paths = partitionKeyPath.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (paths.Length > 1)
+            {
+                return new ContainerProperties { Id = id, PartitionKeyPaths = paths, DefaultTimeToLive = ttl };
+            }
+
+            return new ContainerProperties { Id = id, PartitionKeyPath = paths[0] };
         }
 
         private static Container GetCosmosContainer(SpecFlowContext containerContext, string containerKey = CosmosDbContextKeys.CosmosDbContainer)

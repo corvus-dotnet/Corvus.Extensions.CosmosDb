@@ -19,10 +19,12 @@ namespace Corvus.Testing.CosmosDb.Extensions
         /// or in the local emulator).
         /// </summary>
         /// <param name="serviceCollection">The service collection to modify.</param>
-        /// <param name="partitionKeyPath">The partition key path to specify when creating the collection.</param>
+        /// <param name="partitionKeyPath">The partition key path to specify when creating the collection. To support hierarchical partition keys, separate the paths with <c>;</c>.</param>
+        /// <param name="defaultTtl">The default Time To Live for items in the container.</param>
         public static void AddSharedThroughputCosmosDbTestServices(
             this IServiceCollection serviceCollection,
-            string partitionKeyPath)
+            string partitionKeyPath,
+            int? defaultTtl = null)
         {
             AddStandardServices(serviceCollection);
 
@@ -30,7 +32,8 @@ namespace Corvus.Testing.CosmosDb.Extensions
                 serviceCollection,
                 "endjinspecssharedthroughput",
                 "endjinspecsgraphsharedthroughput",
-                partitionKeyPath);
+                partitionKeyPath,
+                defaultTtl);
         }
 
         /// <summary>
@@ -40,10 +43,14 @@ namespace Corvus.Testing.CosmosDb.Extensions
         /// <param name="serviceCollection">The service collection to modify.</param>
         /// <param name="sqlDatabaseName">The name of the CosmosDB database in which to create document collections.</param>
         /// <param name="graphDatabaseName">The name of the CosmosDB database in which to create graph collections.</param>
+        /// <param name="partitionKeyPath">The partition key path to specify when creating the collection. To support hierarchical partition keys, separate the paths with <c>;</c>.</param>
+        /// <param name="defaultTtl">The default Time To Live for items in the container.</param>
         public static void AddNonSharedThroughputCosmosDbTestServices(
             this IServiceCollection serviceCollection,
             string? sqlDatabaseName = null,
-            string? graphDatabaseName = null)
+            string? graphDatabaseName = null,
+            string? partitionKeyPath = null,
+            int? defaultTtl = null)
         {
             AddStandardServices(serviceCollection);
 
@@ -51,7 +58,8 @@ namespace Corvus.Testing.CosmosDb.Extensions
                 serviceCollection,
                 sqlDatabaseName,
                 graphDatabaseName,
-                null);
+                partitionKeyPath,
+                defaultTtl);
         }
 
         private static void AddStandardServices(IServiceCollection serviceCollection)
@@ -64,7 +72,8 @@ namespace Corvus.Testing.CosmosDb.Extensions
             IServiceCollection serviceCollection,
             string? cosmosDbDatabaseName,
             string? cosmosDbGraphDatabaseName,
-            string? partitionKeyPath)
+            string? partitionKeyPath,
+            int? defaultTtl)
         {
             const string CosmosDbLocalEmulatorWellKnownKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
 
@@ -102,6 +111,11 @@ namespace Corvus.Testing.CosmosDb.Extensions
             {
                 fallbackSettings.Add("CosmosDbPartitionKeyPath", partitionKeyPath);
                 fallbackSettings.Add("CosmosDbUseDatabaseThroughput", "true");
+            }
+
+            if (defaultTtl is int ttl)
+            {
+                fallbackSettings.Add("CosmosDbContainerTimeToLive", ttl.ToString());
             }
 
             if (cosmosDbGraphDatabaseName != null)

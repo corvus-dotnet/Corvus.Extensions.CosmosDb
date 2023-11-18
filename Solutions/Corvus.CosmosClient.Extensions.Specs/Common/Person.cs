@@ -11,6 +11,8 @@ namespace Corvus.CosmosClient.Extensions.Specs.Common
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
+        public string Tenant { get; set; } = Guid.NewGuid().ToString();
+
         public string? Name { get; set; }
 
         public DateTimeOffset? DateOfBirth { get; set; }
@@ -41,6 +43,11 @@ namespace Corvus.CosmosClient.Extensions.Specs.Common
         public override int GetHashCode()
         {
             return HashCode.Combine(this.Name, this.Id, this.DateOfBirth);
+        }
+
+        public override string ToString()
+        {
+            return $"{this.Tenant}, {this.Id}, {this.Name}, {this.DateOfBirth}";
         }
     }
 }

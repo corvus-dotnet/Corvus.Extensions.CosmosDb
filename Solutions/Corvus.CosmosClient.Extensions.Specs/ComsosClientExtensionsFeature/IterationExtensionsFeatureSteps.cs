@@ -33,7 +33,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature
         [Given(@"that I create a Cosmos Container called ""([^""]*)""")]
         public Task GivenThatICreateACosmosContainerCalled(string containerKey)
         {
-            return CosmosExtensionsDriver.CreateContainer("/id", this.FeatureContext, this.ScenarioContext, containerKey);
+            return CosmosExtensionsDriver.CreateContainer(this.FeatureContext, this.ScenarioContext, containerKey);
         }
 
         [Given(@"I add a collection of Person objects called ""([^""]*)"" to the Cosmos Container called ""([^""]*)""")]
@@ -89,6 +89,54 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature
         public Task WhenIIterateTheQueryWithAnAsynchronousActionAndStoreTheEntityInstanceOfPersonObjectsSeenIn(string queryText, string containerKey, string resultsKey)
         {
             return CosmosExtensionsDriver.IteratePeopleWithAsyncMethodAsync<EntityInstance<Person>>(queryText, this.ScenarioContext, containerKey, this.ScenarioContext, resultsKey);
+        }
+
+        [When(@"I iterate the query ""([^""]*)"" against the container called ""([^""]*)"" for the tenant ""(.*)"" with a synchronous action and store the Person objects seen in ""([^""]*)""")]
+        public Task WhenIIterateTheQueryForTheTenantWithASynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, string tenant, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAndTenantAsync<Person>(queryText, this.ScenarioContext, containerKey, tenant, this.ScenarioContext, resultsKey);
+        }
+
+        [When(@"I iterate the query ""([^""]*)"" against the container called ""([^""]*)"" for the tenant ""(.*)"" with a batch size of ""([^""]*)"" and a synchronous action and store the Person objects seen in ""([^""]*)""")]
+        public Task WhenIIterateTheQueryForTheTenantWithASynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, string tenant, int batchSize, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAndTenantAsync<Person>(queryText, this.ScenarioContext, containerKey, tenant, this.ScenarioContext, resultsKey, batchSize);
+        }
+
+        [When(@"I iterate the query ""([^""]*)"" against the container called ""([^""]*)"" for the tenant ""(.*)"" with a batch size of ""([^""]*)"", a max batch count of ""([^""]*)"" and a synchronous action and store the Person objects seen in ""([^""]*)""")]
+        public Task WhenIIterateTheQueryForTheTenantWithASynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, string tenant, int batchSize, int maxBatchCount, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAndTenantAsync<Person>(queryText, this.ScenarioContext, containerKey, tenant, this.ScenarioContext, resultsKey, batchSize, maxBatchCount);
+        }
+
+        [When(@"I iterate the query ""([^""]*)"" against the container called ""([^""]*)"" for the tenant ""(.*)"" with an asynchronous action and store the Person objects seen in ""([^""]*)""")]
+        public Task WhenIIterateTheQueryForTheTenantWithAnAsynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, string tenant, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithAsyncMethodAndTenantAsync<Person>(queryText, this.ScenarioContext, containerKey, tenant, this.ScenarioContext, resultsKey);
+        }
+
+        [When(@"I iterate the query ""([^""]*)"" against the container called ""([^""]*)"" for the tenant ""(.*)"" with a batch size of ""([^""]*)"" and an asynchronous action and store the Person objects seen in ""([^""]*)""")]
+        public Task WhenIIterateTheQueryForTheTenantWithAnAsynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, string tenant, int batchSize, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithAsyncMethodAndTenantAsync<Person>(queryText, this.ScenarioContext, containerKey, tenant, this.ScenarioContext, resultsKey, batchSize);
+        }
+
+        [When(@"I iterate the query ""([^""]*)"" against the container called ""([^""]*)"" for the tenant ""(.*)"" with a batch size of ""([^""]*)"", a max batch count of ""([^""]*)"" and an asynchronous action and store the Person objects seen in ""([^""]*)""")]
+        public Task WhenIIterateTheQueryForTheTenantWithAnAsynchronousActionAndStoreThePersonObjectsSeenIn(string queryText, string containerKey, string tenant, int batchSize, int maxBatchCount, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithAsyncMethodAndTenantAsync<Person>(queryText, this.ScenarioContext, containerKey, tenant, this.ScenarioContext, resultsKey, batchSize, maxBatchCount);
+        }
+
+        [When(@"I iterate the query ""([^""]*)"" against the container called ""([^""]*)"" for the tenant ""(.*)"" with a synchronous action and store the Entity Instance of Person objects seen in ""([^""]*)""")]
+        public Task WhenIIterateTheQueryForTheTenantWithASynchronousActionAndStoreTheEntityInstanceOfPersonObjectsSeenIn(string queryText, string containerKey, string tenant, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithSyncMethodAndTenantAsync<EntityInstance<Person>>(queryText, this.ScenarioContext, containerKey, tenant, this.ScenarioContext, resultsKey);
+        }
+
+        [When(@"I iterate the query ""([^""]*)"" against the container called ""([^""]*)"" for the tenant ""(.*)"" with an asynchronous action and store the Entity Instance of Person objects seen in ""([^""]*)""")]
+        public Task WhenIIterateTheQueryForTheTenantWithAnAsynchronousActionAndStoreTheEntityInstanceOfPersonObjectsSeenIn(string queryText, string containerKey, string tenant, string resultsKey)
+        {
+            return CosmosExtensionsDriver.IteratePeopleWithAsyncMethodAndTenantAsync<EntityInstance<Person>>(queryText, this.ScenarioContext, containerKey, tenant, this.ScenarioContext, resultsKey);
         }
 
         [Then(@"the Person collection ""([^""]*)"" should contain the following items from the Person collection ""([^""]*)""")]

@@ -20,6 +20,11 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
         public const string CosmosDbContainer = "CosmosDbContainer";
 
         /// <summary>
+        /// The key for the Cosmos DB container time-to-live in the feature context.
+        /// </summary>
+        public const string ContainerTimeToLive = "CosmosDbContainerTimeToLive";
+
+        /// <summary>
         /// The key for the Cosmos DB database instance in the feature context.
         /// </summary>
         public const string CosmosDbDatabase = "CosmosDbDatabase";

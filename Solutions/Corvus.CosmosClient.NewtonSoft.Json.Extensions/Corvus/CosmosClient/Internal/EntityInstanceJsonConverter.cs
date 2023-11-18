@@ -57,9 +57,9 @@ namespace Corvus.Extensions.Cosmos.Internal
                 throw new ArgumentException("Value is not an IEntityInstance", nameof(value));
             }
 
-            var jobject = JObject.FromObject(entityInstance.Entity, serializer);
-            jobject["_etag"] = entityInstance.ETag;
-            jobject.WriteTo(writer);
+            var jObject = JObject.FromObject(entityInstance.Entity, serializer);
+            jObject["_etag"] = entityInstance.ETag;
+            jObject.WriteTo(writer);
         }
     }
 }

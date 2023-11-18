@@ -4,6 +4,7 @@
 
 namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Bindings
 {
+    using System.Linq;
     using Corvus.Testing.CosmosDb.Extensions;
     using Corvus.Testing.SpecFlow;
 
@@ -23,9 +24,18 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Bin
         [BeforeFeature("@perFeatureContainer", Order = ContainerBeforeFeatureOrder.PopulateServiceCollection)]
         public static void SetupFeature(FeatureContext featureContext)
         {
-            ContainerBindings.ConfigureServices(
-                featureContext,
-                serviceCollection => serviceCollection.AddSharedThroughputCosmosDbTestServices("/id"));
+            if (featureContext.FeatureInfo.Tags.Contains("withHierarchicalPK"))
+            {
+                ContainerBindings.ConfigureServices(
+                    featureContext,
+                    serviceCollection => serviceCollection.AddSharedThroughputCosmosDbTestServices("/tenant;/id"));
+            }
+            else
+            {
+                ContainerBindings.ConfigureServices(
+                    featureContext,
+                    serviceCollection => serviceCollection.AddSharedThroughputCosmosDbTestServices("/id"));
+            }
         }
     }
 }

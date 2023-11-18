@@ -24,6 +24,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.Common.Driver
                 row => new Person
                 {
                     Id = row["Id"],
+                    Tenant = row["Tenant"],
                     Name = ValueUtilities.GetNullableString(row["Name"]),
                     DateOfBirth = ValueUtilities.GetNullableDateTimeOffset(row["DateOfBirth"]),
                 }).ToList();
