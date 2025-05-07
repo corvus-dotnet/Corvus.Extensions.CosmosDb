@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Corvus.CosmosClient.NewtonSoft.Json.Extensions", "Corvus.CosmosClient.NewtonSoft.Json.Extensions\Corvus.CosmosClient.NewtonSoft.Json.Extensions.csproj", "{B262321F-65E5-4E34-8AA2-90A96E1C7F5E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corvus.CosmosClient", "Corvus.CosmosClient\Corvus.CosmosClient.csproj", "{2C711424-FF2C-474C-9468-3B8735A1B83D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{B262321F-65E5-4E34-8AA2-90A96E1C7F5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B262321F-65E5-4E34-8AA2-90A96E1C7F5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B262321F-65E5-4E34-8AA2-90A96E1C7F5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C711424-FF2C-474C-9468-3B8735A1B83D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C711424-FF2C-474C-9468-3B8735A1B83D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C711424-FF2C-474C-9468-3B8735A1B83D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C711424-FF2C-474C-9468-3B8735A1B83D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{1EB1E15D-E243-4BE4-8AF9-7394EEE500BA} = {49894748-0D71-4BA8-A17E-F346E5036130}
 		{02BA547F-1594-4998-95CB-F2133253A3D0} = {49894748-0D71-4BA8-A17E-F346E5036130}
 		{B262321F-65E5-4E34-8AA2-90A96E1C7F5E} = {49894748-0D71-4BA8-A17E-F346E5036130}
+		{2C711424-FF2C-474C-9468-3B8735A1B83D} = {49894748-0D71-4BA8-A17E-F346E5036130}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2FE6918-F86F-4AAC-BC28-D5141DEB816B}
