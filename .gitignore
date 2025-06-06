@@ -338,3 +338,9 @@ coverage.cobertura.xml
 # SpecFlow generated feature files
 *.feature.cs
 local.settings.json
+
+# Scripted build artifacts
+/_codeCoverage
+/_packages
+*.sbom.*
+.zf/extensions/
