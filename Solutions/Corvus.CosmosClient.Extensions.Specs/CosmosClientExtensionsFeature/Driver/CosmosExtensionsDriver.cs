@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Driver
+namespace Corvus.CosmosClient.Extensions.Specs.CosmosClientExtensionsFeature.Driver
 {
     using System;
     using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
 
     using Microsoft.Azure.Cosmos;
 
-    using TechTalk.SpecFlow;
+    using Reqnroll;
 
     internal static class CosmosExtensionsDriver
     {
@@ -25,7 +25,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
         /// <param name="containerKey">The key in the context with which to get the Cosmos Container.</param>
         /// <param name="people">The people to add to the default container.</param>
         /// <returns>A <see cref="Task"/> which completes once the people have been added to the container.</returns>
-        internal static Task AddPeopleToContainerAsync(SpecFlowContext containerContext, string containerKey, IList<Person> people)
+        internal static Task AddPeopleToContainerAsync(ReqnrollContext containerContext, string containerKey, IList<Person> people)
         {
             return AddPeopleToContainer(GetCosmosContainer(containerContext, containerKey), people);
         }
@@ -38,7 +38,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
         /// <param name="containerContext">The context into which to store the <see cref="Container"/>, or null if you do not need to store it.</param>
         /// <param name="containerKey">The key at which to store the <see cref="Container"/>, or null if you do not need to store it.</param>
         /// <returns>A task that completes when the container has been created.</returns>
-        internal static async Task<Container> CreateContainer(string partitionKeyPath, SpecFlowContext databaseContext, ScenarioContext? containerContext = null, string? containerKey = null)
+        internal static async Task<Container> CreateContainer(string partitionKeyPath, ReqnrollContext databaseContext, ScenarioContext? containerContext = null, string? containerKey = null)
         {
             Database database = databaseContext.Get<Database>(CosmosDbContextKeys.CosmosDbDatabase);
             Container container = await database.CreateContainerIfNotExistsAsync("client-" + Guid.NewGuid(), partitionKeyPath).ConfigureAwait(false);
@@ -78,7 +78,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
         /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
         /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
         /// <returns>The people found when iterating the query.</returns>
-        internal static Task<IList<T>> IteratePeopleWithSyncMethodAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, ScenarioContext scenarioContext, string? resultsKey = null, int? batchSize = null, int? maxBatchCount = null)
+        internal static Task<IList<T>> IteratePeopleWithSyncMethodAsync<T>(string queryText, ReqnrollContext containerContext, string containerKey, ScenarioContext scenarioContext, string? resultsKey = null, int? batchSize = null, int? maxBatchCount = null)
         {
             return IteratePeopleWithSyncMethodAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), scenarioContext, resultsKey, batchSize, maxBatchCount);
         }
@@ -115,7 +115,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
         /// <param name="batchSize">The batch size, or null if the default is to be used.</param>
         /// <param name="maxBatchCount">The max batch count, or null if the default is to be used.</param>
         /// <returns>The people found when iterating the query.</returns>
-        internal static Task<IList<T>> IteratePeopleWithAsyncMethodAsync<T>(string queryText, SpecFlowContext containerContext, string containerKey, ScenarioContext scenarioContext, string? resultsKey = null, int? batchSize = null, int? maxBatchCount = null)
+        internal static Task<IList<T>> IteratePeopleWithAsyncMethodAsync<T>(string queryText, ReqnrollContext containerContext, string containerKey, ScenarioContext scenarioContext, string? resultsKey = null, int? batchSize = null, int? maxBatchCount = null)
         {
             return IteratePeopleWithAsyncMethodAsync<T>(queryText, GetCosmosContainer(containerContext, containerKey), scenarioContext, resultsKey, batchSize, maxBatchCount);
         }
@@ -148,7 +148,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Dri
             return results;
         }
 
-        private static Container GetCosmosContainer(SpecFlowContext containerContext, string containerKey = CosmosDbContextKeys.CosmosDbContainer)
+        private static Container GetCosmosContainer(ReqnrollContext containerContext, string containerKey = CosmosDbContextKeys.CosmosDbContainer)
         {
             return containerContext.Get<Container>(containerKey);
         }

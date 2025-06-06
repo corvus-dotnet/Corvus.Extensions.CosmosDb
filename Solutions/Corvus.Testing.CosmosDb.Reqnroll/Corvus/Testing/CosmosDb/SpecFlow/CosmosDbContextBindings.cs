@@ -10,14 +10,14 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
     using System.Threading.Tasks;
 
     using Corvus.CosmosClient;
-    using Corvus.Testing.SpecFlow;
+    using Corvus.Testing.ReqnRoll;
 
     using Microsoft.Azure.Cosmos;
     using Microsoft.Azure.Cosmos.Fluent;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
-    using TechTalk.SpecFlow;
+    using Reqnroll;
 
     /// <summary>
     /// Services to help manage Cosmos DB instances in a Scenario or Feature context.
@@ -35,10 +35,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
         /// <param name="featureContext">The current feature context.</param>
         /// <param name="container">The <see cref="Container"/> to add to the list for clean-up.</param>
         /// <param name="database">The database to delete (or null if you do not wish to clean up the database for the container).</param>
-        public static void AddFeatureLevelCosmosDbContainerForCleanup(
-            FeatureContext featureContext,
-            Container container,
-            Database? database = null)
+        public static void AddFeatureLevelCosmosDbContainerForCleanup(FeatureContext featureContext, Container container, Database? database = null)
         {
             AddCosmosDbContainerForCleanup(featureContext, container, database);
         }
@@ -50,10 +47,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
         /// <param name="scenarioContext">The current scenario context.</param>
         /// <param name="container">The <see cref="Container"/> to add to the list for clean-up.</param>
         /// <param name="database">The database to delete (or null if you do not wish to clean up the database for the container).</param>
-        public static void AddScenarioLevelCosmosDbContainerForCleanup(
-            ScenarioContext scenarioContext,
-            Container container,
-            Database? database = null)
+        public static void AddScenarioLevelCosmosDbContainerForCleanup(ScenarioContext scenarioContext, Container container, Database? database = null)
         {
             AddCosmosDbContainerForCleanup(scenarioContext, container, database);
         }
@@ -78,15 +72,11 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
                 throw new NullReferenceException("CosmosDbKeySecretName must be set in config.");
             }
 
-            string keyVaultName = configRoot["KeyVaultName"];
+            string keyVaultName = configRoot["KeyVaultName"]!;
 
-            string secret = await SecretHelper.GetSecretFromConfigurationOrKeyVaultAsync(
-                configRoot,
-                "kv:" + settings.CosmosDbKeySecretName,
-                keyVaultName,
-                settings.CosmosDbKeySecretName).ConfigureAwait(false);
+            string secret = await SecretHelper.GetSecretFromConfigurationOrKeyVaultAsync(configRoot, "kv:" + settings.CosmosDbKeySecretName, keyVaultName, settings.CosmosDbKeySecretName).ConfigureAwait(false);
 
-            string partitionKeyPath = configRoot["CosmosDbPartitionKeyPath"];
+            string partitionKeyPath = configRoot["CosmosDbPartitionKeyPath"]!;
             featureContext.Set(partitionKeyPath, CosmosDbContextKeys.PartitionKeyPath);
             featureContext.Set(settings);
             featureContext.Set(secret, CosmosDbContextKeys.AccountKey);
@@ -136,17 +126,9 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
 
             CosmosClientBuilder builder;
 
-            if (clientBuilderFactory is null)
-            {
-                builder = new CosmosClientBuilder(settings.CosmosDbAccountUri, accountKey);
-            }
-            else
-            {
-                builder = clientBuilderFactory.CreateCosmosClientBuilder(settings.CosmosDbAccountUri, accountKey);
-            }
+            builder = clientBuilderFactory is null ? new CosmosClientBuilder(settings.CosmosDbAccountUri, accountKey) : clientBuilderFactory.CreateCosmosClientBuilder(settings.CosmosDbAccountUri, accountKey);
 
-            builder = builder
-                .WithConnectionModeDirect();
+            builder = builder.WithConnectionModeDirect();
 
             CosmosClient client = builder.Build();
             Database database = await client.CreateDatabaseIfNotExistsAsync(settings.CosmosDbDatabaseName, settings.CosmosDbDefaultOfferThroughput).ConfigureAwait(false);
@@ -216,7 +198,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
         }
 
         /// <summary>
-        /// Tear down the cosmos DB datbase for the sceanario.
+        /// Tear down the cosmos DB database for the scenario.
         /// </summary>
         /// <param name="scenarioContext">The scenario context.</param>
         /// <returns>A <see cref="Task"/> which completes once the operation has completed.</returns>
@@ -239,7 +221,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
             return featureContext.RunAndStoreExceptionsAsync(() => TeardownCosmosDBDatabasesCoreAsync(featureContext));
         }
 
-        private static async Task TeardownCosmosDBContainersCoreAsync(SpecFlowContext context)
+        private static async Task TeardownCosmosDBContainersCoreAsync(ReqnrollContext context)
         {
             if (context.ContainsKey(CosmosDbContainersToDelete))
             {
@@ -263,8 +245,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
             }
         }
 
-        private static async Task TeardownCosmosDBDatabasesCoreAsync(
-            SpecFlowContext context)
+        private static async Task TeardownCosmosDBDatabasesCoreAsync(ReqnrollContext context)
         {
             if (context.ContainsKey(CosmosDbDatabasesToDelete))
             {
@@ -275,10 +256,7 @@ namespace Corvus.Testing.CosmosDb.SpecFlow
             }
         }
 
-        private static void AddCosmosDbContainerForCleanup(
-            SpecFlowContext context,
-            Container container,
-            Database? database = null)
+        private static void AddCosmosDbContainerForCleanup(ReqnrollContext context, Container container, Database? database = null)
         {
             if (!context.ContainsKey(CosmosDbContainersToDelete))
             {

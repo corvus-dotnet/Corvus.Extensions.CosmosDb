@@ -16,8 +16,8 @@ namespace Corvus.Testing
     ///     Helper methods for obtaining secrets.
     /// </summary>
     /// <remarks>
-    /// We need this as different tenants may be configured to use different keyvaults (in a BYO scenario).
-    /// Therefore we cannot simply configure the keyvault fallback for configuration.
+    /// We need this as different tenants may be configured to use different KeyVaults (in a BYO scenario).
+    /// Therefore, we cannot simply configure the KeyVault fallback for configuration.
     /// </remarks>
     internal static class SecretHelper
     {
@@ -55,7 +55,7 @@ namespace Corvus.Testing
                 throw new System.ArgumentException("message", nameof(configurationKey));
             }
 
-            string secret = configuration[configurationKey];
+            string secret = configuration[configurationKey]!;
 
             if (string.IsNullOrEmpty(secret))
             {
@@ -80,10 +80,7 @@ namespace Corvus.Testing
         /// <returns>
         ///     The <see cref="Task" />.
         /// </returns>
-        internal static async Task<string> GetSecretFromKeyVaultAsync(
-            IConfiguration configuration,
-            string keyVaultName,
-            string keyVaultSecretName)
+        internal static async Task<string> GetSecretFromKeyVaultAsync(IConfiguration configuration, string keyVaultName, string keyVaultSecretName)
         {
             if (configuration is null)
             {
@@ -100,7 +97,7 @@ namespace Corvus.Testing
                 throw new System.ArgumentException("message", nameof(keyVaultSecretName));
             }
 
-            string azureServicesAuthConnectionString = configuration["AzureServicesAuthConnectionString"];
+            string azureServicesAuthConnectionString = configuration["AzureServicesAuthConnectionString"]!;
             var keyVaultCredentials = Corvus.Identity.ClientAuthentication.Azure.LegacyAzureServiceTokenProviderConnectionString.ToTokenCredential(azureServicesAuthConnectionString);
 
             var keyVaultUri = new Uri($"https://{keyVaultName}.vault.azure.net/");
