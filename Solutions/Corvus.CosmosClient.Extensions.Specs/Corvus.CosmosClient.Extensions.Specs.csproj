@@ -53,7 +53,7 @@
     <ProjectReference Include="..\Corvus.Testing.CosmosDb.Reqnroll\Corvus.Testing.CosmosDb.Reqnroll.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="specflow.json">
+    <None Update="reqnroll.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
