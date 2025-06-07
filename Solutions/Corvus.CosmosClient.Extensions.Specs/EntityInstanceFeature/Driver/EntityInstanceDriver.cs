@@ -12,8 +12,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.EntityInstanceFeature.Driver
     using Newtonsoft.Json.Linq;
 
     using NUnit.Framework;
-
-    using TechTalk.SpecFlow;
+    using Reqnroll;
 
     internal static class EntityInstanceDriver
     {

@@ -2,7 +2,7 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature
+namespace Corvus.CosmosClient.Extensions.Specs.CosmosClientExtensionsFeature
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -10,12 +10,12 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature
 
     using Corvus.CosmosClient.Extensions.Specs.Common;
     using Corvus.CosmosClient.Extensions.Specs.Common.Driver;
-    using Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Driver;
+    using Corvus.CosmosClient.Extensions.Specs.CosmosClientExtensionsFeature.Driver;
     using Corvus.Extensions.Cosmos;
 
     using NUnit.Framework;
 
-    using TechTalk.SpecFlow;
+    using Reqnroll;
 
     [Binding]
     public class IterationExtensionsFeatureSteps

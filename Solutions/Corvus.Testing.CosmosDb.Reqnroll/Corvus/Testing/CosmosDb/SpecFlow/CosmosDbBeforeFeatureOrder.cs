@@ -5,9 +5,9 @@
 namespace Corvus.Testing.CosmosDb.SpecFlow
 {
     using Corvus.Testing.CosmosDb.Extensions;
-    using Corvus.Testing.SpecFlow;
+    using Corvus.Testing.ReqnRoll;
 
-    using TechTalk.SpecFlow;
+    using Reqnroll;
 
     /// <summary>
     /// Defines constants to use for <see cref="HookAttribute.Order"/> property on a

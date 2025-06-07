@@ -10,8 +10,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.EntityInstanceFeature
     using Corvus.Extensions.Cosmos;
 
     using NUnit.Framework;
-
-    using TechTalk.SpecFlow;
+    using Reqnroll;
 
     [Binding]
     public class EntityInstanceFeatureSteps

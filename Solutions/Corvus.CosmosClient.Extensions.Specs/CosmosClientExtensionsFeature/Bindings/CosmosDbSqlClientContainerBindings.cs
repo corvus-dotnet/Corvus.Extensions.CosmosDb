@@ -2,12 +2,12 @@
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
 
-namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Bindings
+namespace Corvus.CosmosClient.Extensions.Specs.CosmosClientExtensionsFeature.Bindings
 {
     using Corvus.Testing.CosmosDb.Extensions;
-    using Corvus.Testing.SpecFlow;
+    using Corvus.Testing.ReqnRoll;
 
-    using TechTalk.SpecFlow;
+    using Reqnroll;
 
     /// <summary>
     /// Provides Specflow bindings for Endjin Composition.
@@ -16,7 +16,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.ComsosClientExtensionsFeature.Bin
     public static class CosmosDbSqlClientContainerBindings
     {
         /// <summary>
-        /// Setup the endjin container for a feature.
+        /// Set up the endjin container for a feature.
         /// </summary>
         /// <param name="featureContext">The SpecFlow test context.</param>
         /// <remarks>We expect features run in parallel to be executing in separate app domains.</remarks>

@@ -7,7 +7,7 @@ namespace Corvus.CosmosClient.Extensions.Specs.Common.Driver
     using System.Collections.Generic;
     using System.Linq;
 
-    using TechTalk.SpecFlow;
+    using Reqnroll;
 
     internal static class PersonDriver
     {
